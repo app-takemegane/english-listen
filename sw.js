@@ -1,10 +1,10 @@
 // サービスワーカー:アプリ全体を端末に保存し、オフラインでも動くようにする
 // ファイルを追加・変更したら VERSION の数字を上げること(古い保存分が入れ替わる)
-const VERSION = "v2";
+const VERSION = "v3";
 const CACHE_NAME = `eigo-ehon-${VERSION}`;
 
 const BOOK_FILES = [];
-["sun", "cat"].forEach(id => {
+["sun", "cat", "colors", "park"].forEach(id => {
   BOOK_FILES.push(`books/${id}/cover.svg`);
   for (let i = 1; i <= 6; i++) {
     BOOK_FILES.push(`books/${id}/p${i}.svg`);

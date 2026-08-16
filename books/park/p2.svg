@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300">
+  <rect width="400" height="300" fill="#c9ecfb"/>
+  <circle cx="345" cy="50" r="28" fill="#ffd23f"/>
+  <ellipse cx="200" cy="310" rx="250" ry="80" fill="#8cc63f"/>
+  <g stroke="#b57735" stroke-width="12" stroke-linecap="round">
+    <line x1="110" y1="255" x2="160" y2="90"/>
+    <line x1="290" y1="255" x2="240" y2="90"/>
+    <line x1="160" y1="90" x2="240" y2="90"/>
+  </g>
+  <line x1="180" y1="95" x2="168" y2="175" stroke="#9b8878" stroke-width="5"/>
+  <line x1="220" y1="95" x2="208" y2="175" stroke="#9b8878" stroke-width="5"/>
+  <rect x="156" y="172" width="62" height="11" rx="5" fill="#e5735c" transform="rotate(-4 187 178)"/>
+  <g transform="rotate(-6 190 150)">
+    <circle cx="190" cy="132" r="17" fill="#ffe0b8"/>
+    <path d="M175 125 Q182 108 199 113 Q208 116 206 126 Q193 118 179 123 Z" fill="#6b4a2f"/>
+    <circle cx="184" cy="132" r="2.8" fill="#4a3728"/><circle cx="196" cy="132" r="2.8" fill="#4a3728"/>
+    <path d="M183 140 Q190 147 197 140" fill="none" stroke="#4a3728" stroke-width="3" stroke-linecap="round"/>
+    <rect x="177" y="149" width="26" height="26" rx="9" fill="#f06292"/>
+    <line x1="180" y1="152" x2="172" y2="118" stroke="#ffe0b8" stroke-width="6" stroke-linecap="round"/>
+    <line x1="200" y1="152" x2="212" y2="120" stroke="#ffe0b8" stroke-width="6" stroke-linecap="round"/>
+    <line x1="183" y1="175" x2="176" y2="196" stroke="#ffe0b8" stroke-width="6" stroke-linecap="round"/>
+    <line x1="197" y1="175" x2="192" y2="197" stroke="#ffe0b8" stroke-width="6" stroke-linecap="round"/>
+  </g>
+  <g stroke="#f7941d" stroke-width="4" fill="none" stroke-linecap="round">
+    <path d="M120 120 Q128 112 136 118"/><path d="M104 145 Q112 137 120 143"/>
+  </g>
+  <text x="60" y="90" font-size="24" font-weight="bold" font-family="sans-serif" fill="#f7941d">Wheee!</text>
+</svg>

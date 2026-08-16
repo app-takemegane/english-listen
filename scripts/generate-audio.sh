@@ -35,5 +35,21 @@ gen cat 4 "She sees a little fish in the pond."
 gen cat 5 "Splash! The fish swims away."
 gen cat 6 "Mom gives Momo some milk. Yum, yum! Momo is happy."
 
+# ── What Color Is It? ──
+gen colors 1 "Look! A red apple."
+gen colors 2 "Look! A yellow banana."
+gen colors 3 "Look! A green frog."
+gen colors 4 "Look! A blue bird."
+gen colors 5 "Look! A pink flower."
+gen colors 6 "Red, yellow, green, blue, and pink. I love colors!"
+
+# ── Let's Go to the Park! ──
+gen park 1 "Today is Sunday. Let's go to the park!"
+gen park 2 "I ride the swing. One, two, three! Wheee!"
+gen park 3 "I go down the slide. It is so fast!"
+gen park 4 "I play in the sandbox with my friend."
+gen park 5 "Oh no! It starts to rain. Run, run, run!"
+gen park 6 "We run home together. It was a fun day!"
+
 rm -rf "$TMP"
 echo "done (voice: $VOICE)"

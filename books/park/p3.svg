@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300">
+  <rect width="400" height="300" fill="#c9ecfb"/>
+  <circle cx="55" cy="55" r="28" fill="#ffd23f"/>
+  <ellipse cx="200" cy="310" rx="250" ry="80" fill="#8cc63f"/>
+  <g>
+    <polygon points="130,80 230,80 320,240 240,240" fill="#4a9fd8"/>
+    <polygon points="145,92 218,92 296,232 252,232" fill="#7ec8e3"/>
+    <rect x="118" y="80" width="16" height="165" rx="6" fill="#3d86b8"/>
+    <rect x="226" y="76" width="16" height="70" rx="6" fill="#3d86b8"/>
+  </g>
+  <g transform="rotate(35 230 160)">
+    <circle cx="230" cy="145" r="16" fill="#ffe0b8"/>
+    <path d="M216 139 Q222 122 238 127 Q247 130 245 139 Q232 132 219 137 Z" fill="#6b4a2f"/>
+    <circle cx="224" cy="145" r="2.6" fill="#4a3728"/><circle cx="236" cy="145" r="2.6" fill="#4a3728"/>
+    <ellipse cx="230" cy="154" rx="4" ry="5" fill="#4a3728"/>
+    <rect x="218" y="161" width="24" height="24" rx="8" fill="#f06292"/>
+    <line x1="220" y1="164" x2="206" y2="150" stroke="#ffe0b8" stroke-width="6" stroke-linecap="round"/>
+    <line x1="240" y1="164" x2="254" y2="150" stroke="#ffe0b8" stroke-width="6" stroke-linecap="round"/>
+    <line x1="224" y1="185" x2="230" y2="204" stroke="#ffe0b8" stroke-width="6" stroke-linecap="round"/>
+    <line x1="236" y1="185" x2="244" y2="202" stroke="#ffe0b8" stroke-width="6" stroke-linecap="round"/>
+  </g>
+  <g stroke="#f7941d" stroke-width="4" fill="none" stroke-linecap="round">
+    <path d="M170 130 Q178 122 186 128"/><path d="M155 160 Q163 152 171 158"/>
+  </g>
+  <text x="52" y="120" font-size="22" font-weight="bold" font-family="sans-serif" fill="#3d86b8">So fast!</text>
+</svg>

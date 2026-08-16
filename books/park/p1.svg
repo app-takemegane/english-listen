@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300">
+  <rect width="400" height="300" fill="#c9ecfb"/>
+  <circle cx="60" cy="55" r="30" fill="#ffd23f"/>
+  <ellipse cx="300" cy="60" rx="34" ry="16" fill="#fff"/>
+  <ellipse cx="200" cy="310" rx="250" ry="80" fill="#8cc63f"/>
+  <path d="M40 300 Q200 230 370 290" fill="none" stroke="#e8d1b0" stroke-width="34" stroke-linecap="round"/>
+  <rect x="290" y="150" width="14" height="90" fill="#8d6e4f"/>
+  <circle cx="297" cy="130" r="45" fill="#6aa84f"/><circle cx="265" cy="155" r="32" fill="#7cb95c"/>
+  <rect x="330" y="180" width="54" height="40" rx="5" fill="#fff" stroke="#b57735" stroke-width="5"/>
+  <text x="338" y="206" font-size="16" font-weight="bold" font-family="sans-serif" fill="#7cb95c">PARK</text>
+  <g>
+    <circle cx="140" cy="185" r="20" fill="#ffe0b8"/>
+    <path d="M122 177 Q130 158 150 163 Q160 166 158 178 Q144 169 128 175 Z" fill="#6b4a2f"/>
+    <circle cx="133" cy="185" r="3" fill="#4a3728"/><circle cx="147" cy="185" r="3" fill="#4a3728"/>
+    <path d="M133 194 Q140 200 147 194" fill="none" stroke="#4a3728" stroke-width="3" stroke-linecap="round"/>
+    <rect x="126" y="205" width="28" height="34" rx="10" fill="#f06292"/>
+    <line x1="126" y1="216" x2="108" y2="204" stroke="#ffe0b8" stroke-width="7" stroke-linecap="round"/>
+    <line x1="154" y1="216" x2="174" y2="208" stroke="#ffe0b8" stroke-width="7" stroke-linecap="round"/>
+    <line x1="133" y1="239" x2="130" y2="258" stroke="#ffe0b8" stroke-width="7" stroke-linecap="round"/>
+    <line x1="147" y1="239" x2="152" y2="258" stroke="#ffe0b8" stroke-width="7" stroke-linecap="round"/>
+  </g>
+  <g>
+    <circle cx="196" cy="196" r="16" fill="#ffe0b8"/>
+    <path d="M182 190 Q188 174 204 178 Q212 181 210 190 Q198 183 186 188 Z" fill="#4a3728"/>
+    <circle cx="191" cy="196" r="2.5" fill="#4a3728"/><circle cx="201" cy="196" r="2.5" fill="#4a3728"/>
+    <path d="M191 203 Q196 208 201 203" fill="none" stroke="#4a3728" stroke-width="2.5" stroke-linecap="round"/>
+    <rect x="185" y="212" width="22" height="28" rx="8" fill="#4a9fd8"/>
+    <line x1="190" y1="240" x2="188" y2="256" stroke="#ffe0b8" stroke-width="6" stroke-linecap="round"/>
+    <line x1="202" y1="240" x2="205" y2="256" stroke="#ffe0b8" stroke-width="6" stroke-linecap="round"/>
+    <line x1="185" y1="220" x2="172" y2="212" stroke="#ffe0b8" stroke-width="6" stroke-linecap="round"/>
+    <line x1="207" y1="220" x2="218" y2="214" stroke="#ffe0b8" stroke-width="6" stroke-linecap="round"/>
+  </g>
+</svg>

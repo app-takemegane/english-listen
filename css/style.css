@@ -144,6 +144,15 @@ html, body {
   padding: 3px 0;
 }
 
+.read-badge {
+  font-size: 10px;
+  font-weight: bold;
+  color: #b3541e;
+  background: #ffe9b8;
+  border-radius: 999px;
+  padding: 3px 8px;
+}
+
 .shelf-footer {
   text-align: center;
   padding: 10px 0 calc(env(safe-area-inset-bottom, 0px) + 16px);

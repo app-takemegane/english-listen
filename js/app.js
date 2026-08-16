@@ -42,6 +42,7 @@ function renderShelf(levelFilter) {
         <div class="book-meta">
           <span class="level-badge level-${book.level}">レベル${book.level}</span>
           <span class="pages-badge">${book.pages.length}ページ</span>
+          ${isRead(book) ? '<span class="read-badge">⭐ よんだ!</span>' : ""}
         </div>`;
       card.addEventListener("click", () => openBook(book));
       bookshelf.appendChild(card);
@@ -71,6 +72,9 @@ function closeBook() {
   readerView.classList.add("hidden");
   shelfView.classList.remove("hidden");
   currentBook = null;
+  // 「よんだ!」の印を反映するため本棚を描き直す
+  const activeTab = levelTabs.querySelector(".tab.active");
+  renderShelf(activeTab ? activeTab.dataset.level : "all");
 }
 
 btnBack.addEventListener("click", closeBook);
@@ -118,8 +122,22 @@ function goNext() {
     showPage(currentPage + 1);
     playAudio();
   } else {
+    markAsRead(currentBook);
     finishOverlay.classList.remove("hidden");
   }
+}
+
+// ══════════ 読んだ記録(端末内にのみ保存) ══════════
+function isRead(book) {
+  try { return localStorage.getItem(`read-${book.id}`) !== null; }
+  catch (e) { return false; }
+}
+
+function markAsRead(book) {
+  try {
+    const count = Number(localStorage.getItem(`read-${book.id}`) || 0) + 1;
+    localStorage.setItem(`read-${book.id}`, String(count));
+  } catch (e) { /* 保存できない端末でもアプリは動かす */ }
 }
 
 btnPrev.addEventListener("click", goPrev);

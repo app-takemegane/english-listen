@@ -28,6 +28,34 @@ const BOOKS = [
       { text: "Splash! The fish swims away." },
       { text: "Mom gives Momo some milk. Yum, yum! Momo is happy." }
     ]
+  },
+  {
+    id: "colors",
+    titleEn: "What Color Is It?",
+    titleJa: "なにいろかな?",
+    level: 1,
+    pages: [
+      { text: "Look! A red apple." },
+      { text: "Look! A yellow banana." },
+      { text: "Look! A green frog." },
+      { text: "Look! A blue bird." },
+      { text: "Look! A pink flower." },
+      { text: "Red, yellow, green, blue, and pink. I love colors!" }
+    ]
+  },
+  {
+    id: "park",
+    titleEn: "Let's Go to the Park!",
+    titleJa: "こうえんへ いこう!",
+    level: 2,
+    pages: [
+      { text: "Today is Sunday. Let's go to the park!" },
+      { text: "I ride the swing. One, two, three! Wheee!" },
+      { text: "I go down the slide. It is so fast!" },
+      { text: "I play in the sandbox with my friend." },
+      { text: "Oh no! It starts to rain. Run, run, run!" },
+      { text: "We run home together. It was a fun day!" }
+    ]
   }
 ];
 
