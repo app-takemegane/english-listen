@@ -509,10 +509,21 @@ async function toggleRecord() {
     return;
   }
   try {
-    // 毎回つなぎ直す(2回目からは iPhone が確認なしで許可してくれる)
-    recStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+      speakFeedback.textContent = "この ひらきかたでは マイクが つかえないよ(ブラウザ非対応)";
+      return;
+    }
+    // 「音の通り道」を切り替えられる新しいiPhoneではマイクを使い回し、
+    // 切り替えられない場合だけ毎回つなぎ直す
+    if (!recStream || !recStream.active) {
+      recStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    }
   } catch (e) {
-    speakFeedback.textContent = "マイクが つかえないよ。おうちのひとに せっていを みてもらってね";
+    if (e && e.name === "NotAllowedError") {
+      speakFeedback.textContent = "マイクが「きょか しない」に なっているよ。せっていで ゆるしてね(NotAllowed)";
+    } else {
+      speakFeedback.textContent = `マイクが つかえないよ(${(e && e.name) || "エラー"})`;
+    }
     return;
   }
   audio.pause();
@@ -526,10 +537,13 @@ async function toggleRecord() {
     clearTimeout(recTimer);
     btnRecord.classList.remove("recording");
     btnRecord.textContent = "🎤 ろくおん";
-    // 重要:録音が終わったらマイクをすぐ手放す。
-    // つなぎっぱなしだと iPhone が通話モードになり、音が耳あてスピーカーから小さく出てしまう
-    releaseMic();
-    setAudioSession("playback");
+    // 音の出口を通常スピーカーに戻す。それができない古い iPhone では、
+    // マイクをつなぎっぱなしだと通話モードで音が小さくなるため、マイクごと手放す
+    if (navigator.audioSession) {
+      setAudioSession("playback");
+    } else {
+      releaseMic();
+    }
     // 録音データの到着がわずかに遅れることがあるため、ひと呼吸おいてから確認する
     setTimeout(() => {
       const blob = new Blob(recChunks, { type: (mediaRecorder && mediaRecorder.mimeType) || "audio/mp4" });
