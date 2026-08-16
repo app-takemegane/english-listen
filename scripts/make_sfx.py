@@ -50,6 +50,28 @@ for i in range(n):
     pop.append(math.sin(2 * math.pi * freq * t) * env * 0.55)
 save(pop, "sfx/page.m4a")
 
+# クイズ正解:「ピンポン!」(ソ→ド↑の2音)
+correct = []
+mix(correct, tone(783.99, 0.18, vol=0.5, decay=7.0), 0)
+mix(correct, tone(1046.5, 0.35, vol=0.5, decay=6.0), 0.14)
+save(correct, "sfx/correct.m4a")
+
+# クイズ不正解:低くやわらかい「ブッ」
+wrong = []
+n = int(RATE * 0.28)
+for i in range(n):
+    t = i / RATE
+    env = math.exp(-9 * t) * min(1.0, i / (RATE * 0.004))
+    v = math.sin(2 * math.pi * 160 * t) + 0.4 * math.sin(2 * math.pi * 152 * t)
+    wrong.append(v * env * 0.4)
+save(wrong, "sfx/wrong.m4a")
+
+# コイン:高い「チャリン」(2音がすばやく続く)
+coin = []
+mix(coin, tone(1244.5, 0.1, vol=0.4, decay=12.0), 0)
+mix(coin, tone(1661.2, 0.4, vol=0.45, decay=7.0), 0.07)
+save(coin, "sfx/coin.m4a")
+
 # 読了のファンファーレ:ドミソド↑の明るいアルペジオ
 fanfare = []
 for k, (f, d) in enumerate([(523.25, 0.16), (659.25, 0.16), (783.99, 0.16), (1046.5, 0.5)]):

@@ -1,8 +1,14 @@
 // ══════════ 画面の要素 ══════════
-const shelfView = document.getElementById("shelf-view");
-const readerView = document.getElementById("reader-view");
+const views = {
+  shelf: document.getElementById("shelf-view"),
+  gacha: document.getElementById("gacha-view"),
+  records: document.getElementById("records-view"),
+  reader: document.getElementById("reader-view"),
+  quiz: document.getElementById("quiz-view")
+};
 const bookshelf = document.getElementById("bookshelf");
 const levelTabs = document.getElementById("level-tabs");
+const mascotMessage = document.getElementById("mascot-message");
 const readerTitle = document.getElementById("reader-title");
 const pageIndicator = document.getElementById("page-indicator");
 const pageIllustration = document.getElementById("page-illustration");
@@ -13,13 +19,79 @@ const btnNext = document.getElementById("btn-next");
 const btnPlay = document.getElementById("btn-play");
 const btnReplay = document.getElementById("btn-replay");
 const btnAuto = document.getElementById("btn-auto");
+const btnJa = document.getElementById("btn-ja");
 const iconPlay = document.getElementById("icon-play");
 const iconPause = document.getElementById("icon-pause");
 const finishOverlay = document.getElementById("finish-overlay");
-const btnJa = document.getElementById("btn-ja");
 const confettiBox = document.getElementById("confetti");
+const btnFinishQuiz = document.getElementById("btn-finish-quiz");
 const btnReadAgain = document.getElementById("btn-read-again");
 const btnToShelf = document.getElementById("btn-to-shelf");
+// モード選択
+const modeOverlay = document.getElementById("mode-overlay");
+const modeCover = document.getElementById("mode-cover");
+const modeTitleEn = document.getElementById("mode-title-en");
+const modeTitleJa = document.getElementById("mode-title-ja");
+const btnModeListen = document.getElementById("btn-mode-listen");
+const btnModeQuiz = document.getElementById("btn-mode-quiz");
+const btnModeClose = document.getElementById("btn-mode-close");
+// クイズ
+const btnQuizBack = document.getElementById("btn-quiz-back");
+const quizProgress = document.getElementById("quiz-progress");
+const btnQuizSound = document.getElementById("btn-quiz-sound");
+const quizQuestion = document.getElementById("quiz-question");
+const quizChoices = document.getElementById("quiz-choices");
+const quizFeedback = document.getElementById("quiz-feedback");
+const quizResultOverlay = document.getElementById("quiz-result-overlay");
+const quizConfetti = document.getElementById("quiz-confetti");
+const quizResultStars = document.getElementById("quiz-result-stars");
+const quizResultEn = document.getElementById("quiz-result-en");
+const quizResultJa = document.getElementById("quiz-result-ja");
+const btnQuizAgain = document.getElementById("btn-quiz-again");
+const btnQuizToShelf = document.getElementById("btn-quiz-to-shelf");
+// ガチャ
+const gachaMachine = document.getElementById("gacha-machine");
+const btnGacha = document.getElementById("btn-gacha");
+const cardGrid = document.getElementById("card-grid");
+const cardCount = document.getElementById("card-count");
+const gachaOverlay = document.getElementById("gacha-overlay");
+const gachaConfetti = document.getElementById("gacha-confetti");
+const gachaCard = document.getElementById("gacha-card");
+const gachaCardNameEn = document.getElementById("gacha-card-name-en");
+const gachaCardNameJa = document.getElementById("gacha-card-name-ja");
+const btnGachaClose = document.getElementById("btn-gacha-close");
+const recordsMain = document.getElementById("records-main");
+
+// ══════════ 保存データ(この端末の中だけ) ══════════
+function loadNum(key) {
+  try { return Number(localStorage.getItem(key) || 0); } catch (e) { return 0; }
+}
+function saveNum(key, value) {
+  try { localStorage.setItem(key, String(value)); } catch (e) {}
+}
+function loadJson(key) {
+  try { return JSON.parse(localStorage.getItem(key) || "{}"); } catch (e) { return {}; }
+}
+function saveJson(key, value) {
+  try { localStorage.setItem(key, JSON.stringify(value)); } catch (e) {}
+}
+
+let coins = loadNum("coins");
+let ownedCards = loadJson("cards"); // { カードid: 持っている枚数 }
+
+function addCoins(n) {
+  coins += n;
+  saveNum("coins", coins);
+  updateCoinDisplays();
+}
+
+function updateCoinDisplays() {
+  ["coin-count", "coin-count-gacha", "coin-count-records"].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = coins;
+  });
+  btnGacha.disabled = coins < GACHA_COST;
+}
 
 // ══════════ 状態 ══════════
 let currentBook = null;
@@ -33,8 +105,15 @@ audio.preload = "auto";
 // 効果音
 const sfxPage = new Audio("sfx/page.m4a");
 const sfxFinish = new Audio("sfx/finish.m4a");
+const sfxCorrect = new Audio("sfx/correct.m4a");
+const sfxWrong = new Audio("sfx/wrong.m4a");
+const sfxCoin = new Audio("sfx/coin.m4a");
 sfxPage.volume = 0.5;
 sfxFinish.volume = 0.6;
+sfxCorrect.volume = 0.55;
+sfxWrong.volume = 0.45;
+sfxCoin.volume = 0.5;
+const ALL_SFX = [sfxPage, sfxFinish, sfxCorrect, sfxWrong, sfxCoin];
 
 function playSfx(sfx) {
   try {
@@ -50,7 +129,7 @@ let sfxUnlocked = false;
 document.addEventListener("touchend", () => {
   if (sfxUnlocked) return;
   sfxUnlocked = true;
-  [sfxPage, sfxFinish].forEach(sfx => {
+  ALL_SFX.forEach(sfx => {
     const vol = sfx.volume;
     sfx.volume = 0;
     const p = sfx.play();
@@ -63,8 +142,32 @@ document.addEventListener("touchend", () => {
 let jaMode = false;
 try { jaMode = localStorage.getItem("ja-mode") === "on"; } catch (e) {}
 
+// ══════════ 画面の切り替え ══════════
+function showView(name) {
+  Object.keys(views).forEach(key => views[key].classList.toggle("hidden", key !== name));
+  if (name === "shelf") {
+    const activeTab = levelTabs.querySelector(".tab.active");
+    renderShelf(activeTab ? activeTab.dataset.level : "all");
+  }
+  if (name === "gacha") renderCardGrid();
+  if (name === "records") renderRecords();
+  updateCoinDisplays();
+}
+
+document.querySelectorAll(".tab-bar .tab-item").forEach(btn => {
+  btn.addEventListener("click", () => showView(btn.dataset.view));
+});
+
 // ══════════ 本棚の表示 ══════════
+const MASCOT_LINES = [
+  "きょうは どの えほんに する?",
+  "Hello! いっしょに よもう!",
+  "クイズも まってるよ!",
+  "コインを あつめて ガチャを まわそう!"
+];
+
 function renderShelf(levelFilter) {
+  mascotMessage.textContent = MASCOT_LINES[Math.floor(Math.random() * MASCOT_LINES.length)];
   bookshelf.innerHTML = "";
   BOOKS.filter(b => levelFilter === "all" || String(b.level) === levelFilter)
     .forEach(book => {
@@ -79,7 +182,7 @@ function renderShelf(levelFilter) {
           <span class="pages-badge">${book.pages.length}ページ</span>
           ${isRead(book) ? '<span class="read-badge">⭐ よんだ!</span>' : ""}
         </div>`;
-      card.addEventListener("click", () => openBook(book));
+      card.addEventListener("click", () => openModeSelect(book));
       bookshelf.appendChild(card);
     });
 }
@@ -92,12 +195,35 @@ levelTabs.addEventListener("click", e => {
   renderShelf(tab.dataset.level);
 });
 
+// ══════════ モード選択(よみきかせ / クイズ) ══════════
+let selectedBook = null;
+
+function openModeSelect(book) {
+  selectedBook = book;
+  modeCover.src = coverImage(book);
+  modeTitleEn.textContent = book.titleEn;
+  modeTitleJa.textContent = book.titleJa;
+  modeOverlay.classList.remove("hidden");
+}
+
+btnModeClose.addEventListener("click", () => modeOverlay.classList.add("hidden"));
+modeOverlay.addEventListener("click", e => {
+  if (e.target === modeOverlay) modeOverlay.classList.add("hidden");
+});
+btnModeListen.addEventListener("click", () => {
+  modeOverlay.classList.add("hidden");
+  openBook(selectedBook);
+});
+btnModeQuiz.addEventListener("click", () => {
+  modeOverlay.classList.add("hidden");
+  startQuiz(selectedBook);
+});
+
 // ══════════ えほんを開く・閉じる ══════════
 function openBook(book) {
   currentBook = book;
   currentPage = 0;
-  shelfView.classList.add("hidden");
-  readerView.classList.remove("hidden");
+  showView("reader");
   showPage(0);
 }
 
@@ -105,12 +231,8 @@ function closeBook() {
   stopAudio();
   finishOverlay.classList.add("hidden");
   confettiBox.innerHTML = "";
-  readerView.classList.add("hidden");
-  shelfView.classList.remove("hidden");
   currentBook = null;
-  // 「よんだ!」の印を反映するため本棚を描き直す
-  const activeTab = levelTabs.querySelector(".tab.active");
-  renderShelf(activeTab ? activeTab.dataset.level : "all");
+  showView("shelf");
 }
 
 btnBack.addEventListener("click", closeBook);
@@ -122,6 +244,13 @@ btnReadAgain.addEventListener("click", () => {
   showPage(0);
   playAudio();
 });
+btnFinishQuiz.addEventListener("click", () => {
+  const book = currentBook;
+  stopAudio();
+  finishOverlay.classList.add("hidden");
+  confettiBox.innerHTML = "";
+  startQuiz(book);
+});
 
 btnJa.addEventListener("click", () => {
   jaMode = !jaMode;
@@ -130,7 +259,7 @@ btnJa.addEventListener("click", () => {
 });
 
 function applyJaMode() {
-  readerView.classList.toggle("show-ja", jaMode);
+  views.reader.classList.toggle("show-ja", jaMode);
   btnJa.classList.toggle("on", jaMode);
 }
 
@@ -189,13 +318,14 @@ function goNext() {
 }
 
 function showFinish() {
-  spawnConfetti();
+  addCoins(1); // 最後まで読めたごほうび
+  spawnConfetti(confettiBox);
   finishOverlay.classList.remove("hidden");
   playSfx(sfxFinish);
 }
 
-function spawnConfetti() {
-  confettiBox.innerHTML = "";
+function spawnConfetti(box) {
+  box.innerHTML = "";
   const colors = ["#f7941d", "#ffd23f", "#7cb95c", "#4a9fd8", "#f06292", "#e5735c"];
   for (let i = 0; i < 40; i++) {
     const piece = document.createElement("span");
@@ -205,21 +335,16 @@ function spawnConfetti() {
     piece.style.animationDelay = Math.random() * 0.8 + "s";
     piece.style.animationDuration = 2 + Math.random() * 1.5 + "s";
     piece.style.width = piece.style.height = 7 + Math.random() * 7 + "px";
-    confettiBox.appendChild(piece);
+    box.appendChild(piece);
   }
 }
 
-// ══════════ 読んだ記録(端末内にのみ保存) ══════════
+// ══════════ 読んだ記録 ══════════
 function isRead(book) {
-  try { return localStorage.getItem(`read-${book.id}`) !== null; }
-  catch (e) { return false; }
+  return loadNum(`read-${book.id}`) > 0;
 }
-
 function markAsRead(book) {
-  try {
-    const count = Number(localStorage.getItem(`read-${book.id}`) || 0) + 1;
-    localStorage.setItem(`read-${book.id}`, String(count));
-  } catch (e) { /* 保存できない端末でもアプリは動かす */ }
+  saveNum(`read-${book.id}`, loadNum(`read-${book.id}`) + 1);
 }
 
 btnPrev.addEventListener("click", goPrev);
@@ -227,8 +352,8 @@ btnNext.addEventListener("click", goNext);
 
 // スワイプでページめくり
 let touchStartX = null;
-readerView.addEventListener("touchstart", e => { touchStartX = e.touches[0].clientX; }, { passive: true });
-readerView.addEventListener("touchend", e => {
+views.reader.addEventListener("touchstart", e => { touchStartX = e.touches[0].clientX; }, { passive: true });
+views.reader.addEventListener("touchend", e => {
   if (touchStartX === null) return;
   const dx = e.changedTouches[0].clientX - touchStartX;
   touchStartX = null;
@@ -238,6 +363,7 @@ readerView.addEventListener("touchend", e => {
 
 // ══════════ 音声の再生と単語ハイライト ══════════
 function computeWordTimings() {
+  if (!currentBook) return;
   // 音声全体の長さを、単語の文字数の割合で配分して、各単語の開始時刻を推定する
   const words = wordSpans.map(s => s.textContent);
   const weights = words.map(w => w.replace(/[^A-Za-z]/g, "").length + 1.5);
@@ -302,17 +428,192 @@ btnAuto.addEventListener("click", () => {
 
 audio.addEventListener("loadedmetadata", computeWordTimings);
 audio.addEventListener("timeupdate", updateHighlight);
-audio.addEventListener("play", () => setPlayIcon(true));
+audio.addEventListener("play", () => { if (currentBook) setPlayIcon(true); });
 audio.addEventListener("pause", () => setPlayIcon(false));
 audio.addEventListener("ended", () => {
+  if (!currentBook) return; // クイズの問題読み上げのときは何もしない
   wordSpans.forEach(s => s.classList.remove("active"));
   setPlayIcon(false);
-  if (autoMode) setTimeout(goNext, 900);
+  if (autoMode && !views.reader.classList.contains("hidden")) setTimeout(goNext, 900);
 });
+
+// ══════════ クイズ ══════════
+let quizBook = null;
+let quizIndex = 0;
+let quizScore = 0;
+let quizAnswered = false;
+
+function startQuiz(book) {
+  quizBook = book;
+  quizIndex = 0;
+  quizScore = 0;
+  currentBook = null; // リーダーの自動めくりを止める
+  stopAudio();
+  quizResultOverlay.classList.add("hidden");
+  quizConfetti.innerHTML = "";
+  showView("quiz");
+  renderQuizQuestion();
+}
+
+function renderQuizQuestion() {
+  const q = quizBook.quiz[quizIndex];
+  quizAnswered = false;
+  quizProgress.textContent = `${quizIndex + 1} / ${quizBook.quiz.length}`;
+  quizQuestion.textContent = q.q;
+  quizFeedback.textContent = "";
+  quizFeedback.className = "quiz-feedback";
+  quizChoices.innerHTML = "";
+  q.choices.forEach((choice, i) => {
+    const btn = document.createElement("button");
+    btn.className = "quiz-choice";
+    btn.textContent = choice;
+    btn.addEventListener("click", () => answerQuiz(i, btn));
+    quizChoices.appendChild(btn);
+  });
+  playQuizAudio();
+}
+
+function playQuizAudio() {
+  audio.src = quizAudio(quizBook, quizIndex);
+  playAudio();
+}
+
+btnQuizSound.addEventListener("click", playQuizAudio);
+
+function answerQuiz(choiceIndex, btn) {
+  if (quizAnswered) return;
+  quizAnswered = true;
+  const q = quizBook.quiz[quizIndex];
+  const buttons = quizChoices.querySelectorAll(".quiz-choice");
+  buttons.forEach(b => b.classList.add("locked"));
+
+  if (choiceIndex === q.answer) {
+    quizScore++;
+    btn.classList.add("correct");
+    quizFeedback.textContent = "That's right! せいかい! 🪙+1";
+    quizFeedback.classList.add("good");
+    playSfx(sfxCorrect);
+    addCoins(1);
+  } else {
+    btn.classList.add("wrong");
+    buttons[q.answer].classList.add("correct");
+    quizFeedback.textContent = `こたえは「${q.choices[q.answer]}」だよ`;
+    quizFeedback.classList.add("bad");
+    playSfx(sfxWrong);
+  }
+
+  setTimeout(() => {
+    if (quizIndex < quizBook.quiz.length - 1) {
+      quizIndex++;
+      renderQuizQuestion();
+    } else {
+      showQuizResult();
+    }
+  }, 1600);
+}
+
+function showQuizResult() {
+  const total = quizBook.quiz.length;
+  const best = loadNum(`quiz-best-${quizBook.id}`);
+  if (quizScore > best) saveNum(`quiz-best-${quizBook.id}`, quizScore);
+
+  quizResultStars.textContent = "⭐️".repeat(Math.max(quizScore, 1));
+  quizResultEn.textContent = ["Nice try!", "Good try!", "Great!", "Perfect!"][quizScore] || "Great!";
+  quizResultJa.textContent = `${total}もん中 ${quizScore}もん せいかい! コインを ${quizScore}まい ゲット!`;
+  if (quizScore === total) {
+    spawnConfetti(quizConfetti);
+    playSfx(sfxFinish);
+  } else {
+    playSfx(sfxCoin);
+  }
+  quizResultOverlay.classList.remove("hidden");
+}
+
+btnQuizBack.addEventListener("click", () => { stopAudio(); showView("shelf"); });
+btnQuizToShelf.addEventListener("click", () => {
+  quizResultOverlay.classList.add("hidden");
+  showView("shelf");
+});
+btnQuizAgain.addEventListener("click", () => startQuiz(quizBook));
+
+// ══════════ ガチャ ══════════
+btnGacha.addEventListener("click", () => {
+  if (coins < GACHA_COST) return;
+  addCoins(-GACHA_COST);
+  btnGacha.disabled = true;
+  gachaMachine.classList.add("shaking");
+  playSfx(sfxCoin);
+
+  setTimeout(() => {
+    gachaMachine.classList.remove("shaking");
+    const card = CARDS[Math.floor(Math.random() * CARDS.length)];
+    ownedCards[card.id] = (ownedCards[card.id] || 0) + 1;
+    saveJson("cards", ownedCards);
+    gachaCard.innerHTML = cardSvgHtml(card, 130);
+    gachaCardNameEn.textContent = card.nameEn;
+    gachaCardNameJa.textContent = card.nameJa;
+    spawnConfetti(gachaConfetti);
+    playSfx(sfxFinish);
+    gachaOverlay.classList.remove("hidden");
+    renderCardGrid();
+    updateCoinDisplays();
+  }, 1000);
+});
+
+btnGachaClose.addEventListener("click", () => {
+  gachaOverlay.classList.add("hidden");
+  gachaConfetti.innerHTML = "";
+});
+
+function renderCardGrid() {
+  cardGrid.innerHTML = "";
+  let owned = 0;
+  CARDS.forEach(card => {
+    const count = ownedCards[card.id] || 0;
+    if (count > 0) owned++;
+    const cell = document.createElement("div");
+    cell.className = "card-cell" + (count > 0 ? "" : " unowned");
+    cell.innerHTML = count > 0
+      ? `${cardSvgHtml(card, 64)}
+         <div class="card-name-en">${card.nameEn}</div>
+         <div class="card-name-ja">${card.nameJa}</div>
+         ${count > 1 ? `<div class="card-dup">×${count}</div>` : ""}`
+      : `<div class="card-mystery">?</div><div class="card-name-ja">まだだよ</div>`;
+    cardGrid.appendChild(cell);
+  });
+  cardCount.textContent = owned;
+}
+
+// ══════════ きろく ══════════
+function renderRecords() {
+  const ownedCount = CARDS.filter(c => (ownedCards[c.id] || 0) > 0).length;
+  let html = `
+    <div class="record-summary">
+      <div class="record-box"><div class="record-num">${BOOKS.filter(isRead).length}</div><div>よんだ えほん</div></div>
+      <div class="record-box"><div class="record-num">${coins}</div><div>もっている コイン</div></div>
+      <div class="record-box"><div class="record-num">${ownedCount}/8</div><div>あつめた カード</div></div>
+    </div>
+    <h3 class="records-title">えほんの きろく</h3>`;
+  BOOKS.forEach(book => {
+    const reads = loadNum(`read-${book.id}`);
+    const best = loadNum(`quiz-best-${book.id}`);
+    html += `
+      <div class="record-row">
+        <img src="${coverImage(book)}" alt="">
+        <div class="record-info">
+          <div class="record-title">${book.titleEn}</div>
+          <div class="record-detail">よんだ かいすう:${reads}かい / クイズ さいこう:${best}/${book.quiz.length}もん</div>
+        </div>
+        ${reads > 0 ? '<span class="read-badge">⭐</span>' : ""}
+      </div>`;
+  });
+  recordsMain.innerHTML = html;
+}
 
 // ══════════ 起動 ══════════
 btnAuto.classList.toggle("on", autoMode);
 applyJaMode();
+updateCoinDisplays();
 renderShelf("all");
 
 if ("serviceWorker" in navigator) {

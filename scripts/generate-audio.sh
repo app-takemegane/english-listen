@@ -19,6 +19,16 @@ gen() {
   echo "created $dir/p$page.m4a"
 }
 
+# クイズの問題文の音声
+gen_quiz() {
+  local book="$1" num="$2" text="$3"
+  local dir="books/$book/quiz"
+  mkdir -p "$dir"
+  say -v "$VOICE" -r "$RATE" -o "$TMP/tmp.aiff" "$text"
+  afconvert -f m4af -d aac -b 64000 "$TMP/tmp.aiff" "$dir/q$num.m4a"
+  echo "created $dir/q$num.m4a"
+}
+
 # ── Good Morning, Sun! ──
 gen sun 1 "The sun comes up. Good morning, sun!"
 gen sun 2 "A bird sings on the tree. Good morning, bird!"
@@ -50,6 +60,20 @@ gen park 3 "I go down the slide. It is so fast!"
 gen park 4 "I play in the sandbox with my friend."
 gen park 5 "Oh no! It starts to rain. Run, run, run!"
 gen park 6 "We run home together. It was a fun day!"
+
+# ── クイズの問題文 ──
+gen_quiz sun 1 "Who sings on the tree?"
+gen_quiz sun 2 "What does the cat do?"
+gen_quiz sun 3 "Is it a happy new day?"
+gen_quiz cat 1 "Who is very hungry?"
+gen_quiz cat 2 "What does Momo see in the pond?"
+gen_quiz cat 3 "What does Mom give Momo?"
+gen_quiz colors 1 "What color is the apple?"
+gen_quiz colors 2 "What color is the frog?"
+gen_quiz colors 3 "What color is the banana?"
+gen_quiz park 1 "What day is it today?"
+gen_quiz park 2 "What is so fast?"
+gen_quiz park 3 "Why do they run home?"
 
 rm -rf "$TMP"
 echo "done (voice: $VOICE)"

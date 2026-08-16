@@ -20,6 +20,11 @@ const BOOKS = [
         textJa: "わたしも おきて にっこり。おはよう、みんな!" },
       { text: "It is a happy new day!",
         textJa: "たのしい いちにちの はじまり!" }
+    ],
+    quiz: [
+      { q: "Who sings on the tree?", choices: ["A bird", "A cat", "A flower"], answer: 0 },
+      { q: "What does the cat do?", choices: ["It swims.", "It wakes up.", "It sings."], answer: 1 },
+      { q: "Is it a happy new day?", choices: ["No, it is not.", "Maybe.", "Yes, it is!"], answer: 2 }
     ]
   },
   {
@@ -40,6 +45,11 @@ const BOOKS = [
         textJa: "ぱしゃん! さかなは およいで いっちゃった。" },
       { text: "Mom gives Momo some milk. Yum, yum! Momo is happy.",
         textJa: "おかあさんが ミルクを くれたよ。おいしいね! モモは ごきげん。" }
+    ],
+    quiz: [
+      { q: "Who is very hungry?", choices: ["Momo the cat", "A little bird", "Mom"], answer: 0 },
+      { q: "What does Momo see in the pond?", choices: ["A big dog", "A little fish", "An apple"], answer: 1 },
+      { q: "What does Mom give Momo?", choices: ["Some bread", "A ball", "Some milk"], answer: 2 }
     ]
   },
   {
@@ -60,6 +70,11 @@ const BOOKS = [
         textJa: "みてみて! ピンクの おはな。" },
       { text: "Red, yellow, green, blue, and pink. I love colors!",
         textJa: "あか、きいろ、みどり、あお、ピンク。いろって だいすき!" }
+    ],
+    quiz: [
+      { q: "What color is the apple?", choices: ["Red", "Blue", "Green"], answer: 0 },
+      { q: "What color is the frog?", choices: ["Yellow", "Green", "Pink"], answer: 1 },
+      { q: "What color is the banana?", choices: ["Blue", "Pink", "Yellow"], answer: 2 }
     ]
   },
   {
@@ -80,6 +95,11 @@ const BOOKS = [
         textJa: "たいへん! あめが ふってきた。はしれ、はしれ!" },
       { text: "We run home together. It was a fun day!",
         textJa: "いっしょに おうちまで はしったよ。たのしい いちにちだったね!" }
+    ],
+    quiz: [
+      { q: "What day is it today?", choices: ["Sunday", "Monday", "Friday"], answer: 0 },
+      { q: "What is so fast?", choices: ["The swing", "The slide", "The sandbox"], answer: 1 },
+      { q: "Why do they run home?", choices: ["They are sleepy.", "It is dark.", "It starts to rain."], answer: 2 }
     ]
   }
 ];
@@ -93,4 +113,7 @@ function pageAudio(book, pageIndex) {
 }
 function coverImage(book) {
   return `books/${book.id}/cover.svg`;
+}
+function quizAudio(book, quizIndex) {
+  return `books/${book.id}/quiz/q${quizIndex + 1}.m4a`;
 }
