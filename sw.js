@@ -1,6 +1,6 @@
 // サービスワーカー:アプリ全体を端末に保存し、オフラインでも動くようにする
 // ファイルを追加・変更したら VERSION の数字を上げること(古い保存分が入れ替わる)
-const VERSION = "v4";
+const VERSION = "v5";
 const CACHE_NAME = `eigo-ehon-${VERSION}`;
 
 const BOOK_FILES = [];
@@ -22,6 +22,8 @@ const FILES_TO_CACHE = [
   "img/icon-192.png",
   "img/icon-512.png",
   "img/apple-touch-icon.png",
+  "sfx/page.m4a",
+  "sfx/finish.m4a",
   ...BOOK_FILES
 ];
 

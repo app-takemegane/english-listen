@@ -205,6 +205,34 @@ html, body {
   text-align: right;
 }
 
+.ja-btn {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 2px solid #f7941d;
+  background: #fff;
+  color: #f7941d;
+  font-size: 15px;
+  font-weight: bold;
+  font-family: inherit;
+  flex-shrink: 0;
+}
+
+.ja-btn.on {
+  background: #f7941d;
+  color: #fff;
+}
+
+.ja-text {
+  display: none;
+  margin-top: 6px;
+  font-size: 14px;
+  font-weight: normal;
+  color: #9b8878;
+}
+
+.show-ja .ja-text { display: block; }
+
 .reader-main {
   flex: 1;
   display: flex;
@@ -316,6 +344,26 @@ html, body {
   align-items: center;
   justify-content: center;
   z-index: 50;
+}
+
+.confetti {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.confetti-piece {
+  position: absolute;
+  top: -20px;
+  border-radius: 3px;
+  animation: confetti-fall linear infinite;
+}
+
+@keyframes confetti-fall {
+  0%   { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+  90%  { opacity: 1; }
+  100% { transform: translateY(105vh) rotate(720deg); opacity: 0.3; }
 }
 
 .finish-card {

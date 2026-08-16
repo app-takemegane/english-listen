@@ -16,6 +16,8 @@ const btnAuto = document.getElementById("btn-auto");
 const iconPlay = document.getElementById("icon-play");
 const iconPause = document.getElementById("icon-pause");
 const finishOverlay = document.getElementById("finish-overlay");
+const btnJa = document.getElementById("btn-ja");
+const confettiBox = document.getElementById("confetti");
 const btnReadAgain = document.getElementById("btn-read-again");
 const btnToShelf = document.getElementById("btn-to-shelf");
 
@@ -27,6 +29,39 @@ let wordSpans = [];
 let wordTimings = []; // 各単語の開始時刻(秒)。音声の長さから推定する
 const audio = new Audio(); // iPhoneでも連続再生できるよう、1つを使い回す
 audio.preload = "auto";
+
+// 効果音
+const sfxPage = new Audio("sfx/page.m4a");
+const sfxFinish = new Audio("sfx/finish.m4a");
+sfxPage.volume = 0.5;
+sfxFinish.volume = 0.6;
+
+function playSfx(sfx) {
+  try {
+    sfx.currentTime = 0;
+    const p = sfx.play();
+    if (p) p.catch(() => {});
+  } catch (e) { /* 効果音が鳴らなくても本編は続ける */ }
+}
+
+// iPhoneは「利用者が画面を触ったとき」しか新しい音を鳴らし始められないため、
+// 最初のタップの瞬間に効果音を一度だけ無音で慣らしておく
+let sfxUnlocked = false;
+document.addEventListener("touchend", () => {
+  if (sfxUnlocked) return;
+  sfxUnlocked = true;
+  [sfxPage, sfxFinish].forEach(sfx => {
+    const vol = sfx.volume;
+    sfx.volume = 0;
+    const p = sfx.play();
+    if (p) p.then(() => { sfx.pause(); sfx.currentTime = 0; sfx.volume = vol; })
+           .catch(() => { sfx.volume = vol; });
+  });
+}, { once: true });
+
+// 日本語訳の表示(端末ごとに設定を覚えておく)
+let jaMode = false;
+try { jaMode = localStorage.getItem("ja-mode") === "on"; } catch (e) {}
 
 // ══════════ 本棚の表示 ══════════
 function renderShelf(levelFilter) {
@@ -69,6 +104,7 @@ function openBook(book) {
 function closeBook() {
   stopAudio();
   finishOverlay.classList.add("hidden");
+  confettiBox.innerHTML = "";
   readerView.classList.add("hidden");
   shelfView.classList.remove("hidden");
   currentBook = null;
@@ -81,10 +117,22 @@ btnBack.addEventListener("click", closeBook);
 btnToShelf.addEventListener("click", closeBook);
 btnReadAgain.addEventListener("click", () => {
   finishOverlay.classList.add("hidden");
+  confettiBox.innerHTML = "";
   currentPage = 0;
   showPage(0);
   playAudio();
 });
+
+btnJa.addEventListener("click", () => {
+  jaMode = !jaMode;
+  try { localStorage.setItem("ja-mode", jaMode ? "on" : "off"); } catch (e) {}
+  applyJaMode();
+});
+
+function applyJaMode() {
+  readerView.classList.toggle("show-ja", jaMode);
+  btnJa.classList.toggle("on", jaMode);
+}
 
 // ══════════ ページ表示 ══════════
 function showPage(index) {
@@ -108,6 +156,12 @@ function showPage(index) {
     wordSpans.push(span);
   });
 
+  // 日本語訳(「あ」ボタンで表示・非表示)
+  const ja = document.createElement("div");
+  ja.className = "ja-text";
+  ja.textContent = book.pages[index].textJa || "";
+  pageText.appendChild(ja);
+
   btnPrev.classList.toggle("enabled", index > 0);
   btnNext.classList.toggle("enabled", index < book.pages.length - 1);
 
@@ -116,14 +170,42 @@ function showPage(index) {
   wordTimings = [];
 }
 
-function goPrev() { if (currentPage > 0) { showPage(currentPage - 1); playAudio(); } }
+function goPrev() {
+  if (currentPage > 0) {
+    playSfx(sfxPage);
+    showPage(currentPage - 1);
+    playAudio();
+  }
+}
 function goNext() {
   if (currentPage < currentBook.pages.length - 1) {
+    playSfx(sfxPage);
     showPage(currentPage + 1);
     playAudio();
   } else {
     markAsRead(currentBook);
-    finishOverlay.classList.remove("hidden");
+    showFinish();
+  }
+}
+
+function showFinish() {
+  spawnConfetti();
+  finishOverlay.classList.remove("hidden");
+  playSfx(sfxFinish);
+}
+
+function spawnConfetti() {
+  confettiBox.innerHTML = "";
+  const colors = ["#f7941d", "#ffd23f", "#7cb95c", "#4a9fd8", "#f06292", "#e5735c"];
+  for (let i = 0; i < 40; i++) {
+    const piece = document.createElement("span");
+    piece.className = "confetti-piece";
+    piece.style.left = Math.random() * 100 + "%";
+    piece.style.background = colors[i % colors.length];
+    piece.style.animationDelay = Math.random() * 0.8 + "s";
+    piece.style.animationDuration = 2 + Math.random() * 1.5 + "s";
+    piece.style.width = piece.style.height = 7 + Math.random() * 7 + "px";
+    confettiBox.appendChild(piece);
   }
 }
 
@@ -230,6 +312,7 @@ audio.addEventListener("ended", () => {
 
 // ══════════ 起動 ══════════
 btnAuto.classList.toggle("on", autoMode);
+applyJaMode();
 renderShelf("all");
 
 if ("serviceWorker" in navigator) {
