@@ -466,8 +466,24 @@ let recStream = null;      // マイク
 let mediaRecorder = null;
 let recChunks = [];
 let recTimer = null;
-let myVoiceAudio = null;   // 録音した自分の声
-let recordings = {};       // ページごとの録音 { ページ番号: 音声のURL }
+let recordings = {};       // ページごとの録音データ { ページ番号: Blob }
+let audioCtx = null;       // 自分の声の再生用(iPhoneで確実に鳴らすため生データ方式)
+let myVoiceSource = null;
+
+function getAudioCtx() {
+  if (!audioCtx) {
+    const Ctx = window.AudioContext || window.webkitAudioContext;
+    audioCtx = new Ctx();
+  }
+  return audioCtx;
+}
+
+// iPhone 17以降にある「音の通り道」の設定。録音中だけ録音向き、ふだんは再生向きにする
+function setAudioSession(type) {
+  try {
+    if (navigator.audioSession) navigator.audioSession.type = type;
+  } catch (e) {}
+}
 
 function speakResetForPage() {
   clearTimeout(recTimer);
@@ -513,17 +529,21 @@ async function toggleRecord() {
     // 重要:録音が終わったらマイクをすぐ手放す。
     // つなぎっぱなしだと iPhone が通話モードになり、音が耳あてスピーカーから小さく出てしまう
     releaseMic();
-    if (!recChunks.length) {
-      speakFeedback.textContent = "うまく ろくおんできなかったよ。もういちど ためしてね";
-      return;
-    }
-    const blob = new Blob(recChunks, { type: mediaRecorder.mimeType || "audio/mp4" });
-    if (recordings[currentPage]) URL.revokeObjectURL(recordings[currentPage]);
-    recordings[currentPage] = URL.createObjectURL(blob);
-    btnPlayMine.disabled = false;
-    speakFeedback.textContent = "Great! いえたね! じぶんの こえを きいてみよう";
-    playSfx(sfxCorrect);
+    setAudioSession("playback");
+    // 録音データの到着がわずかに遅れることがあるため、ひと呼吸おいてから確認する
+    setTimeout(() => {
+      const blob = new Blob(recChunks, { type: (mediaRecorder && mediaRecorder.mimeType) || "audio/mp4" });
+      if (blob.size < 1500) {
+        speakFeedback.textContent = "うまく ろくおんできなかったよ。もういちど ためしてね";
+        return;
+      }
+      recordings[currentPage] = blob;
+      btnPlayMine.disabled = false;
+      speakFeedback.textContent = "Great! いえたね! じぶんの こえを きいてみよう";
+      playSfx(sfxCorrect);
+    }, 250);
   };
+  setAudioSession("play-and-record");
   mediaRecorder.start();
   btnRecord.classList.add("recording");
   btnRecord.textContent = "⏹ とめる";
@@ -535,13 +555,30 @@ async function toggleRecord() {
 
 btnRecord.addEventListener("click", toggleRecord);
 
-btnPlayMine.addEventListener("click", () => {
-  if (!recordings[currentPage]) return;
+// 自分の声の再生:録音データを生データに戻して直接鳴らす
+// (録音の一時データを普通の再生機能に渡すと、iPhoneでは一瞬で止まることがあるため)
+btnPlayMine.addEventListener("click", async () => {
+  const blob = recordings[currentPage];
+  if (!blob) return;
   audio.pause();
-  if (myVoiceAudio) myVoiceAudio.pause();
-  myVoiceAudio = new Audio(recordings[currentPage]);
-  const p = myVoiceAudio.play();
-  if (p) p.catch(() => {});
+  setAudioSession("playback");
+  try {
+    const ctx = getAudioCtx();
+    if (ctx.state === "suspended") await ctx.resume();
+    const data = await blob.arrayBuffer();
+    const decoded = await ctx.decodeAudioData(data);
+    if (myVoiceSource) { try { myVoiceSource.stop(); } catch (e) {} }
+    myVoiceSource = ctx.createBufferSource();
+    myVoiceSource.buffer = decoded;
+    myVoiceSource.connect(ctx.destination);
+    myVoiceSource.start();
+    speakFeedback.textContent = `さいせいちゅう(${decoded.duration.toFixed(1)}びょう)... おてほんと くらべてみよう`;
+    myVoiceSource.onended = () => {
+      speakFeedback.textContent = "もういちど いっても、つぎの ページに いっても いいよ!";
+    };
+  } catch (e) {
+    speakFeedback.textContent = "さいせいできなかったよ。もういちど ろくおんしてみてね";
+  }
 });
 
 function stopRecordingHardware() {
@@ -550,9 +587,9 @@ function stopRecordingHardware() {
     try { mediaRecorder.stop(); } catch (e) {}
   }
   mediaRecorder = null;
-  if (myVoiceAudio) { myVoiceAudio.pause(); myVoiceAudio = null; }
+  if (myVoiceSource) { try { myVoiceSource.stop(); } catch (e) {} myVoiceSource = null; }
   releaseMic();
-  Object.values(recordings).forEach(url => URL.revokeObjectURL(url));
+  setAudioSession("playback");
   recordings = {};
 }
 
