@@ -462,21 +462,17 @@ audio.addEventListener("ended", () => {
 });
 
 // ══════════ はなすモード(自分の声を録音して聞き比べ) ══════════
-let recStream = null;      // マイク
-let mediaRecorder = null;
-let recChunks = [];
+// iPhoneの録音部品(MediaRecorder)は2回目以降に壊れる不具合があるため、
+// マイクから届く「音の生データ」を直接ためて、そのまま直接鳴らす方式にしている
+let recStream = null;        // マイク
+let recCtx = null;           // 録音用の音声処理
+let recNodes = null;         // 録音中の部品(あとで確実に外すため)
+let recBuffers = [];         // ためた生データ
+let recSampleRate = 0;
+let recording = false;
 let recTimer = null;
-let recordings = {};       // ページごとの録音データ { ページ番号: Blob }
-let audioCtx = null;       // 自分の声の再生用(iPhoneで確実に鳴らすため生データ方式)
-let myVoiceSource = null;
-
-function getAudioCtx() {
-  if (!audioCtx) {
-    const Ctx = window.AudioContext || window.webkitAudioContext;
-    audioCtx = new Ctx();
-  }
-  return audioCtx;
-}
+let recordings = {};         // ページごとの録音 { ページ番号: { pcm, sampleRate } }
+let playCtx = null;          // 自分の声の再生用
 
 // iPhone 17以降にある「音の通り道」の設定。録音中だけ録音向き、ふだんは再生向きにする
 function setAudioSession(type) {
@@ -486,9 +482,7 @@ function setAudioSession(type) {
 }
 
 function speakResetForPage() {
-  clearTimeout(recTimer);
-  btnRecord.classList.remove("recording");
-  btnRecord.textContent = "🎤 ろくおん";
+  if (recording) stopRecording(true);
   const has = !!recordings[currentPage];
   btnPlayMine.disabled = !has;
   speakFeedback.textContent = has
@@ -503,22 +497,43 @@ function releaseMic() {
   }
 }
 
+function cleanupRecording() {
+  clearTimeout(recTimer);
+  recording = false;
+  btnRecord.classList.remove("recording");
+  btnRecord.textContent = "🎤 ろくおん";
+  if (recNodes) {
+    try {
+      recNodes.processor.disconnect();
+      recNodes.source.disconnect();
+      recNodes.gain.disconnect();
+    } catch (e) {}
+    recNodes = null;
+  }
+  if (recCtx) {
+    try { recCtx.close(); } catch (e) {}
+    recCtx = null;
+  }
+  releaseMic();
+  setAudioSession("playback");
+}
+
 async function toggleRecord() {
-  if (mediaRecorder && mediaRecorder.state === "recording") {
-    mediaRecorder.stop();
+  if (recording) {
+    stopRecording(false);
     return;
   }
+  if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+    speakFeedback.textContent = "この ひらきかたでは マイクが つかえないよ(ブラウザ非対応)";
+    return;
+  }
+  audio.pause();
+  stopMyVoice();
+  setAudioSession("play-and-record");
   try {
-    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-      speakFeedback.textContent = "この ひらきかたでは マイクが つかえないよ(ブラウザ非対応)";
-      return;
-    }
-    // 「音の通り道」を切り替えられる新しいiPhoneではマイクを使い回し、
-    // 切り替えられない場合だけ毎回つなぎ直す
-    if (!recStream || !recStream.active) {
-      recStream = await navigator.mediaDevices.getUserMedia({ audio: true });
-    }
+    recStream = await navigator.mediaDevices.getUserMedia({ audio: true });
   } catch (e) {
+    setAudioSession("playback");
     if (e && e.name === "NotAllowedError") {
       speakFeedback.textContent = "マイクが「きょか しない」に なっているよ。せっていで ゆるしてね(NotAllowed)";
     } else {
@@ -526,84 +541,96 @@ async function toggleRecord() {
     }
     return;
   }
-  audio.pause();
-  if (myVoiceAudio) myVoiceAudio.pause();
-  recChunks = [];
-  const type = MediaRecorder.isTypeSupported && MediaRecorder.isTypeSupported("audio/mp4")
-    ? "audio/mp4" : "";
-  mediaRecorder = type ? new MediaRecorder(recStream, { mimeType: type }) : new MediaRecorder(recStream);
-  mediaRecorder.ondataavailable = e => { if (e.data.size) recChunks.push(e.data); };
-  mediaRecorder.onstop = () => {
-    clearTimeout(recTimer);
-    btnRecord.classList.remove("recording");
-    btnRecord.textContent = "🎤 ろくおん";
-    // 音の出口を通常スピーカーに戻す。それができない古い iPhone では、
-    // マイクをつなぎっぱなしだと通話モードで音が小さくなるため、マイクごと手放す
-    if (navigator.audioSession) {
-      setAudioSession("playback");
-    } else {
-      releaseMic();
-    }
-    // 録音データの到着がわずかに遅れることがあるため、ひと呼吸おいてから確認する
-    setTimeout(() => {
-      const blob = new Blob(recChunks, { type: (mediaRecorder && mediaRecorder.mimeType) || "audio/mp4" });
-      if (blob.size < 1500) {
-        speakFeedback.textContent = "うまく ろくおんできなかったよ。もういちど ためしてね";
-        return;
-      }
-      recordings[currentPage] = blob;
-      btnPlayMine.disabled = false;
-      speakFeedback.textContent = "Great! いえたね! じぶんの こえを きいてみよう";
-      playSfx(sfxCorrect);
-    }, 250);
-  };
-  setAudioSession("play-and-record");
-  mediaRecorder.start();
+  try {
+    const Ctx = window.AudioContext || window.webkitAudioContext;
+    recCtx = new Ctx(); // マイクがつながった後に作ると、録音向けの設定で動く
+    if (recCtx.state === "suspended") recCtx.resume();
+    recSampleRate = recCtx.sampleRate;
+    recBuffers = [];
+    const source = recCtx.createMediaStreamSource(recStream);
+    const processor = recCtx.createScriptProcessor(4096, 1, 1);
+    const gain = recCtx.createGain();
+    gain.gain.value = 0; // 自分の声がその場で響かないように音は出さない
+    processor.onaudioprocess = e => {
+      if (recording) recBuffers.push(new Float32Array(e.inputBuffer.getChannelData(0)));
+    };
+    source.connect(processor);
+    processor.connect(gain);
+    gain.connect(recCtx.destination);
+    recNodes = { source, processor, gain };
+  } catch (e) {
+    cleanupRecording();
+    speakFeedback.textContent = `ろくおんの じゅんびに しっぱいしたよ(${(e && e.name) || "エラー"})`;
+    return;
+  }
+  recording = true;
   btnRecord.classList.add("recording");
   btnRecord.textContent = "⏹ とめる";
   speakFeedback.textContent = "ろくおんちゅう... おわったら もういちど おしてね";
-  recTimer = setTimeout(() => {
-    if (mediaRecorder && mediaRecorder.state === "recording") mediaRecorder.stop();
-  }, 12000); // 長くても12秒で自動停止
+  recTimer = setTimeout(() => stopRecording(false), 12000); // 長くても12秒で自動停止
+}
+
+function stopRecording(silent) {
+  const buffers = recBuffers;
+  const rate = recSampleRate;
+  recBuffers = [];
+  cleanupRecording();
+  if (silent) return;
+
+  const total = buffers.reduce((sum, b) => sum + b.length, 0);
+  if (!rate || total < rate * 0.3) { // 0.3秒未満は失敗あつかい
+    speakFeedback.textContent = "うまく ろくおんできなかったよ。もういちど ためしてね";
+    return;
+  }
+  const pcm = new Float32Array(total);
+  let pos = 0;
+  buffers.forEach(b => { pcm.set(b, pos); pos += b.length; });
+  recordings[currentPage] = { pcm, sampleRate: rate };
+  btnPlayMine.disabled = false;
+  speakFeedback.textContent = "Great! いえたね! じぶんの こえを きいてみよう";
+  playSfx(sfxCorrect);
 }
 
 btnRecord.addEventListener("click", toggleRecord);
 
-// 自分の声の再生:録音データを生データに戻して直接鳴らす
-// (録音の一時データを普通の再生機能に渡すと、iPhoneでは一瞬で止まることがあるため)
-btnPlayMine.addEventListener("click", async () => {
-  const blob = recordings[currentPage];
-  if (!blob) return;
+function stopMyVoice() {
+  if (playCtx) {
+    try { playCtx.close(); } catch (e) {}
+    playCtx = null;
+  }
+}
+
+// 自分の声の再生:ためた生データをそのまま鳴らす(変換なし・確実)
+btnPlayMine.addEventListener("click", () => {
+  const rec = recordings[currentPage];
+  if (!rec) return;
   audio.pause();
   setAudioSession("playback");
+  stopMyVoice();
   try {
-    const ctx = getAudioCtx();
-    if (ctx.state === "suspended") await ctx.resume();
-    const data = await blob.arrayBuffer();
-    const decoded = await ctx.decodeAudioData(data);
-    if (myVoiceSource) { try { myVoiceSource.stop(); } catch (e) {} }
-    myVoiceSource = ctx.createBufferSource();
-    myVoiceSource.buffer = decoded;
-    myVoiceSource.connect(ctx.destination);
-    myVoiceSource.start();
-    speakFeedback.textContent = `さいせいちゅう(${decoded.duration.toFixed(1)}びょう)... おてほんと くらべてみよう`;
-    myVoiceSource.onended = () => {
+    const Ctx = window.AudioContext || window.webkitAudioContext;
+    playCtx = new Ctx();
+    if (playCtx.state === "suspended") playCtx.resume();
+    const buf = playCtx.createBuffer(1, rec.pcm.length, rec.sampleRate);
+    buf.getChannelData(0).set(rec.pcm);
+    const src = playCtx.createBufferSource();
+    src.buffer = buf;
+    src.connect(playCtx.destination);
+    const seconds = (rec.pcm.length / rec.sampleRate).toFixed(1);
+    speakFeedback.textContent = `さいせいちゅう(${seconds}びょう)... おてほんと くらべてみよう`;
+    src.onended = () => {
+      stopMyVoice();
       speakFeedback.textContent = "もういちど いっても、つぎの ページに いっても いいよ!";
     };
+    src.start();
   } catch (e) {
-    speakFeedback.textContent = "さいせいできなかったよ。もういちど ろくおんしてみてね";
+    speakFeedback.textContent = `さいせいできなかったよ(${(e && e.name) || "エラー"})`;
   }
 });
 
 function stopRecordingHardware() {
-  clearTimeout(recTimer);
-  if (mediaRecorder && mediaRecorder.state === "recording") {
-    try { mediaRecorder.stop(); } catch (e) {}
-  }
-  mediaRecorder = null;
-  if (myVoiceSource) { try { myVoiceSource.stop(); } catch (e) {} myVoiceSource = null; }
-  releaseMic();
-  setAudioSession("playback");
+  if (recording) stopRecording(true); else cleanupRecording();
+  stopMyVoice();
   recordings = {};
 }
 

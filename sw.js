@@ -1,6 +1,6 @@
 // サービスワーカー:アプリ全体を端末に保存し、オフラインでも動くようにする
 // ファイルを追加・変更したら VERSION の数字を上げること(古い保存分が入れ替わる)
-const VERSION = "v10";
+const VERSION = "v11";
 const CACHE_NAME = `eigo-ehon-${VERSION}`;
 
 const BOOK_FILES = [];
