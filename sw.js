@@ -1,6 +1,6 @@
 // サービスワーカー:アプリ全体を端末に保存し、オフラインでも動くようにする
 // ファイルを追加・変更したら VERSION の数字を上げること(古い保存分が入れ替わる)
-const VERSION = "v3";
+const VERSION = "v4";
 const CACHE_NAME = `eigo-ehon-${VERSION}`;
 
 const BOOK_FILES = [];
@@ -41,17 +41,32 @@ self.addEventListener("activate", event => {
   self.clients.claim();
 });
 
-// 保存済みのファイルがあればそれを返し、なければネットから取りに行く
+// 画面や絵本一覧などの「中身が変わるファイル」は、まずネットの最新版を取りに行き、
+// 電波がないときだけ保存分を使う。挿絵や音声など「重くて変わらないファイル」は保存分を優先する。
+const NETWORK_FIRST = /(\.html|\.js|\.css|\.webmanifest|\/)$/;
+
 self.addEventListener("fetch", event => {
   if (event.request.method !== "GET") return;
-  event.respondWith(
-    caches.match(event.request, { ignoreSearch: true }).then(cached =>
-      cached ||
+  const path = new URL(event.request.url).pathname;
+
+  if (NETWORK_FIRST.test(path)) {
+    event.respondWith(
       fetch(event.request).then(response => {
         const copy = response.clone();
         caches.open(CACHE_NAME).then(cache => cache.put(event.request, copy));
         return response;
-      })
-    )
-  );
+      }).catch(() => caches.match(event.request, { ignoreSearch: true }))
+    );
+  } else {
+    event.respondWith(
+      caches.match(event.request, { ignoreSearch: true }).then(cached =>
+        cached ||
+        fetch(event.request).then(response => {
+          const copy = response.clone();
+          caches.open(CACHE_NAME).then(cache => cache.put(event.request, copy));
+          return response;
+        })
+      )
+    );
+  }
 });

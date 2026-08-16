@@ -234,4 +234,13 @@ renderShelf("all");
 
 if ("serviceWorker" in navigator) {
   navigator.serviceWorker.register("sw.js");
+  // アプリが新しい版に入れ替わったら、画面を一度だけ自動で読み直す
+  const hadController = !!navigator.serviceWorker.controller;
+  let reloaded = false;
+  navigator.serviceWorker.addEventListener("controllerchange", () => {
+    if (hadController && !reloaded) {
+      reloaded = true;
+      location.reload();
+    }
+  });
 }
