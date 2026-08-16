@@ -480,15 +480,21 @@ function speakResetForPage() {
     : "おてほんを きいて、まねして いってみよう!";
 }
 
+function releaseMic() {
+  if (recStream) {
+    recStream.getTracks().forEach(t => t.stop());
+    recStream = null;
+  }
+}
+
 async function toggleRecord() {
   if (mediaRecorder && mediaRecorder.state === "recording") {
     mediaRecorder.stop();
     return;
   }
   try {
-    if (!recStream) {
-      recStream = await navigator.mediaDevices.getUserMedia({ audio: true });
-    }
+    // 毎回つなぎ直す(2回目からは iPhone が確認なしで許可してくれる)
+    recStream = await navigator.mediaDevices.getUserMedia({ audio: true });
   } catch (e) {
     speakFeedback.textContent = "マイクが つかえないよ。おうちのひとに せっていを みてもらってね";
     return;
@@ -504,7 +510,13 @@ async function toggleRecord() {
     clearTimeout(recTimer);
     btnRecord.classList.remove("recording");
     btnRecord.textContent = "🎤 ろくおん";
-    if (!recChunks.length) return;
+    // 重要:録音が終わったらマイクをすぐ手放す。
+    // つなぎっぱなしだと iPhone が通話モードになり、音が耳あてスピーカーから小さく出てしまう
+    releaseMic();
+    if (!recChunks.length) {
+      speakFeedback.textContent = "うまく ろくおんできなかったよ。もういちど ためしてね";
+      return;
+    }
     const blob = new Blob(recChunks, { type: mediaRecorder.mimeType || "audio/mp4" });
     if (recordings[currentPage]) URL.revokeObjectURL(recordings[currentPage]);
     recordings[currentPage] = URL.createObjectURL(blob);
@@ -539,10 +551,7 @@ function stopRecordingHardware() {
   }
   mediaRecorder = null;
   if (myVoiceAudio) { myVoiceAudio.pause(); myVoiceAudio = null; }
-  if (recStream) {
-    recStream.getTracks().forEach(t => t.stop());
-    recStream = null;
-  }
+  releaseMic();
   Object.values(recordings).forEach(url => URL.revokeObjectURL(url));
   recordings = {};
 }
