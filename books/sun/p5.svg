@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300">
+  <rect width="400" height="300" fill="#fff3dc"/>
+  <rect x="250" y="40" width="110" height="90" rx="8" fill="#c9ecfb" stroke="#b78b5e" stroke-width="8"/>
+  <line x1="305" y1="44" x2="305" y2="126" stroke="#b78b5e" stroke-width="6"/>
+  <line x1="254" y1="85" x2="356" y2="85" stroke="#b78b5e" stroke-width="6"/>
+  <circle cx="280" cy="66" r="15" fill="#ffd23f"/>
+  <rect x="40" y="200" width="220" height="70" rx="12" fill="#e58b3a"/>
+  <rect x="52" y="150" width="196" height="60" rx="14" fill="#fff"/>
+  <rect x="52" y="180" width="196" height="45" rx="14" fill="#7ec8e3"/>
+  <g>
+    <circle cx="95" cy="150" r="30" fill="#ffe0b8"/>
+    <path d="M68 138 Q80 112 108 118 Q124 122 122 140 Q104 128 84 136 Q74 142 68 148 Z" fill="#6b4a2f"/>
+    <circle cx="86" cy="150" r="4" fill="#4a3728"/>
+    <circle cx="106" cy="150" r="4" fill="#4a3728"/>
+    <path d="M88 164 Q96 171 104 164" fill="none" stroke="#4a3728" stroke-width="3" stroke-linecap="round"/>
+    <circle cx="78" cy="158" r="6" fill="#ffb0a0" opacity="0.8"/>
+    <circle cx="114" cy="158" r="6" fill="#ffb0a0" opacity="0.8"/>
+    <path d="M132 190 Q150 168 168 186" fill="none" stroke="#ffe0b8" stroke-width="14" stroke-linecap="round"/>
+  </g>
+  <text x="180" y="120" font-size="30" font-family="sans-serif" fill="#f7941d">☀</text>
+</svg>

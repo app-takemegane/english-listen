@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300">
+  <rect width="400" height="300" fill="#c9ecfb"/>
+  <g stroke="#f7b733" stroke-width="7" stroke-linecap="round">
+    <line x1="200" y1="20" x2="200" y2="40"/><line x1="150" y1="35" x2="164" y2="52"/>
+    <line x1="250" y1="35" x2="236" y2="52"/>
+  </g>
+  <circle cx="200" cy="85" r="42" fill="#ffd23f" stroke="#f7b733" stroke-width="5"/>
+  <circle cx="186" cy="78" r="5" fill="#4a3728"/><circle cx="214" cy="78" r="5" fill="#4a3728"/>
+  <path d="M184 94 Q200 108 216 94" fill="none" stroke="#4a3728" stroke-width="4" stroke-linecap="round"/>
+  <ellipse cx="200" cy="310" rx="250" ry="80" fill="#8cc63f"/>
+  <g>
+    <circle cx="120" cy="200" r="26" fill="#ffe0b8"/>
+    <path d="M96 190 Q106 166 132 172 Q146 176 144 190 Q126 180 108 186 Z" fill="#6b4a2f"/>
+    <circle cx="112" cy="200" r="3.5" fill="#4a3728"/><circle cx="128" cy="200" r="3.5" fill="#4a3728"/>
+    <path d="M112 212 Q120 219 128 212" fill="none" stroke="#4a3728" stroke-width="3" stroke-linecap="round"/>
+    <rect x="102" y="226" width="36" height="42" rx="12" fill="#f06292"/>
+    <line x1="102" y1="240" x2="82" y2="222" stroke="#ffe0b8" stroke-width="9" stroke-linecap="round"/>
+    <line x1="138" y1="240" x2="158" y2="222" stroke="#ffe0b8" stroke-width="9" stroke-linecap="round"/>
+  </g>
+  <g>
+    <ellipse cx="235" cy="248" rx="34" ry="20" fill="#f0a04b"/>
+    <circle cx="264" cy="232" r="17" fill="#f0a04b"/>
+    <polygon points="254,220 258,206 266,218" fill="#f0a04b"/>
+    <polygon points="272,220 278,206 268,218" fill="#f0a04b"/>
+    <circle cx="259" cy="230" r="2.5" fill="#4a3728"/><circle cx="269" cy="230" r="2.5" fill="#4a3728"/>
+    <path d="M204 244 Q192 234 200 226" fill="none" stroke="#d8873a" stroke-width="6" stroke-linecap="round"/>
+  </g>
+  <g>
+    <ellipse cx="322" cy="180" rx="18" ry="13" fill="#4a9fd8"/>
+    <circle cx="338" cy="171" r="10" fill="#4a9fd8"/>
+    <polygon points="347,169 357,172 347,176" fill="#f7941d"/>
+    <circle cx="341" cy="169" r="2" fill="#fff"/>
+    <path d="M314 176 Q306 168 312 162" fill="none" stroke="#3d86b8" stroke-width="4" stroke-linecap="round"/>
+  </g>
+  <g fill="#f7941d">
+    <text x="60" y="120" font-size="24" font-family="sans-serif">♪</text>
+    <text x="320" y="120" font-size="24" font-family="sans-serif">♫</text>
+  </g>
+</svg>

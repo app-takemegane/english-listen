@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>えいごのえほん</title>
+  <meta name="description" content="幼児・小学生向け 英語えほん読み聞かせアプリ">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="えいごのえほん">
+  <meta name="theme-color" content="#f7941d">
+</head>
+<body>
+
+  <!-- ═══════════ 本棚(ほんだな)画面 ═══════════ -->
+  <div id="shelf-view" class="view">
+    <header class="app-header">
+      <div class="logo">
+        <span class="logo-sun">☀️</span>
+        <h1>えいごのえほん</h1>
+      </div>
+      <p class="tagline">えほんで たのしく えいごに ふれよう</p>
+    </header>
+
+    <nav class="level-tabs" id="level-tabs">
+      <button class="tab active" data-level="all">すべて</button>
+      <button class="tab" data-level="1">レベル1</button>
+      <button class="tab" data-level="2">レベル2</button>
+    </nav>
+
+    <main id="bookshelf" class="bookshelf"></main>
+
+    <footer class="shelf-footer">
+      <p>よみたい えほんを タップしてね</p>
+    </footer>
+  </div>
+
+  <!-- ═══════════ えほんリーダー画面 ═══════════ -->
+  <div id="reader-view" class="view hidden">
+    <header class="reader-header">
+      <button id="btn-back" class="icon-btn" aria-label="ほんだなにもどる">
+        <svg viewBox="0 0 24 24" width="26" height="26"><path d="M15 6l-6 6 6 6" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span>ほんだな</span>
+      </button>
+      <div id="reader-title" class="reader-title"></div>
+      <div id="page-indicator" class="page-indicator"></div>
+    </header>
+
+    <main class="reader-main">
+      <div id="page-illustration" class="page-illustration"></div>
+      <div id="page-text" class="page-text"></div>
+    </main>
+
+    <footer class="reader-controls">
+      <button id="btn-prev" class="nav-btn" aria-label="まえのページ">
+        <svg viewBox="0 0 24 24" width="34" height="34"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+
+      <button id="btn-replay" class="round-btn small" aria-label="もういちど">
+        <svg viewBox="0 0 24 24" width="26" height="26"><path d="M4 4v6h6" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M4.6 10A8 8 0 1 1 4 14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg>
+      </button>
+
+      <button id="btn-play" class="round-btn big" aria-label="さいせい">
+        <svg id="icon-play" viewBox="0 0 24 24" width="40" height="40"><path d="M8 5v14l11-7z" fill="currentColor"/></svg>
+        <svg id="icon-pause" viewBox="0 0 24 24" width="40" height="40" class="hidden"><rect x="6" y="5" width="4" height="14" rx="1.5" fill="currentColor"/><rect x="14" y="5" width="4" height="14" rx="1.5" fill="currentColor"/></svg>
+      </button>
+
+      <button id="btn-auto" class="round-btn small" aria-label="じどうめくり">
+        <span class="auto-label">auto</span>
+      </button>
+
+      <button id="btn-next" class="nav-btn" aria-label="つぎのページ">
+        <svg viewBox="0 0 24 24" width="34" height="34"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+    </footer>
+
+    <div id="finish-overlay" class="finish-overlay hidden">
+      <div class="finish-card">
+        <div class="finish-stars">⭐️⭐️⭐️</div>
+        <p class="finish-en">Great job!</p>
+        <p class="finish-ja">さいごまで よめたね!</p>
+        <button id="btn-read-again" class="pill-btn orange">もういちど よむ</button>
+        <button id="btn-to-shelf" class="pill-btn white">ほんだなに もどる</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/books.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

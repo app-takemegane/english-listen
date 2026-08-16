@@ -1,0 +1,357 @@
+/* ══════════ 基本 ══════════ */
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+html, body {
+  height: 100%;
+  font-family: "Hiragino Maru Gothic ProN", "Hiragino Kaku Gothic ProN", "Rounded Mplus 1c", sans-serif;
+  background: #fdf6ec;
+  color: #4a3728;
+  overscroll-behavior: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.hidden { display: none !important; }
+
+.view {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ══════════ 本棚画面 ══════════ */
+.app-header {
+  background: linear-gradient(180deg, #f7941d, #f5a623);
+  color: #fff;
+  padding: calc(env(safe-area-inset-top, 0px) + 18px) 16px 14px;
+  text-align: center;
+  border-radius: 0 0 24px 24px;
+  box-shadow: 0 3px 10px rgba(247, 148, 29, 0.35);
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.logo-sun { font-size: 28px; }
+
+.app-header h1 {
+  font-size: 26px;
+  letter-spacing: 2px;
+  text-shadow: 0 2px 0 rgba(0,0,0,0.08);
+}
+
+.tagline {
+  margin-top: 4px;
+  font-size: 12px;
+  opacity: 0.95;
+}
+
+.level-tabs {
+  display: flex;
+  gap: 8px;
+  padding: 14px 16px 4px;
+  justify-content: center;
+}
+
+.tab {
+  border: 2px solid #f7941d;
+  background: #fff;
+  color: #f7941d;
+  font-size: 14px;
+  font-weight: bold;
+  padding: 7px 18px;
+  border-radius: 999px;
+  font-family: inherit;
+}
+
+.tab.active {
+  background: #f7941d;
+  color: #fff;
+}
+
+.bookshelf {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 16px;
+  padding: 16px;
+  align-content: start;
+}
+
+.book-card {
+  background: #fff;
+  border-radius: 18px;
+  padding: 12px;
+  box-shadow: 0 3px 8px rgba(74, 55, 40, 0.12);
+  text-align: center;
+  border: none;
+  font-family: inherit;
+  color: inherit;
+  cursor: pointer;
+  transition: transform 0.1s;
+}
+
+.book-card:active { transform: scale(0.96); }
+
+.book-cover {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #eef6fb;
+}
+
+.book-cover img { width: 100%; height: 100%; display: block; object-fit: cover; }
+
+.book-title-en {
+  margin-top: 10px;
+  font-size: 15px;
+  font-weight: bold;
+  color: #4a3728;
+}
+
+.book-title-ja {
+  margin-top: 2px;
+  font-size: 11px;
+  color: #9b8878;
+}
+
+.book-meta {
+  margin-top: 8px;
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+}
+
+.level-badge {
+  font-size: 10px;
+  font-weight: bold;
+  color: #fff;
+  background: #7cb95c;
+  border-radius: 999px;
+  padding: 3px 10px;
+}
+
+.level-badge.level-2 { background: #4a9fd8; }
+
+.pages-badge {
+  font-size: 10px;
+  color: #9b8878;
+  padding: 3px 0;
+}
+
+.shelf-footer {
+  text-align: center;
+  padding: 10px 0 calc(env(safe-area-inset-bottom, 0px) + 16px);
+  font-size: 12px;
+  color: #b7a493;
+}
+
+/* ══════════ リーダー画面 ══════════ */
+#reader-view {
+  height: 100dvh;
+  background: #fffdf8;
+}
+
+.reader-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: calc(env(safe-area-inset-top, 0px) + 8px) 12px 8px;
+  background: #fff;
+  border-bottom: 1px solid #f0e6d8;
+}
+
+.icon-btn {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  border: none;
+  background: none;
+  color: #f7941d;
+  font-size: 13px;
+  font-weight: bold;
+  font-family: inherit;
+  padding: 6px;
+}
+
+.reader-title {
+  font-size: 14px;
+  font-weight: bold;
+  color: #4a3728;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 45%;
+}
+
+.page-indicator {
+  font-size: 13px;
+  color: #9b8878;
+  min-width: 52px;
+  text-align: right;
+}
+
+.reader-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.page-illustration {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 14px 4px;
+  min-height: 0;
+}
+
+.page-illustration img {
+  max-width: 100%;
+  max-height: 100%;
+  border-radius: 16px;
+  box-shadow: 0 3px 12px rgba(74, 55, 40, 0.12);
+}
+
+.page-text {
+  padding: 14px 22px 10px;
+  text-align: center;
+  font-size: 24px;
+  line-height: 1.6;
+  font-weight: bold;
+  color: #4a3728;
+  min-height: 96px;
+}
+
+.word {
+  display: inline-block;
+  padding: 1px 3px;
+  border-radius: 6px;
+  transition: background 0.12s;
+}
+
+.word.active {
+  background: #ffd54f;
+  color: #b3541e;
+}
+
+/* ══════════ 操作ボタン ══════════ */
+.reader-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  padding: 8px 12px calc(env(safe-area-inset-bottom, 0px) + 14px);
+  background: #fff;
+  border-top: 1px solid #f0e6d8;
+}
+
+.nav-btn {
+  border: none;
+  background: none;
+  color: #d8c6b2;
+  padding: 8px;
+}
+
+.nav-btn.enabled { color: #f7941d; }
+
+.round-btn {
+  border: none;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: inherit;
+  color: #fff;
+  box-shadow: 0 3px 8px rgba(247, 148, 29, 0.4);
+}
+
+.round-btn.big {
+  width: 74px;
+  height: 74px;
+  background: linear-gradient(180deg, #f7941d, #ef7f10);
+}
+
+.round-btn.big:active { transform: scale(0.94); }
+
+.round-btn.small {
+  width: 52px;
+  height: 52px;
+  background: #ffe3bd;
+  color: #e07b00;
+  box-shadow: 0 2px 6px rgba(74, 55, 40, 0.15);
+}
+
+.round-btn.small.on {
+  background: #7cb95c;
+  color: #fff;
+}
+
+.auto-label {
+  font-size: 13px;
+  font-weight: bold;
+}
+
+/* ══════════ よみおわり画面 ══════════ */
+.finish-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(74, 55, 40, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+}
+
+.finish-card {
+  background: #fff;
+  border-radius: 24px;
+  padding: 30px 34px;
+  text-align: center;
+  width: min(320px, 86vw);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+}
+
+.finish-stars { font-size: 34px; }
+
+.finish-en {
+  margin-top: 10px;
+  font-size: 26px;
+  font-weight: bold;
+  color: #f7941d;
+}
+
+.finish-ja {
+  margin-top: 4px;
+  font-size: 14px;
+  color: #9b8878;
+}
+
+.pill-btn {
+  display: block;
+  width: 100%;
+  margin-top: 14px;
+  padding: 13px 0;
+  border-radius: 999px;
+  font-size: 15px;
+  font-weight: bold;
+  font-family: inherit;
+  border: none;
+}
+
+.pill-btn.orange {
+  background: #f7941d;
+  color: #fff;
+}
+
+.pill-btn.white {
+  background: #fff;
+  color: #f7941d;
+  border: 2px solid #f7941d;
+}

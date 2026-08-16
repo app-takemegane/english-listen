@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300">
+  <rect width="400" height="300" fill="#d8f3d0"/>
+  <ellipse cx="200" cy="310" rx="250" ry="80" fill="#8cc63f"/>
+  <ellipse cx="230" cy="235" rx="130" ry="48" fill="#5db3d8"/>
+  <ellipse cx="230" cy="229" rx="118" ry="40" fill="#7ec8e3"/>
+  <g>
+    <polygon points="245,215 235,190 260,205" fill="#f7941d"/>
+    <ellipse cx="248" cy="220" rx="20" ry="11" fill="#f7941d" transform="rotate(-50 248 220)"/>
+  </g>
+  <g stroke="#fff" stroke-width="5" stroke-linecap="round" fill="none">
+    <path d="M225 200 Q230 190 238 188"/><path d="M270 200 Q268 188 260 184"/>
+    <line x1="248" y1="178" x2="248" y2="166"/>
+  </g>
+  <ellipse cx="248" cy="222" rx="42" ry="12" fill="#fff" opacity="0.55"/>
+  <g>
+    <ellipse cx="90" cy="205" rx="52" ry="33" fill="#f0a04b"/>
+    <circle cx="128" cy="180" r="35" fill="#f0a04b"/>
+    <polygon points="106,160 108,132 126,152" fill="#f0a04b"/>
+    <polygon points="150,160 152,132 134,152" fill="#f0a04b"/>
+    <circle cx="120" cy="176" r="7" fill="#4a3728"/>
+    <circle cx="141" cy="176" r="7" fill="#4a3728"/>
+    <circle cx="122" cy="174" r="2.5" fill="#fff"/><circle cx="143" cy="174" r="2.5" fill="#fff"/>
+    <ellipse cx="130" cy="192" rx="6" ry="7" fill="#4a3728"/>
+    <path d="M44 212 Q22 200 32 182" fill="none" stroke="#f0a04b" stroke-width="11" stroke-linecap="round"/>
+  </g>
+  <text x="290" y="130" font-size="26" font-weight="bold" font-family="sans-serif" fill="#3d86b8">SPLASH!</text>
+</svg>
