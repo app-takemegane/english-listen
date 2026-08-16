@@ -364,6 +364,56 @@ html, body {
   color: #b3541e;
 }
 
+/* ══════════ はなすモード ══════════ */
+.speak-bar {
+  background: #fff8ea;
+  border-top: 2px dashed #ffd8a1;
+  padding: 10px 16px;
+  text-align: center;
+}
+
+.speak-feedback {
+  font-size: 13px;
+  font-weight: bold;
+  color: #b3541e;
+  min-height: 18px;
+}
+
+.speak-buttons {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 8px;
+}
+
+.record-btn {
+  border: none;
+  border-radius: 999px;
+  padding: 12px 20px;
+  font-size: 15px;
+  font-weight: bold;
+  font-family: inherit;
+  background: #e5504f;
+  color: #fff;
+  box-shadow: 0 3px 8px rgba(229, 80, 79, 0.35);
+}
+
+.record-btn.mine {
+  background: #4a9fd8;
+  box-shadow: 0 3px 8px rgba(74, 159, 216, 0.35);
+}
+
+.record-btn:disabled { opacity: 0.4; box-shadow: none; }
+
+.record-btn.recording {
+  animation: rec-pulse 1s infinite;
+}
+
+@keyframes rec-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.06); box-shadow: 0 0 0 8px rgba(229, 80, 79, 0.15); }
+}
+
 /* ══════════ 操作ボタン ══════════ */
 .reader-controls {
   display: flex;

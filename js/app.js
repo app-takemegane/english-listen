@@ -33,7 +33,14 @@ const modeCover = document.getElementById("mode-cover");
 const modeTitleEn = document.getElementById("mode-title-en");
 const modeTitleJa = document.getElementById("mode-title-ja");
 const btnModeListen = document.getElementById("btn-mode-listen");
+const btnModeSpeak = document.getElementById("btn-mode-speak");
 const btnModeQuiz = document.getElementById("btn-mode-quiz");
+// はなすモード
+const speakBar = document.getElementById("speak-bar");
+const speakFeedback = document.getElementById("speak-feedback");
+const btnRecord = document.getElementById("btn-record");
+const btnPlayMine = document.getElementById("btn-play-mine");
+const finishJaText = document.getElementById("finish-ja-text");
 const btnModeClose = document.getElementById("btn-mode-close");
 // クイズ
 const btnQuizBack = document.getElementById("btn-quiz-back");
@@ -97,6 +104,7 @@ function updateCoinDisplays() {
 let currentBook = null;
 let currentPage = 0;
 let autoMode = true; // 自動でページをめくる(よみきかせモード)
+let speakMode = false; // はなすモード(録音して聞き比べ)
 let wordSpans = [];
 let wordTimings = []; // 各単語の開始時刻(秒)。音声の長さから推定する
 const audio = new Audio(); // iPhoneでも連続再生できるよう、1つを使い回す
@@ -212,7 +220,11 @@ modeOverlay.addEventListener("click", e => {
 });
 btnModeListen.addEventListener("click", () => {
   modeOverlay.classList.add("hidden");
-  openBook(selectedBook);
+  openBook(selectedBook, "listen");
+});
+btnModeSpeak.addEventListener("click", () => {
+  modeOverlay.classList.add("hidden");
+  openBook(selectedBook, "speak");
 });
 btnModeQuiz.addEventListener("click", () => {
   modeOverlay.classList.add("hidden");
@@ -220,15 +232,19 @@ btnModeQuiz.addEventListener("click", () => {
 });
 
 // ══════════ えほんを開く・閉じる ══════════
-function openBook(book) {
+function openBook(book, mode) {
   currentBook = book;
   currentPage = 0;
+  speakMode = mode === "speak";
+  speakBar.classList.toggle("hidden", !speakMode);
+  btnAuto.classList.toggle("hidden", speakMode); // はなすモードは自分のペースでめくる
   showView("reader");
   showPage(0);
 }
 
 function closeBook() {
   stopAudio();
+  stopRecordingHardware();
   finishOverlay.classList.add("hidden");
   confettiBox.innerHTML = "";
   currentBook = null;
@@ -297,6 +313,8 @@ function showPage(index) {
   audio.src = pageAudio(book, index);
   audio.load();
   wordTimings = [];
+
+  if (speakMode) speakResetForPage();
 }
 
 function goPrev() {
@@ -318,7 +336,12 @@ function goNext() {
 }
 
 function showFinish() {
-  addCoins(1); // 最後まで読めたごほうび
+  // はなすモードはがんばりが大きいのでコイン2枚
+  const reward = speakMode ? 2 : 1;
+  addCoins(reward);
+  finishJaText.textContent = speakMode
+    ? `さいごまで いえたね! 🪙コインを ${reward}まい ゲット!`
+    : `さいごまで よめたね! 🪙コインを ${reward}まい ゲット!`;
   spawnConfetti(confettiBox);
   finishOverlay.classList.remove("hidden");
   playSfx(sfxFinish);
@@ -434,8 +457,95 @@ audio.addEventListener("ended", () => {
   if (!currentBook) return; // クイズの問題読み上げのときは何もしない
   wordSpans.forEach(s => s.classList.remove("active"));
   setPlayIcon(false);
+  if (speakMode) return; // はなすモードは自動でめくらない
   if (autoMode && !views.reader.classList.contains("hidden")) setTimeout(goNext, 900);
 });
+
+// ══════════ はなすモード(自分の声を録音して聞き比べ) ══════════
+let recStream = null;      // マイク
+let mediaRecorder = null;
+let recChunks = [];
+let recTimer = null;
+let myVoiceAudio = null;   // 録音した自分の声
+let recordings = {};       // ページごとの録音 { ページ番号: 音声のURL }
+
+function speakResetForPage() {
+  clearTimeout(recTimer);
+  btnRecord.classList.remove("recording");
+  btnRecord.textContent = "🎤 ろくおん";
+  const has = !!recordings[currentPage];
+  btnPlayMine.disabled = !has;
+  speakFeedback.textContent = has
+    ? "もういちど いっても、つぎの ページに いっても いいよ!"
+    : "おてほんを きいて、まねして いってみよう!";
+}
+
+async function toggleRecord() {
+  if (mediaRecorder && mediaRecorder.state === "recording") {
+    mediaRecorder.stop();
+    return;
+  }
+  try {
+    if (!recStream) {
+      recStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    }
+  } catch (e) {
+    speakFeedback.textContent = "マイクが つかえないよ。おうちのひとに せっていを みてもらってね";
+    return;
+  }
+  audio.pause();
+  if (myVoiceAudio) myVoiceAudio.pause();
+  recChunks = [];
+  const type = MediaRecorder.isTypeSupported && MediaRecorder.isTypeSupported("audio/mp4")
+    ? "audio/mp4" : "";
+  mediaRecorder = type ? new MediaRecorder(recStream, { mimeType: type }) : new MediaRecorder(recStream);
+  mediaRecorder.ondataavailable = e => { if (e.data.size) recChunks.push(e.data); };
+  mediaRecorder.onstop = () => {
+    clearTimeout(recTimer);
+    btnRecord.classList.remove("recording");
+    btnRecord.textContent = "🎤 ろくおん";
+    if (!recChunks.length) return;
+    const blob = new Blob(recChunks, { type: mediaRecorder.mimeType || "audio/mp4" });
+    if (recordings[currentPage]) URL.revokeObjectURL(recordings[currentPage]);
+    recordings[currentPage] = URL.createObjectURL(blob);
+    btnPlayMine.disabled = false;
+    speakFeedback.textContent = "Great! いえたね! じぶんの こえを きいてみよう";
+    playSfx(sfxCorrect);
+  };
+  mediaRecorder.start();
+  btnRecord.classList.add("recording");
+  btnRecord.textContent = "⏹ とめる";
+  speakFeedback.textContent = "ろくおんちゅう... おわったら もういちど おしてね";
+  recTimer = setTimeout(() => {
+    if (mediaRecorder && mediaRecorder.state === "recording") mediaRecorder.stop();
+  }, 12000); // 長くても12秒で自動停止
+}
+
+btnRecord.addEventListener("click", toggleRecord);
+
+btnPlayMine.addEventListener("click", () => {
+  if (!recordings[currentPage]) return;
+  audio.pause();
+  if (myVoiceAudio) myVoiceAudio.pause();
+  myVoiceAudio = new Audio(recordings[currentPage]);
+  const p = myVoiceAudio.play();
+  if (p) p.catch(() => {});
+});
+
+function stopRecordingHardware() {
+  clearTimeout(recTimer);
+  if (mediaRecorder && mediaRecorder.state === "recording") {
+    try { mediaRecorder.stop(); } catch (e) {}
+  }
+  mediaRecorder = null;
+  if (myVoiceAudio) { myVoiceAudio.pause(); myVoiceAudio = null; }
+  if (recStream) {
+    recStream.getTracks().forEach(t => t.stop());
+    recStream = null;
+  }
+  Object.values(recordings).forEach(url => URL.revokeObjectURL(url));
+  recordings = {};
+}
 
 // ══════════ クイズ ══════════
 let quizBook = null;

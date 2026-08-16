@@ -120,6 +120,7 @@
       <div class="mode-title-en" id="mode-title-en"></div>
       <div class="mode-title-ja" id="mode-title-ja"></div>
       <button id="btn-mode-listen" class="pill-btn orange big-btn">🎧 よみきかせ</button>
+      <button id="btn-mode-speak" class="pill-btn white big-btn">🎤 はなす れんしゅう</button>
       <button id="btn-mode-quiz" class="pill-btn white big-btn">📝 クイズに ちょうせん</button>
       <button id="btn-mode-close" class="text-btn">とじる</button>
     </div>
@@ -141,6 +142,14 @@
       <div id="page-illustration" class="page-illustration"></div>
       <div id="page-text" class="page-text"></div>
     </main>
+
+    <div id="speak-bar" class="speak-bar hidden">
+      <div id="speak-feedback" class="speak-feedback">おてほんを きいて、まねして いってみよう!</div>
+      <div class="speak-buttons">
+        <button id="btn-record" class="record-btn">🎤 ろくおん</button>
+        <button id="btn-play-mine" class="record-btn mine" disabled>▶️ じぶんの こえ</button>
+      </div>
+    </div>
 
     <footer class="reader-controls">
       <button id="btn-prev" class="nav-btn" aria-label="まえのページ">
@@ -170,7 +179,7 @@
       <div class="finish-card">
         <div class="finish-stars">⭐️⭐️⭐️</div>
         <p class="finish-en">Great job!</p>
-        <p class="finish-ja">さいごまで よめたね! 🪙コインを 1まい ゲット!</p>
+        <p id="finish-ja-text" class="finish-ja">さいごまで よめたね! 🪙コインを 1まい ゲット!</p>
         <button id="btn-finish-quiz" class="pill-btn orange">📝 クイズに ちょうせん!</button>
         <button id="btn-read-again" class="pill-btn white">もういちど よむ</button>
         <button id="btn-to-shelf" class="text-btn">ほんだなに もどる</button>
