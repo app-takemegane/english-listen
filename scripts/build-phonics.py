@@ -17,8 +17,9 @@ PAD = 0.03     # 前後に残す余白(秒)
 
 # 音の名前 → 合成に使う発音記号(IPA)
 # 単独では鳴らせない音(破裂音 p t k など)は、ごく短い ə を付けて発音させる
+# 注意: g は特殊文字の ɡ(U+0261)だと無視される。普通のアルファベットの g を使うこと
 SYNTH_IPA = {
-    "p": "pə", "b": "bə", "t": "tə", "d": "də", "k": "kə", "g": "ɡə",
+    "p": "pə", "b": "bə", "t": "tə", "d": "də", "k": "kə", "g": "gə",
     "ch": "tʃə", "j": "dʒə",
     "f": "f", "v": "v", "th": "θ", "dh": "ð", "s": "s", "z": "z",
     "sh": "ʃ", "h": "hə",
@@ -28,6 +29,12 @@ SYNTH_IPA = {
     "uh": "ə", "uu": "ʊ", "uw": "u", "er": "ɜɹ", "el": "əl",  # ɚ 単独は鳴らない
     "ar": "ɑɹ", "or": "ɔɹ",
     "ay": "aɪ", "ey": "eɪ", "ow": "aʊ", "oh": "oʊ", "oy": "ɔɪ", "aw": "ɔ",
+}
+
+# 発音記号だと不自然になる音は、ふつうの英語をそのまま読ませて作る(こちらが優先)
+# 形式: 音の名前: (読ませる英語, 速さ)
+TEXT_SYNTH = {
+    "ow": ("Ow.", "0.42"),  # flower・down の「アウ」。IPA の aʊ 単独は不自然だった
 }
 
 # ── 辞書の検査 ──────────────────────────────────────
@@ -79,8 +86,15 @@ for key, ipa in SYNTH_IPA.items():
     wav = os.path.join(tmpdir, "p.wav")
     if os.path.exists(caf):
         os.remove(caf)
-    subprocess.run(["swift", "scripts/speak_ipa.swift", "x", ipa, caf, RATE],
-                   check=True, capture_output=True)
+    if key in TEXT_SYNTH:
+        text, rate = TEXT_SYNTH[key]
+        subprocess.run(["swift", "scripts/speak_with_timings.swift", text,
+                        caf, os.path.join(tmpdir, "p.json"), rate],
+                       check=True, capture_output=True)
+        ipa = f"「{text}」"
+    else:
+        subprocess.run(["swift", "scripts/speak_ipa.swift", "x", ipa, caf, RATE],
+                       check=True, capture_output=True)
     subprocess.run(["afconvert", "-f", "WAVE", "-d", "LEI16", caf, wav],
                    check=True, capture_output=True)
     with wave.open(wav, "rb") as w:

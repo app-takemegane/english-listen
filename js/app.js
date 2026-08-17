@@ -164,7 +164,8 @@ audio.preservesPitch = true;
 if ("webkitPreservesPitch" in audio) audio.webkitPreservesPitch = true;
 
 function applyPlaybackRate() {
-  audio.playbackRate = practicingWord ? wordRate : pageRate;
+  // はなすモードの単語練習は「たんごの はやさ」、それ以外は「よみあげの はやさ」
+  audio.playbackRate = (practicingWord && speakMode) ? wordRate : pageRate;
 }
 
 function setupSpeedButtons(containerId, storageKey, getRate, setRate) {
@@ -328,9 +329,9 @@ function showPage(index) {
     const span = document.createElement("span");
     span.className = "word";
     span.textContent = word;
-    // よみきかせ中はその単語から聞き直し、はなすモードは1単語だけの練習
+    // よみきかせ中はその単語だけ読む、はなすモードはフォニックスカードで練習
     span.addEventListener("click", () => {
-      if (speakMode) practiceWord(word, span, i); else seekToWord(i);
+      if (speakMode) practiceWord(word, span, i); else listenWord(span, i);
     });
     pageText.appendChild(span);
     pageText.appendChild(document.createTextNode(" "));
@@ -358,18 +359,19 @@ function showPage(index) {
   if (speakMode) speakResetForPage();
 }
 
+// ページをめくっても自動では読み上げない(再生ボタンを押してから読む)
 function goPrev() {
   if (currentPage > 0) {
     playSfx(sfxPage);
     showPage(currentPage - 1);
-    playAudio();
   }
 }
-function goNext() {
+// autoPlay は「自動めくりで進んだとき」だけ true(そのときだけ続けて読み上げる)
+function goNext(autoPlay) {
   if (currentPage < currentBook.pages.length - 1) {
     playSfx(sfxPage);
     showPage(currentPage + 1);
-    playAudio();
+    if (autoPlay === true) playAudio();
   } else {
     markAsRead(currentBook);
     showFinish();
@@ -446,7 +448,6 @@ function practiceWord(word, span, wordIndex) {
 const phonicsOverlay = document.getElementById("phonics-overlay");
 const phonicsWordBox = document.getElementById("phonics-word");
 const phonicsIpaBox = document.getElementById("phonics-ipa");
-const btnPhonicsSound = document.getElementById("btn-phonics-sound");
 const btnPhonicsWord = document.getElementById("btn-phonics-word");
 const btnPhonicsClose = document.getElementById("btn-phonics-close");
 
@@ -476,8 +477,7 @@ function openPhonics(word, wordIndex) {
     return item;
   });
   phonicsIpaBox.textContent = "/" + entry.map(([, s]) => (s ? soundIpa(s) : "")).join("") + "/";
-  phonicsOverlay.classList.remove("hidden");
-  playPhonicsSequence();
+  phonicsOverlay.classList.remove("hidden"); // 開くだけで音は鳴らさない(押してから再生)
   return true;
 }
 
@@ -524,32 +524,7 @@ function phPlay(src) {
   });
 }
 
-// 1もじずつ(読んでいる文字を強調)→ さいごに つなげて単語まるごと
-async function playPhonicsSequence() {
-  const seq = ++phonicsSeq;
-  for (const item of phonicsChunks) {
-    if (seq !== phonicsSeq) return;
-    highlightChunk(item);
-    if (item.sounds) {
-      for (const key of item.sounds) {
-        if (seq !== phonicsSeq) return;
-        await phPlay(phonemeAudio(key));
-      }
-      await phWait(280);
-    } else {
-      await phWait(750); // よまない文字は音を出さずに見せるだけ
-    }
-  }
-  if (seq !== phonicsSeq) return;
-  highlightChunk(null);
-  await phWait(400);
-  if (seq !== phonicsSeq) return;
-  blendHighlight(true); // つなげて読むあいだは全体をほんのり光らせる
-  await phPlay(phonicsWordClip);
-  if (seq === phonicsSeq) blendHighlight(false);
-}
-
-// 文字を1つタップしたら、その音だけ鳴らす
+// 文字を1つタップしたら、その音だけ鳴らす(読んでいる文字を強調)
 async function playPhonicsChunk(item) {
   const seq = ++phonicsSeq;
   highlightChunk(item);
@@ -571,7 +546,6 @@ async function playPhonicsWord() {
   if (seq === phonicsSeq) blendHighlight(false);
 }
 
-btnPhonicsSound.addEventListener("click", playPhonicsSequence);
 btnPhonicsWord.addEventListener("click", playPhonicsWord);
 btnPhonicsClose.addEventListener("click", () => closePhonics(false));
 phonicsOverlay.addEventListener("click", e => {
@@ -620,10 +594,13 @@ function updateHighlight() {
   wordSpans.forEach((s, i) => s.classList.toggle("active", i === active));
 }
 
-function seekToWord(i) {
-  if (!wordTimings.length && audio.duration) computeWordTimings();
-  if (!wordTimings.length) return;
-  audio.currentTime = wordTimings[i];
+// よみきかせ中に単語をタップ:その単語だけ読んで止まる(続きは読まない)
+function listenWord(span, i) {
+  practicingWord = true; // 1単語だけの再生あつかい(終わっても次に進まない)
+  wordTimings = [];
+  wordSpans.forEach(s => s.classList.remove("active", "practice"));
+  span.classList.add("active");
+  audio.src = clipAudio(currentBook, currentPage, i);
   playAudio();
 }
 
@@ -676,7 +653,7 @@ audio.addEventListener("ended", () => {
     return;
   }
   if (speakMode) return; // はなすモードは自動でめくらない
-  if (autoMode && !views.reader.classList.contains("hidden")) setTimeout(goNext, 900);
+  if (autoMode && !views.reader.classList.contains("hidden")) setTimeout(() => goNext(true), 900);
 });
 
 // ══════════ はなすモード(自分の声を録音して聞き比べ) ══════════
