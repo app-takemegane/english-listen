@@ -125,3 +125,10 @@ function wordKey(word) {
 function clipAudio(book, pageIndex, wordIndex) {
   return `books/${book.id}/clips/p${pageIndex + 1}_w${wordIndex}.m4a`;
 }
+// 単語タップの音声の方針:true なら「単語単独の正しい読み」(words/、辞書の発音)、
+// false なら以前の「文中の発音そのまま」(clips/)に戻る(1か所直すだけで戻せる)
+const USE_WORD_SOUND = true;
+function tapAudio(book, pageIndex, wordIndex, word) {
+  if (USE_WORD_SOUND && wordKey(word)) return `words/${wordKey(word)}.m4a`;
+  return clipAudio(book, pageIndex, wordIndex);
+}

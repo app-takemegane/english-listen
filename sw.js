@@ -1,26 +1,31 @@
 // サービスワーカー:アプリ全体を端末に保存し、オフラインでも動くようにする
 // ファイルを追加・変更したら VERSION の数字を上げること(古い保存分が入れ替わる)
-const VERSION = "v25";
+const VERSION = "v26";
 const CACHE_NAME = `eigo-ehon-${VERSION}`;
 
 // 絵本データを読み込み、保存するファイルの一覧を本文から自動で作る
 importScripts("js/books.js");
 importScripts("js/phonics.js");
 const BOOK_FILES = [];
+const WORD_KEY_SET = new Set();
 BOOKS.forEach(book => {
   BOOK_FILES.push(`books/${book.id}/cover.svg`);
   book.pages.forEach((page, pi) => {
     BOOK_FILES.push(`books/${book.id}/p${pi + 1}.svg`);
     BOOK_FILES.push(`books/${book.id}/audio/p${pi + 1}.m4a`);
-    // ページ内の単語クリップ(その位置の発音をそのまま切り出したもの)
+    // ページ内の単語クリップ(その位置の発音をそのまま切り出したもの。戻す場合に備えて保存も継続)
     page.text.split(" ").forEach((w, wi) => {
       BOOK_FILES.push(`books/${book.id}/clips/p${pi + 1}_w${wi}.m4a`);
+      const key = wordKey(w);
+      if (key) WORD_KEY_SET.add(key);
     });
   });
   (book.quiz || []).forEach((q, qi) => {
     BOOK_FILES.push(`books/${book.id}/quiz/q${qi + 1}.m4a`);
   });
 });
+// 単語単独の正しい読み(単語タップで鳴らす音声)
+const WORD_FILES = [...WORD_KEY_SET].map(key => `words/${key}.m4a`);
 
 // フォニックスの1音ずつの音声(音の表から自動で一覧を作る)
 const PHONICS_FILES = Object.keys(PHONEME_IPA).map(key => `phonics/${key}.m4a`);
@@ -44,6 +49,7 @@ const FILES_TO_CACHE = [
   "sfx/wrong.m4a",
   "sfx/coin.m4a",
   ...PHONICS_FILES,
+  ...WORD_FILES,
   ...BOOK_FILES
 ];
 

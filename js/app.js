@@ -429,7 +429,7 @@ views.reader.addEventListener("touchend", e => {
 
 // ══════════ 音声の再生と単語ハイライト ══════════
 // ══════════ 1単語ずつの発音練習(はなすモードで単語をタップ) ══════════
-// その文のその場所の発音をそのまま切り出したクリップを鳴らす
+// 単語単独の正しい読み(辞書の発音)を鳴らす
 function practiceWord(word, span, wordIndex) {
   if (!wordKey(word)) return;
   practicingWord = true;
@@ -440,7 +440,7 @@ function practiceWord(word, span, wordIndex) {
   speakFeedback.textContent = `「${clean}」だけ れんしゅう! おなじように いって ろくおんしてみよう`;
   // 辞書にある単語はフォニックスカードを開く(1もじずつ→つなげて、の順に鳴る)
   if (openPhonics(word, wordIndex)) return;
-  audio.src = clipAudio(currentBook, currentPage, wordIndex);
+  audio.src = tapAudio(currentBook, currentPage, wordIndex, word);
   playAudio();
 }
 
@@ -463,7 +463,7 @@ const soundIpa = s => soundList(s).map(k => PHONEME_IPA[k]).join("");
 function openPhonics(word, wordIndex) {
   const entry = PHONICS[wordKey(word)];
   if (!entry) return false;
-  phonicsWordClip = clipAudio(currentBook, currentPage, wordIndex);
+  phonicsWordClip = tapAudio(currentBook, currentPage, wordIndex, word);
   phonicsWordBox.innerHTML = "";
   phonicsChunks = entry.map(([letters, sound]) => {
     const el = document.createElement("button");
@@ -600,7 +600,7 @@ function listenWord(span, i) {
   wordTimings = [];
   wordSpans.forEach(s => s.classList.remove("active", "practice"));
   span.classList.add("active");
-  audio.src = clipAudio(currentBook, currentPage, i);
+  audio.src = tapAudio(currentBook, currentPage, i, span.textContent);
   playAudio();
 }
 
