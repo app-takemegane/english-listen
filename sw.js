@@ -1,30 +1,24 @@
 // サービスワーカー:アプリ全体を端末に保存し、オフラインでも動くようにする
 // ファイルを追加・変更したら VERSION の数字を上げること(古い保存分が入れ替わる)
-const VERSION = "v18";
+const VERSION = "v19";
 const CACHE_NAME = `eigo-ehon-${VERSION}`;
 
-// 絵本データを読み込み、単語練習の音声一覧を絵本の本文から自動で作る
+// 絵本データを読み込み、保存するファイルの一覧を本文から自動で作る
 importScripts("js/books.js");
-const WORD_FILES = [];
-const seenWords = new Set();
-BOOKS.forEach(b => b.pages.forEach(p => p.text.split(" ").forEach(w => {
-  const key = wordKey(w);
-  if (key && !seenWords.has(key)) {
-    seenWords.add(key);
-    WORD_FILES.push(`words/${key}.m4a`);
-  }
-})));
-
 const BOOK_FILES = [];
-["sun", "cat", "colors", "park"].forEach(id => {
-  BOOK_FILES.push(`books/${id}/cover.svg`);
-  for (let i = 1; i <= 6; i++) {
-    BOOK_FILES.push(`books/${id}/p${i}.svg`);
-    BOOK_FILES.push(`books/${id}/audio/p${i}.m4a`);
-  }
-  for (let i = 1; i <= 3; i++) {
-    BOOK_FILES.push(`books/${id}/quiz/q${i}.m4a`);
-  }
+BOOKS.forEach(book => {
+  BOOK_FILES.push(`books/${book.id}/cover.svg`);
+  book.pages.forEach((page, pi) => {
+    BOOK_FILES.push(`books/${book.id}/p${pi + 1}.svg`);
+    BOOK_FILES.push(`books/${book.id}/audio/p${pi + 1}.m4a`);
+    // ページ内の単語クリップ(その位置の発音をそのまま切り出したもの)
+    page.text.split(" ").forEach((w, wi) => {
+      BOOK_FILES.push(`books/${book.id}/clips/p${pi + 1}_w${wi}.m4a`);
+    });
+  });
+  (book.quiz || []).forEach((q, qi) => {
+    BOOK_FILES.push(`books/${book.id}/quiz/q${qi + 1}.m4a`);
+  });
 });
 
 const FILES_TO_CACHE = [
@@ -33,6 +27,7 @@ const FILES_TO_CACHE = [
   "css/style.css",
   "js/app.js",
   "js/books.js",
+  "js/timings.js",
   "js/cards.js",
   "manifest.webmanifest",
   "img/icon-192.png",
@@ -43,7 +38,6 @@ const FILES_TO_CACHE = [
   "sfx/correct.m4a",
   "sfx/wrong.m4a",
   "sfx/coin.m4a",
-  ...WORD_FILES,
   ...BOOK_FILES
 ];
 

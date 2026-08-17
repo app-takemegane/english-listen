@@ -330,7 +330,7 @@ function showPage(index) {
     span.textContent = word;
     // よみきかせ中はその単語から聞き直し、はなすモードは1単語だけの練習
     span.addEventListener("click", () => {
-      if (speakMode) practiceWord(word, span); else seekToWord(i);
+      if (speakMode) practiceWord(word, span, i); else seekToWord(i);
     });
     pageText.appendChild(span);
     pageText.appendChild(document.createTextNode(" "));
@@ -348,7 +348,12 @@ function showPage(index) {
 
   audio.src = pageAudio(book, index);
   audio.load();
+
+  // ハイライトの時刻:実測の時刻表があればそれを使う(なければ後で推定)
   wordTimings = [];
+  if (typeof TIMINGS !== "undefined" && TIMINGS[book.id] && TIMINGS[book.id][index]) {
+    wordTimings = TIMINGS[book.id][index].starts.slice();
+  }
 
   if (speakMode) speakResetForPage();
 }
@@ -422,13 +427,14 @@ views.reader.addEventListener("touchend", e => {
 
 // ══════════ 音声の再生と単語ハイライト ══════════
 // ══════════ 1単語ずつの発音練習(はなすモードで単語をタップ) ══════════
-function practiceWord(word, span) {
+// その文のその場所の発音をそのまま切り出したクリップを鳴らす
+function practiceWord(word, span, wordIndex) {
   if (!wordKey(word)) return;
   practicingWord = true;
   wordTimings = []; // 文のハイライトは動かさない
   wordSpans.forEach(s => s.classList.remove("active", "practice"));
   span.classList.add("practice");
-  audio.src = wordAudio(word);
+  audio.src = clipAudio(currentBook, currentPage, wordIndex);
   playAudio();
   const clean = word.replace(/[^A-Za-z']/g, "");
   speakFeedback.textContent = `「${clean}」だけ れんしゅう! おなじように いって ろくおんしてみよう`;
@@ -443,11 +449,15 @@ function restorePageAudio() {
     audio.src = pageAudio(currentBook, currentPage);
     audio.load();
     wordTimings = [];
+    if (typeof TIMINGS !== "undefined" && TIMINGS[currentBook.id] && TIMINGS[currentBook.id][currentPage]) {
+      wordTimings = TIMINGS[currentBook.id][currentPage].starts.slice();
+    }
   }
 }
 
 function computeWordTimings() {
   if (!currentBook || practicingWord) return;
+  if (wordTimings.length) return; // 実測の時刻表があるときは推定しない
   // 音声全体の長さを、単語の文字数の割合で配分して、各単語の開始時刻を推定する
   const words = wordSpans.map(s => s.textContent);
   const weights = words.map(w => w.replace(/[^A-Za-z]/g, "").length + 1.5);

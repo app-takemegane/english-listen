@@ -117,10 +117,11 @@ function coverImage(book) {
 function quizAudio(book, quizIndex) {
   return `books/${book.id}/quiz/q${quizIndex + 1}.m4a`;
 }
-// 単語 → 音声ファイル名のルール(「Sun!」→ words/sun.m4a のように記号を除いて小文字化)
+// 単語 → 音声ファイル名のルール
 function wordKey(word) {
   return word.toLowerCase().replace(/[^a-z]/g, "");
 }
-function wordAudio(word) {
-  return `words/${wordKey(word)}.m4a`;
+// そのページのその位置の単語クリップ(文中の発音をそのまま切り出したもの)
+function clipAudio(book, pageIndex, wordIndex) {
+  return `books/${book.id}/clips/p${pageIndex + 1}_w${wordIndex}.m4a`;
 }
