@@ -20,7 +20,8 @@ BOOKS.forEach(b => b.pages.forEach(p => p.text.split(" ").forEach(w => {
   if (!map[key]) map[key] = w.replace(/[^A-Za-z\x27]/g, "");
 })));
 // 読み方の上書き:文の中での読み方に合わせたい単語をここで指定する
-map["a"] = "ah";  // 「A blue bird」の a は文中どおり「ア」と読ませる
+map["a"] = "ah";     // 「A blue bird」の a は文中どおり「ア」と読ませる
+map["blue"] = "bloo"; // ゆっくり読みだと「ビュリュ」に崩れるため、音のとおりのつづりで指定
 console.log(Object.entries(map).map(([k, v]) => k + "\t" + v).join("\n"));
 ' | while IFS=$'\t' read -r key spoken; do
   # 末尾にピリオドを付けると、語尾が自然な言い切りの発音になる
