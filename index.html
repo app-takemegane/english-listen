@@ -191,6 +191,18 @@
       </button>
     </footer>
 
+    <!-- フォニックスカード(単語をタップすると1もじずつ発音) -->
+    <div id="phonics-overlay" class="overlay hidden">
+      <div class="phonics-card">
+        <div id="phonics-word" class="phonics-word"></div>
+        <div id="phonics-ipa" class="phonics-ipa"></div>
+        <p class="phonics-hint">もじを タップすると その おとだけ きけるよ</p>
+        <button id="btn-phonics-sound" class="pill-btn orange">🔤 1もじずつ きく</button>
+        <button id="btn-phonics-word" class="pill-btn white">🔊 つなげて きく</button>
+        <button id="btn-phonics-close" class="text-btn">とじる(ろくおんに すすむ)</button>
+      </div>
+    </div>
+
     <div id="finish-overlay" class="overlay hidden">
       <div id="confetti" class="confetti"></div>
       <div class="finish-card">
@@ -251,6 +263,7 @@
   </div>
 
   <script src="js/books.js"></script>
+  <script src="js/phonics.js"></script>
   <script src="js/timings.js"></script>
   <script src="js/cards.js"></script>
   <script src="js/app.js"></script>

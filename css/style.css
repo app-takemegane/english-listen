@@ -882,3 +882,78 @@ html, body {
 .record-title { font-size: 14px; font-weight: bold; color: #4a3728; }
 
 .record-detail { font-size: 13px; color: #9b8878; margin-top: 3px; }
+
+/* ══════════ フォニックスカード(1もじずつの発音) ══════════ */
+.phonics-card {
+  background: #fff;
+  border-radius: 24px;
+  padding: 26px 22px 16px;
+  text-align: center;
+  width: min(350px, 92vw);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+}
+
+.phonics-word {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px;
+}
+
+.ph-chunk {
+  border: 2px solid #f0e6d8;
+  background: #fffdf7;
+  border-radius: 12px;
+  padding: 8px 9px 5px;
+  min-width: 48px;
+  font-family: inherit;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  transition: transform 0.12s, background 0.12s;
+}
+
+.ph-g {
+  font-size: 36px;
+  font-weight: bold;
+  line-height: 1.1;
+  color: #2b6cb0; /* 子音は青 */
+}
+
+.ph-chunk.vowel .ph-g { color: #e5504f; } /* 母音は赤 */
+
+.ph-s {
+  font-size: 13px;
+  font-weight: bold;
+  color: #9b8878;
+}
+
+.ph-chunk.silent { opacity: 0.55; }
+.ph-chunk.silent .ph-g { color: #9b8878; }
+.ph-chunk.silent .ph-s { font-size: 10px; }
+
+.ph-chunk.now {
+  background: #ffd54f;
+  border-color: #f7941d;
+  transform: scale(1.18);
+  box-shadow: 0 4px 10px rgba(247, 148, 29, 0.35);
+}
+
+.ph-chunk.blend {
+  background: #ffe3bd;
+  border-color: #f7941d;
+}
+
+.phonics-ipa {
+  margin-top: 14px;
+  font-size: 19px;
+  font-weight: bold;
+  color: #4a3728;
+}
+
+.phonics-hint {
+  margin-top: 6px;
+  font-size: 13px;
+  color: #9b8878;
+}

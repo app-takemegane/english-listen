@@ -1,10 +1,11 @@
 // サービスワーカー:アプリ全体を端末に保存し、オフラインでも動くようにする
 // ファイルを追加・変更したら VERSION の数字を上げること(古い保存分が入れ替わる)
-const VERSION = "v19";
+const VERSION = "v20";
 const CACHE_NAME = `eigo-ehon-${VERSION}`;
 
 // 絵本データを読み込み、保存するファイルの一覧を本文から自動で作る
 importScripts("js/books.js");
+importScripts("js/phonics.js");
 const BOOK_FILES = [];
 BOOKS.forEach(book => {
   BOOK_FILES.push(`books/${book.id}/cover.svg`);
@@ -21,12 +22,16 @@ BOOKS.forEach(book => {
   });
 });
 
+// フォニックスの1音ずつの音声(音の表から自動で一覧を作る)
+const PHONICS_FILES = Object.keys(PHONEME_IPA).map(key => `phonics/${key}.m4a`);
+
 const FILES_TO_CACHE = [
   "./",
   "index.html",
   "css/style.css",
   "js/app.js",
   "js/books.js",
+  "js/phonics.js",
   "js/timings.js",
   "js/cards.js",
   "manifest.webmanifest",
@@ -38,6 +43,7 @@ const FILES_TO_CACHE = [
   "sfx/correct.m4a",
   "sfx/wrong.m4a",
   "sfx/coin.m4a",
+  ...PHONICS_FILES,
   ...BOOK_FILES
 ];
 

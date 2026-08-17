@@ -434,11 +434,149 @@ function practiceWord(word, span, wordIndex) {
   wordTimings = []; // 文のハイライトは動かさない
   wordSpans.forEach(s => s.classList.remove("active", "practice"));
   span.classList.add("practice");
-  audio.src = clipAudio(currentBook, currentPage, wordIndex);
-  playAudio();
   const clean = word.replace(/[^A-Za-z']/g, "");
   speakFeedback.textContent = `「${clean}」だけ れんしゅう! おなじように いって ろくおんしてみよう`;
+  // 辞書にある単語はフォニックスカードを開く(1もじずつ→つなげて、の順に鳴る)
+  if (openPhonics(word, wordIndex)) return;
+  audio.src = clipAudio(currentBook, currentPage, wordIndex);
+  playAudio();
 }
+
+// ══════════ フォニックスカード(1もじずつの発音と文字の強調) ══════════
+const phonicsOverlay = document.getElementById("phonics-overlay");
+const phonicsWordBox = document.getElementById("phonics-word");
+const phonicsIpaBox = document.getElementById("phonics-ipa");
+const btnPhonicsSound = document.getElementById("btn-phonics-sound");
+const btnPhonicsWord = document.getElementById("btn-phonics-word");
+const btnPhonicsClose = document.getElementById("btn-phonics-close");
+
+let phonicsChunks = [];   // 文字のまとまりごとの部品 { el, sounds }
+let phonicsWordClip = ""; // その単語まるごとのクリップ
+let phonicsSeq = 0;       // 再生のやり直し・中断を見分ける番号
+
+function phonemeAudio(key) { return `phonics/${key}.m4a`; }
+const soundList = s => (Array.isArray(s) ? s : [s]);
+const soundIpa = s => soundList(s).map(k => PHONEME_IPA[k]).join("");
+
+// フォニックスカードを開く(辞書にない単語なら false を返して今まで通りの再生)
+function openPhonics(word, wordIndex) {
+  const entry = PHONICS[wordKey(word)];
+  if (!entry) return false;
+  phonicsWordClip = clipAudio(currentBook, currentPage, wordIndex);
+  phonicsWordBox.innerHTML = "";
+  phonicsChunks = entry.map(([letters, sound]) => {
+    const el = document.createElement("button");
+    const vowel = sound && soundList(sound).some(k => VOWEL_SOUNDS.includes(k));
+    el.className = "ph-chunk" + (sound ? (vowel ? " vowel" : "") : " silent");
+    el.innerHTML = `<span class="ph-g">${letters}</span>` +
+      `<span class="ph-s">${sound ? soundIpa(sound) : "よまない"}</span>`;
+    const item = { el, sounds: sound ? soundList(sound) : null };
+    el.addEventListener("click", () => playPhonicsChunk(item));
+    phonicsWordBox.appendChild(el);
+    return item;
+  });
+  phonicsIpaBox.textContent = "/" + entry.map(([, s]) => (s ? soundIpa(s) : "")).join("") + "/";
+  phonicsOverlay.classList.remove("hidden");
+  playPhonicsSequence();
+  return true;
+}
+
+function closePhonics(silent) {
+  phonicsSeq++; // 再生中の流れを止める
+  if (phonicsOverlay.classList.contains("hidden")) return;
+  phonicsOverlay.classList.add("hidden");
+  if (!silent) {
+    audio.pause();
+    speakFeedback.textContent = "ろくおんして じぶんの こえと くらべてみよう!(たんごタップで もういちど)";
+  }
+}
+
+function highlightChunk(target) {
+  phonicsChunks.forEach(c => {
+    c.el.classList.toggle("now", c === target);
+    c.el.classList.remove("blend");
+  });
+}
+
+function blendHighlight(on) {
+  phonicsChunks.forEach(c => {
+    c.el.classList.remove("now");
+    c.el.classList.toggle("blend", on);
+  });
+}
+
+const phWait = ms => new Promise(resolve => setTimeout(resolve, ms));
+
+// 1ファイル再生して終わるまで待つ(中断されて止まったときも戻ってくる)
+function phPlay(src) {
+  return new Promise(resolve => {
+    const done = () => {
+      audio.removeEventListener("ended", done);
+      audio.removeEventListener("pause", done);
+      resolve();
+    };
+    audio.addEventListener("ended", done);
+    audio.addEventListener("pause", done);
+    audio.src = src;
+    applyPlaybackRate();
+    const p = audio.play();
+    if (p) p.catch(done);
+  });
+}
+
+// 1もじずつ(読んでいる文字を強調)→ さいごに つなげて単語まるごと
+async function playPhonicsSequence() {
+  const seq = ++phonicsSeq;
+  for (const item of phonicsChunks) {
+    if (seq !== phonicsSeq) return;
+    highlightChunk(item);
+    if (item.sounds) {
+      for (const key of item.sounds) {
+        if (seq !== phonicsSeq) return;
+        await phPlay(phonemeAudio(key));
+      }
+      await phWait(280);
+    } else {
+      await phWait(750); // よまない文字は音を出さずに見せるだけ
+    }
+  }
+  if (seq !== phonicsSeq) return;
+  highlightChunk(null);
+  await phWait(400);
+  if (seq !== phonicsSeq) return;
+  blendHighlight(true); // つなげて読むあいだは全体をほんのり光らせる
+  await phPlay(phonicsWordClip);
+  if (seq === phonicsSeq) blendHighlight(false);
+}
+
+// 文字を1つタップしたら、その音だけ鳴らす
+async function playPhonicsChunk(item) {
+  const seq = ++phonicsSeq;
+  highlightChunk(item);
+  if (item.sounds) {
+    for (const key of item.sounds) {
+      if (seq !== phonicsSeq) return;
+      await phPlay(phonemeAudio(key));
+    }
+  } else {
+    await phWait(600);
+  }
+  if (seq === phonicsSeq) highlightChunk(null);
+}
+
+async function playPhonicsWord() {
+  const seq = ++phonicsSeq;
+  blendHighlight(true);
+  await phPlay(phonicsWordClip);
+  if (seq === phonicsSeq) blendHighlight(false);
+}
+
+btnPhonicsSound.addEventListener("click", playPhonicsSequence);
+btnPhonicsWord.addEventListener("click", playPhonicsWord);
+btnPhonicsClose.addEventListener("click", () => closePhonics(false));
+phonicsOverlay.addEventListener("click", e => {
+  if (e.target === phonicsOverlay) closePhonics(false);
+});
 
 // 単語練習のあと、再生ボタンでページ全体の読み上げに戻す
 function restorePageAudio() {
@@ -496,6 +634,7 @@ function playAudio() {
 }
 
 function stopAudio() {
+  closePhonics(true); // フォニックスカードが開いていたら閉じて流れを止める
   audio.pause();
   audio.currentTime = 0;
   practicingWord = false;
