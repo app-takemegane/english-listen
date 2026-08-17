@@ -19,12 +19,15 @@ BOOKS.forEach(b => b.pages.forEach(p => p.text.split(" ").forEach(w => {
   if (!key) return;
   if (!map[key]) map[key] = w.replace(/[^A-Za-z\x27]/g, "");
 })));
-// 読み方を指定したい単語はここで上書きできる(例: map["a"] = "uh";)
-map["a"] = "A";  // 単語単体の標準的な読み(エイ)。速さも自然になり聞き取りやすい
+// 読み方の上書き:文の中での読み方に合わせたい単語をここで指定する
+map["a"] = "ah";  // 「A blue bird」の a は文中どおり「ア」と読ませる
 console.log(Object.entries(map).map(([k, v]) => k + "\t" + v).join("\n"));
 ' | while IFS=$'\t' read -r key spoken; do
   # 末尾にピリオドを付けると、語尾が自然な言い切りの発音になる
-  say -v "$VOICE" -r "$RATE" -o "$TMP/tmp.aiff" "$spoken."
+  # ごく短い単語は、聞き取りやすいよう少しゆっくり読ませる
+  rate="$RATE"
+  if [ "${#key}" -le 2 ]; then rate=115; fi
+  say -v "$VOICE" -r "$rate" -o "$TMP/tmp.aiff" "$spoken."
   afconvert -f m4af -d aac -b 64000 "$TMP/tmp.aiff" "words/$key.m4a"
   echo "created words/$key.m4a"
 done
