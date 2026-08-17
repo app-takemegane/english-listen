@@ -151,6 +151,38 @@ document.addEventListener("touchend", () => {
 let jaMode = false;
 try { jaMode = localStorage.getItem("ja-mode") === "on"; } catch (e) {}
 
+// ══════════ 再生の速さ(文と単語で別々に覚えておく) ══════════
+let pageRate = 1;
+let wordRate = 1;
+try {
+  pageRate = parseFloat(localStorage.getItem("speed-page")) || 1;
+  wordRate = parseFloat(localStorage.getItem("speed-word")) || 1;
+} catch (e) {}
+
+// 速さを変えても声の高さが変わらないようにする
+audio.preservesPitch = true;
+if ("webkitPreservesPitch" in audio) audio.webkitPreservesPitch = true;
+
+function applyPlaybackRate() {
+  audio.playbackRate = practicingWord ? wordRate : pageRate;
+}
+
+function setupSpeedButtons(containerId, storageKey, getRate, setRate) {
+  const box = document.getElementById(containerId);
+  const buttons = box.querySelectorAll("button");
+  buttons.forEach(btn => {
+    btn.classList.toggle("on", parseFloat(btn.dataset.rate) === getRate());
+    btn.addEventListener("click", () => {
+      setRate(parseFloat(btn.dataset.rate));
+      try { localStorage.setItem(storageKey, btn.dataset.rate); } catch (e) {}
+      buttons.forEach(b => b.classList.toggle("on", b === btn));
+      applyPlaybackRate(); // 再生中でもすぐ反映
+    });
+  });
+}
+setupSpeedButtons("page-speed", "speed-page", () => pageRate, r => { pageRate = r; });
+setupSpeedButtons("word-speed", "speed-word", () => wordRate, r => { wordRate = r; });
+
 // ══════════ 画面の切り替え ══════════
 function showView(name) {
   Object.keys(views).forEach(key => views[key].classList.toggle("hidden", key !== name));
@@ -448,6 +480,7 @@ function seekToWord(i) {
 }
 
 function playAudio() {
+  applyPlaybackRate();
   const p = audio.play();
   if (p) p.catch(() => {}); // 読み込み前のタップは無視
 }
