@@ -38,7 +38,7 @@ SYNTH_IPA = {
 TEXT_SYNTH = {
     # 破裂する音(g・k が不自然と確認された仲間)
     "p": ("puh.", "0.42"),
-    "b": ("buh.", "0.42"),
+    "b": ("bud.", "0.42", "cut"),  # 「buh」は誤読された。本物の単語 bud の末尾 d を切り落として /bʌ/ を得る
     "t": ("tuh.", "0.42"),
     "d": ("duh.", "0.42"),
     "ch": ("chuh.", "0.42"),
@@ -111,12 +111,14 @@ for key, ipa in SYNTH_IPA.items():
     if os.path.exists(caf):
         os.remove(caf)
     if key in TEXT_SYNTH:
-        text, rate = TEXT_SYNTH[key]
+        text, rate = TEXT_SYNTH[key][0], TEXT_SYNTH[key][1]
+        cut_final = len(TEXT_SYNTH[key]) > 2 and TEXT_SYNTH[key][2] == "cut"
         subprocess.run(["swift", "scripts/speak_with_timings.swift", text,
                         caf, os.path.join(tmpdir, "p.json"), rate],
                        check=True, capture_output=True)
-        ipa = f"「{text}」"
+        ipa = f"「{text}」" + ("(末尾の子音を切除)" if cut_final else "")
     else:
+        cut_final = False
         subprocess.run(["swift", "scripts/speak_ipa.swift", "x", ipa, caf, RATE],
                        check=True, capture_output=True)
     subprocess.run(["afconvert", "-f", "WAVE", "-d", "LEI16", caf, wav],
@@ -125,6 +127,27 @@ for key, ipa in SYNTH_IPA.items():
         sr = w.getframerate()
         raw = w.readframes(w.getnframes())
     samples = list(struct.unpack(f"<{len(raw)//2}h", raw))
+
+    # 末尾の子音の切除:破裂音の前の「一瞬の無音」を探し、そこから後ろを捨てる
+    if cut_final:
+        win = int(0.005 * sr)  # 5ms きざみで音量を見る
+        peak = max(1, max(abs(s) for s in samples))
+        quiet = [max(abs(s) for s in samples[i:i + win]) < peak * 0.05
+                 for i in range(0, len(samples) - win, win)]
+        cut_at = None
+        run_start = None
+        for i, q in enumerate(quiet):
+            if q and run_start is None:
+                run_start = i
+            elif not q:
+                # 20ms以上の無音のあとに再び音がある=破裂の前の間。そこで切る
+                if run_start is not None and i - run_start >= 4 and run_start > len(quiet) * 0.3:
+                    cut_at = run_start * win
+                run_start = None
+        if cut_at:
+            samples = samples[:cut_at]
+        else:
+            print(f"注意: {key} は切除位置が見つからなかった(そのまま使う)")
 
     # 前後の無音を切りつめる(余白 PAD 秒だけ残す)
     peak = max(1, max(abs(s) for s in samples))
