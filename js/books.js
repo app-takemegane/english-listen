@@ -117,3 +117,10 @@ function coverImage(book) {
 function quizAudio(book, quizIndex) {
   return `books/${book.id}/quiz/q${quizIndex + 1}.m4a`;
 }
+// 単語 → 音声ファイル名のルール(「Sun!」→ words/sun.m4a のように記号を除いて小文字化)
+function wordKey(word) {
+  return word.toLowerCase().replace(/[^a-z]/g, "");
+}
+function wordAudio(word) {
+  return `words/${wordKey(word)}.m4a`;
+}

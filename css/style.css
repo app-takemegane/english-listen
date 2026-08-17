@@ -364,6 +364,13 @@ html, body {
   color: #b3541e;
 }
 
+.word.practice {
+  background: #ffe3bd;
+  color: #b3541e;
+  outline: 2px dashed #f7941d;
+  outline-offset: 1px;
+}
+
 /* ══════════ はなすモード ══════════ */
 .speak-bar {
   background: #fff8ea;

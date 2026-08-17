@@ -105,6 +105,7 @@ let currentBook = null;
 let currentPage = 0;
 let autoMode = true; // 自動でページをめくる(よみきかせモード)
 let speakMode = false; // はなすモード(録音して聞き比べ)
+let practicingWord = false; // 1単語だけの練習中か
 let wordSpans = [];
 let wordTimings = []; // 各単語の開始時刻(秒)。音声の長さから推定する
 const audio = new Audio(); // iPhoneでも連続再生できるよう、1つを使い回す
@@ -295,7 +296,10 @@ function showPage(index) {
     const span = document.createElement("span");
     span.className = "word";
     span.textContent = word;
-    span.addEventListener("click", () => seekToWord(i));
+    // よみきかせ中はその単語から聞き直し、はなすモードは1単語だけの練習
+    span.addEventListener("click", () => {
+      if (speakMode) practiceWord(word, span); else seekToWord(i);
+    });
     pageText.appendChild(span);
     pageText.appendChild(document.createTextNode(" "));
     wordSpans.push(span);
@@ -385,8 +389,33 @@ views.reader.addEventListener("touchend", e => {
 }, { passive: true });
 
 // ══════════ 音声の再生と単語ハイライト ══════════
+// ══════════ 1単語ずつの発音練習(はなすモードで単語をタップ) ══════════
+function practiceWord(word, span) {
+  if (!wordKey(word)) return;
+  practicingWord = true;
+  wordTimings = []; // 文のハイライトは動かさない
+  wordSpans.forEach(s => s.classList.remove("active", "practice"));
+  span.classList.add("practice");
+  audio.src = wordAudio(word);
+  playAudio();
+  const clean = word.replace(/[^A-Za-z']/g, "");
+  speakFeedback.textContent = `「${clean}」だけ れんしゅう! おなじように いって ろくおんしてみよう`;
+}
+
+// 単語練習のあと、再生ボタンでページ全体の読み上げに戻す
+function restorePageAudio() {
+  if (!practicingWord) return;
+  practicingWord = false;
+  wordSpans.forEach(s => s.classList.remove("practice"));
+  if (currentBook) {
+    audio.src = pageAudio(currentBook, currentPage);
+    audio.load();
+    wordTimings = [];
+  }
+}
+
 function computeWordTimings() {
-  if (!currentBook) return;
+  if (!currentBook || practicingWord) return;
   // 音声全体の長さを、単語の文字数の割合で配分して、各単語の開始時刻を推定する
   const words = wordSpans.map(s => s.textContent);
   const weights = words.map(w => w.replace(/[^A-Za-z]/g, "").length + 1.5);
@@ -426,7 +455,8 @@ function playAudio() {
 function stopAudio() {
   audio.pause();
   audio.currentTime = 0;
-  wordSpans.forEach(s => s.classList.remove("active"));
+  practicingWord = false;
+  wordSpans.forEach(s => s.classList.remove("active", "practice"));
   setPlayIcon(false);
 }
 
@@ -436,10 +466,12 @@ function setPlayIcon(playing) {
 }
 
 btnPlay.addEventListener("click", () => {
+  restorePageAudio();
   if (audio.paused) playAudio(); else audio.pause();
 });
 
 btnReplay.addEventListener("click", () => {
+  restorePageAudio();
   audio.currentTime = 0;
   playAudio();
 });
@@ -457,6 +489,10 @@ audio.addEventListener("ended", () => {
   if (!currentBook) return; // クイズの問題読み上げのときは何もしない
   wordSpans.forEach(s => s.classList.remove("active"));
   setPlayIcon(false);
+  if (practicingWord) {
+    speakFeedback.textContent = "ろくおんして じぶんの こえと くらべてみよう!(もういちど タップで きける)";
+    return;
+  }
   if (speakMode) return; // はなすモードは自動でめくらない
   if (autoMode && !views.reader.classList.contains("hidden")) setTimeout(goNext, 900);
 });
@@ -487,7 +523,7 @@ function speakResetForPage() {
   btnPlayMine.disabled = !has;
   speakFeedback.textContent = has
     ? "もういちど いっても、つぎの ページに いっても いいよ!"
-    : "おてほんを きいて、まねして いってみよう!";
+    : "おてほんを きいて まねしてみよう! たんごを タップすると 1たんごずつ れんしゅうできるよ";
 }
 
 function releaseMic() {

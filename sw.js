@@ -1,7 +1,19 @@
 // サービスワーカー:アプリ全体を端末に保存し、オフラインでも動くようにする
 // ファイルを追加・変更したら VERSION の数字を上げること(古い保存分が入れ替わる)
-const VERSION = "v11";
+const VERSION = "v12";
 const CACHE_NAME = `eigo-ehon-${VERSION}`;
+
+// 絵本データを読み込み、単語練習の音声一覧を絵本の本文から自動で作る
+importScripts("js/books.js");
+const WORD_FILES = [];
+const seenWords = new Set();
+BOOKS.forEach(b => b.pages.forEach(p => p.text.split(" ").forEach(w => {
+  const key = wordKey(w);
+  if (key && !seenWords.has(key)) {
+    seenWords.add(key);
+    WORD_FILES.push(`words/${key}.m4a`);
+  }
+})));
 
 const BOOK_FILES = [];
 ["sun", "cat", "colors", "park"].forEach(id => {
@@ -31,6 +43,7 @@ const FILES_TO_CACHE = [
   "sfx/correct.m4a",
   "sfx/wrong.m4a",
   "sfx/coin.m4a",
+  ...WORD_FILES,
   ...BOOK_FILES
 ];
 
