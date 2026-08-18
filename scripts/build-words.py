@@ -67,6 +67,7 @@ SPECIAL_TEXT = {
 # blue は「Blue.」単独だと「ブリュ」に崩れると実機確認(速さを変えても直らない単語固有の癖)
 EXTRACT_TEXT = {
     "blue": "It is blue.",
+    "starts": "It starts.",  # 「Starts.」単独だと語尾の ts が「トス」に崩れる(ユーザー報告)
 }
 
 # ── 絵本の全単語と、フォニックス辞書(音節の数の点検に使う)を読み込む ──
