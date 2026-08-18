@@ -57,6 +57,13 @@ SPECIAL_TEXT = {
     "wheee": "Wheee!",  # かけ声なので勢いを残す
 }
 
+# 1語だけの合成だと発音が崩れる単語は、文の終わりに置いた文を合成して切り出す
+# (文末の単語は下がる調子の完全な発音=単独読みとほぼ同じ。切り出す位置は実測時刻を使う)
+# blue は「Blue.」単独だと「ブリュ」に崩れると実機確認(速さを変えても直らない単語固有の癖)
+EXTRACT_TEXT = {
+    "blue": "It is blue.",
+}
+
 # ── 絵本の全単語と、フォニックス辞書(音節の数の点検に使う)を読み込む ──
 data = json.loads(subprocess.run(
     ["node", "-e",
@@ -83,6 +90,15 @@ if missing:
 if extra:
     print(f"注意: 絵本にない単語が発音表に残っている: {', '.join(extra)}")
 
+# 引数に単語を並べると、その単語だけ作り直せる(例: python3 scripts/build-words.py blue)
+only = set(sys.argv[1:])
+if only:
+    unknown = sorted(only - words)
+    if unknown:
+        print(f"絵本にない単語: {', '.join(unknown)}")
+        sys.exit(1)
+    words = only
+
 # フォニックス辞書から音節の数(母音のまとまりの数)を数える
 vowels = set(data["vowels"])
 def syllables(key):
@@ -102,13 +118,17 @@ tmpdir = tempfile.mkdtemp()
 results = []
 
 for key in sorted(words):
-    text = SPECIAL_TEXT.get(key, key.capitalize() + ".")
+    if key in EXTRACT_TEXT:
+        text = EXTRACT_TEXT[key]
+    else:
+        text = SPECIAL_TEXT.get(key, key.capitalize() + ".")
     caf = os.path.join(tmpdir, "w.caf")
     wav = os.path.join(tmpdir, "w.wav")
+    tim = os.path.join(tmpdir, "w.json")
     if os.path.exists(caf):
         os.remove(caf)
     subprocess.run(["swift", "scripts/speak_with_timings.swift", text,
-                    caf, os.path.join(tmpdir, "w.json"), RATE],
+                    caf, tim, RATE],
                    check=True, capture_output=True)
     subprocess.run(["afconvert", "-f", "WAVE", "-d", "LEI16", caf, wav],
                    check=True, capture_output=True)
@@ -116,6 +136,12 @@ for key in sorted(words):
         sr = w.getframerate()
         raw = w.readframes(w.getnframes())
     samples = list(struct.unpack(f"<{len(raw)//2}h", raw))
+
+    # 文から切り出す単語:最後の単語の開始時刻から後ろだけを使う
+    if key in EXTRACT_TEXT:
+        info = json.load(open(tim))
+        start = info["words"][-1]["start"]
+        samples = samples[max(0, int((start - 0.02) * sr)):]
 
     # 前後の無音を切りつめる(余白 PAD 秒だけ残す)
     peak = max(1, max(abs(s) for s in samples))
