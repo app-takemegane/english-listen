@@ -11,7 +11,7 @@
  4. 機械点検:音節の数(フォニックス辞書の母音の数)に対して長さが極端な単語を警告する
 使い方: python3 scripts/build-words.py
 """
-import json, os, struct, subprocess, sys, tempfile, wave
+import json, os, shutil, struct, subprocess, sys, tempfile, wave
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 os.chdir(ROOT)
@@ -22,7 +22,7 @@ FADE = 0.015   # プチッという音を防ぐフェード(秒)
 # 各単語の辞書の発音(アメリカ英語・単独読み)。音声づくりの仕様として書いておく。
 # 文中の弱い読みと違う単語に注意: a(エイ)、the(ザ)、to(トゥー)、was(ワズ)など
 WORD_IPA = {
-    "a": "eɪ", "and": "ænd", "apple": "ˈæpəl", "away": "əˈweɪ",
+    "a": "ə", "and": "ænd", "apple": "ˈæpəl", "away": "əˈweɪ",
     "banana": "bəˈnænə", "bird": "bɝd", "blue": "bluː", "cat": "kæt",
     "colors": "ˈkʌlɚz", "comes": "kʌmz", "day": "deɪ", "down": "daʊn",
     "everyone": "ˈɛvriwʌn", "fast": "fæst", "fish": "fɪʃ",
@@ -48,11 +48,16 @@ WORD_IPA = {
     "with": "wɪθ", "yellow": "ˈjɛloʊ", "yum": "jʌm",
 }
 
+# フォニックスの1音の音声をそのまま使う単語(合成しない)
+# a は辞書の単独読み「エイ」で作っていたが、子どもには文中の「ア」で教える方針に変更(ユーザー要望)。
+# 文字タップで鳴る phonics/uh.m4a(ə、実機確認済み)を流用し、文字と単語の音を完全に一致させる
+COPY_SOUND = {
+    "a": "uh",
+}
+
 # 読ませる英語の特別指定(ふつうは「先頭を大文字+ピリオド」で読ませる)
-# a と i は1文字のままだと読みが揺れるため、大文字の単独読みを明示する
 SPECIAL_TEXT = {
-    "a": "A.",       # 単独読みは「エイ」(文中の「ア」ではない)
-    "i": "I.",       # 単独読みは「アイ」
+    "i": "I.",       # 1文字のままだと読みが揺れるため、大文字の単独読み「アイ」を明示する
     "lets": "Let's.",  # 本文の表記どおりアポストロフィを付けて読ませる
     "wheee": "Wheee!",  # かけ声なので勢いを残す
 }
@@ -118,6 +123,16 @@ tmpdir = tempfile.mkdtemp()
 results = []
 
 for key in sorted(words):
+    # フォニックスの音をそのまま使う単語:コピーするだけ(長さの点検には参加させる)
+    if key in COPY_SOUND:
+        src = f"phonics/{COPY_SOUND[key]}.m4a"
+        out = f"words/{key}.m4a"
+        shutil.copyfile(src, out)
+        info = subprocess.run(["afinfo", src], check=True, capture_output=True, text=True).stdout
+        dur = next(float(line.split(":")[1].split()[0])
+                   for line in info.splitlines() if "estimated duration" in line)
+        results.append((key, f"{src} を流用", dur))
+        continue
     if key in EXTRACT_TEXT:
         text = EXTRACT_TEXT[key]
     else:
