@@ -24,7 +24,7 @@ SYNTH_IPA = {
     "f": "f", "v": "v", "th": "θ", "dh": "ð", "s": "s", "z": "z",
     "sh": "ʃ", "h": "hə",
     "m": "m", "n": "n", "ng": "ŋ", "l": "l", "r": "rə",  # ɹ 単独は鳴らない
-    "w": "wə", "y": "jə",
+    "w": "wə", "y": "jə", "ks": "ks", "ts": "ts",
     "ae": "æ", "eh": "ɛ", "ih": "ɪ", "iy": "i", "aa": "ɑ", "ah": "ʌ",
     "uh": "ə", "uu": "ʊ", "uw": "u", "er": "ɜɹ", "el": "əl",  # ɚ 単独は鳴らない
     "ar": "ɑɹ", "or": "ɔɹ",
@@ -34,8 +34,11 @@ SYNTH_IPA = {
 # 発音記号だと不自然になる音は、ふつうの英語をそのまま読ませて作る(こちらが優先)
 # 発音記号の単独読みは「破裂する音」「すべる音」「形が変わる母音」「r系」で崩れやすい
 # と実機確認で判明したため、その仲間は最初からこちらで作る。
-# 形式: 音の名前: (読ませる英語, 速さ)
+# 形式: 音の名前: (読ませる英語, 速さ[, "cut"=末尾の子音を切除 / "tail"=先頭側を捨てて後ろだけ使う])
 TEXT_SYNTH = {
+    # 一息で読む子音のかたまり(2ファイル連結だと「ク…ス」のように間延びするため、1つの音として作る)
+    "ks": ("box.", "0.42", "tail"),   # x の音。本物の単語 box の「k の破裂の前の無音」から後ろ= /ks/ を切り出す
+    "ts": ("cats.", "0.42", "tail"),  # starts・let's の ts の音(つ)。cats の末尾から /ts/ を切り出す
     # 破裂する音(g・k が不自然と確認された仲間)
     "p": ("puh.", "0.42"),
     "b": ("bud.", "0.42", "cut"),  # 「buh」は誤読された。本物の単語 bud の末尾 d を切り落として /bʌ/ を得る
@@ -105,20 +108,33 @@ print(f"辞書OK: 単語 {len(data['phonics'])}件 / 使っている音 {len(use
 os.makedirs("phonics", exist_ok=True)
 tmpdir = tempfile.mkdtemp()
 
+# 引数に音の名前を並べると、その音だけ作り直せる(例: python3 scripts/build-phonics.py ks)
+only = set(sys.argv[1:])
+unknown = sorted(only - set(SYNTH_IPA))
+if unknown:
+    print(f"音の表にない: {', '.join(unknown)}")
+    sys.exit(1)
+
+made = 0
 for key, ipa in SYNTH_IPA.items():
+    if only and key not in only:
+        continue
+    made += 1
     caf = os.path.join(tmpdir, "p.caf")
     wav = os.path.join(tmpdir, "p.wav")
     if os.path.exists(caf):
         os.remove(caf)
     if key in TEXT_SYNTH:
         text, rate = TEXT_SYNTH[key][0], TEXT_SYNTH[key][1]
-        cut_final = len(TEXT_SYNTH[key]) > 2 and TEXT_SYNTH[key][2] == "cut"
+        mode = TEXT_SYNTH[key][2] if len(TEXT_SYNTH[key]) > 2 else None
+        cut_final = mode == "cut"
+        keep_tail = mode == "tail"
         subprocess.run(["swift", "scripts/speak_with_timings.swift", text,
                         caf, os.path.join(tmpdir, "p.json"), rate],
                        check=True, capture_output=True)
-        ipa = f"「{text}」" + ("(末尾の子音を切除)" if cut_final else "")
+        ipa = f"「{text}」" + ("(末尾の子音を切除)" if cut_final else "(後ろだけ使う)" if keep_tail else "")
     else:
-        cut_final = False
+        cut_final = keep_tail = False
         subprocess.run(["swift", "scripts/speak_ipa.swift", "x", ipa, caf, RATE],
                        check=True, capture_output=True)
     subprocess.run(["afconvert", "-f", "WAVE", "-d", "LEI16", caf, wav],
@@ -128,8 +144,10 @@ for key, ipa in SYNTH_IPA.items():
         raw = w.readframes(w.getnframes())
     samples = list(struct.unpack(f"<{len(raw)//2}h", raw))
 
-    # 末尾の子音の切除:破裂音の前の「一瞬の無音」を探し、そこから後ろを捨てる
-    if cut_final:
+    # 破裂音の前の「一瞬の無音」を探して切る:
+    #   cut  = そこから後ろを捨てる(bud → /bʌ/)
+    #   tail = そこから前を捨てて後ろだけ使う(box → /ks/)
+    if cut_final or keep_tail:
         win = int(0.005 * sr)  # 5ms きざみで音量を見る
         peak = max(1, max(abs(s) for s in samples))
         quiet = [max(abs(s) for s in samples[i:i + win]) < peak * 0.05
@@ -145,7 +163,7 @@ for key, ipa in SYNTH_IPA.items():
                     cut_at = run_start * win
                 run_start = None
         if cut_at:
-            samples = samples[:cut_at]
+            samples = samples[:cut_at] if cut_final else samples[cut_at:]
         else:
             print(f"注意: {key} は切除位置が見つからなかった(そのまま使う)")
 
@@ -175,4 +193,4 @@ for key, ipa in SYNTH_IPA.items():
                    check=True, capture_output=True)
     print(f"{key}: {ipa} ({len(samples)/sr:.2f}s)")
 
-print(f"完了: phonics/ に {len(SYNTH_IPA)}音")
+print(f"完了: phonics/ に {made}音" + (f"(指定分のみ。全 {len(SYNTH_IPA)}音)" if only else ""))
