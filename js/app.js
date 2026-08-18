@@ -449,6 +449,7 @@ const phonicsOverlay = document.getElementById("phonics-overlay");
 const phonicsWordBox = document.getElementById("phonics-word");
 const phonicsIpaBox = document.getElementById("phonics-ipa");
 const btnPhonicsWord = document.getElementById("btn-phonics-word");
+const btnPhonicsSlow = document.getElementById("btn-phonics-slow");
 const btnPhonicsClose = document.getElementById("btn-phonics-close");
 
 let phonicsChunks = [];   // 文字のまとまりごとの部品 { el, sounds }
@@ -508,7 +509,8 @@ function blendHighlight(on) {
 const phWait = ms => new Promise(resolve => setTimeout(resolve, ms));
 
 // 1ファイル再生して終わるまで待つ(中断されて止まったときも戻ってくる)
-function phPlay(src) {
+// maxRate を渡すと、その速さより速くならない(ゆっくり読み用)
+function phPlay(src, maxRate) {
   return new Promise(resolve => {
     const done = () => {
       audio.removeEventListener("ended", done);
@@ -519,6 +521,7 @@ function phPlay(src) {
     audio.addEventListener("pause", done);
     audio.src = src;
     applyPlaybackRate();
+    if (maxRate) audio.playbackRate = Math.min(audio.playbackRate, maxRate);
     const p = audio.play();
     if (p) p.catch(done);
   });
@@ -546,7 +549,35 @@ async function playPhonicsWord() {
   if (seq === phonicsSeq) blendHighlight(false);
 }
 
+// ══════════ 1おとずつ → つなげて(ゆっくり読み) ══════════
+const SOUNDOUT_RATE = 0.8;      // 1音ずつのときはこの速さより速くしない(強調のため少しゆっくり)
+const SOUNDOUT_GAP = 250;       // 音と音のあいだの間(ミリ秒)
+const SOUNDOUT_WORD_PAUSE = 500; // 最後に単語まるごとを鳴らす前の間(ミリ秒)
+
+// 音を順番に少しゆっくり鳴らし(鳴っている文字を強調)、最後に単語まるごとを鳴らす
+async function playPhonicsSlow() {
+  const seq = ++phonicsSeq;
+  for (const item of phonicsChunks) {
+    if (!item.sounds) continue; // 「よまない」文字は飛ばす
+    highlightChunk(item);
+    for (const key of item.sounds) {
+      if (seq !== phonicsSeq) return;
+      await phPlay(phonemeAudio(key), SOUNDOUT_RATE);
+    }
+    if (seq !== phonicsSeq) return;
+    await phWait(SOUNDOUT_GAP);
+  }
+  if (seq !== phonicsSeq) return;
+  highlightChunk(null);
+  await phWait(SOUNDOUT_WORD_PAUSE);
+  if (seq !== phonicsSeq) return;
+  blendHighlight(true);
+  await phPlay(phonicsWordClip);
+  if (seq === phonicsSeq) blendHighlight(false);
+}
+
 btnPhonicsWord.addEventListener("click", playPhonicsWord);
+btnPhonicsSlow.addEventListener("click", playPhonicsSlow);
 btnPhonicsClose.addEventListener("click", () => closePhonics(false));
 phonicsOverlay.addEventListener("click", e => {
   if (e.target === phonicsOverlay) closePhonics(false);
