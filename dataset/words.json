@@ -1,0 +1,299 @@
+[
+  {
+    "spelling": "the",
+    "rank": 1,
+    "ipa": "ðə",
+    "ipa_variants": [
+      "ðə",
+      "ˈðʌ",
+      "ði"
+    ],
+    "phonemes": [
+      {
+        "text": "ð",
+        "ipa": "ð",
+        "arpabet": "DH",
+        "stress": null,
+        "long": false,
+        "audio": "audio/phonemes/dh.mp3"
+      },
+      {
+        "text": "ə",
+        "ipa": "ə",
+        "arpabet": "AH",
+        "stress": null,
+        "long": false,
+        "audio": "audio/phonemes/ah.mp3"
+      }
+    ],
+    "audio": "audio/words/the.mp3"
+  },
+  {
+    "spelling": "of",
+    "rank": 2,
+    "ipa": "ˈʌv",
+    "ipa_variants": [
+      "ˈʌv",
+      "əv"
+    ],
+    "phonemes": [
+      {
+        "text": "ˈʌ",
+        "ipa": "ʌ",
+        "arpabet": "AH",
+        "stress": "primary",
+        "long": false,
+        "audio": "audio/phonemes/ah.mp3"
+      },
+      {
+        "text": "v",
+        "ipa": "v",
+        "arpabet": "V",
+        "stress": null,
+        "long": false,
+        "audio": "audio/phonemes/v.mp3"
+      }
+    ],
+    "audio": "audio/words/of.mp3"
+  },
+  {
+    "spelling": "and",
+    "rank": 3,
+    "ipa": "ənd",
+    "ipa_variants": [
+      "ənd",
+      "ˈænd"
+    ],
+    "phonemes": [
+      {
+        "text": "ə",
+        "ipa": "ə",
+        "arpabet": "AH",
+        "stress": null,
+        "long": false,
+        "audio": "audio/phonemes/ah.mp3"
+      },
+      {
+        "text": "n",
+        "ipa": "n",
+        "arpabet": "N",
+        "stress": null,
+        "long": false,
+        "audio": "audio/phonemes/n.mp3"
+      },
+      {
+        "text": "d",
+        "ipa": "d",
+        "arpabet": "D",
+        "stress": null,
+        "long": false,
+        "audio": "audio/phonemes/d.mp3"
+      }
+    ],
+    "audio": "audio/words/and.mp3"
+  },
+  {
+    "spelling": "to",
+    "rank": 4,
+    "ipa": "ˈtuː",
+    "ipa_variants": [
+      "ˈtuː",
+      "tɪ",
+      "tə"
+    ],
+    "phonemes": [
+      {
+        "text": "ˈt",
+        "ipa": "t",
+        "arpabet": "T",
+        "stress": "primary",
+        "long": false,
+        "audio": "audio/phonemes/t.mp3"
+      },
+      {
+        "text": "uː",
+        "ipa": "uː",
+        "arpabet": "UW",
+        "stress": null,
+        "long": true,
+        "audio": "audio/phonemes/uw.mp3"
+      }
+    ],
+    "audio": "audio/words/to.mp3"
+  },
+  {
+    "spelling": "a",
+    "rank": 5,
+    "ipa": "ə",
+    "ipa_variants": [
+      "ə",
+      "ˈeɪ"
+    ],
+    "phonemes": [
+      {
+        "text": "ə",
+        "ipa": "ə",
+        "arpabet": "AH",
+        "stress": null,
+        "long": false,
+        "audio": "audio/phonemes/ah.mp3"
+      }
+    ],
+    "audio": "audio/words/a.mp3"
+  },
+  {
+    "spelling": "in",
+    "rank": 6,
+    "ipa": "ɪn",
+    "ipa_variants": [
+      "ɪn",
+      "ˈɪn"
+    ],
+    "phonemes": [
+      {
+        "text": "ɪ",
+        "ipa": "ɪ",
+        "arpabet": "IH",
+        "stress": null,
+        "long": false,
+        "audio": "audio/phonemes/ih.mp3"
+      },
+      {
+        "text": "n",
+        "ipa": "n",
+        "arpabet": "N",
+        "stress": null,
+        "long": false,
+        "audio": "audio/phonemes/n.mp3"
+      }
+    ],
+    "audio": "audio/words/in.mp3"
+  },
+  {
+    "spelling": "that",
+    "rank": 7,
+    "ipa": "ˈðæt",
+    "ipa_variants": [
+      "ˈðæt",
+      "ðət"
+    ],
+    "phonemes": [
+      {
+        "text": "ˈð",
+        "ipa": "ð",
+        "arpabet": "DH",
+        "stress": "primary",
+        "long": false,
+        "audio": "audio/phonemes/dh.mp3"
+      },
+      {
+        "text": "æ",
+        "ipa": "æ",
+        "arpabet": "AE",
+        "stress": null,
+        "long": false,
+        "audio": "audio/phonemes/ae.mp3"
+      },
+      {
+        "text": "t",
+        "ipa": "t",
+        "arpabet": "T",
+        "stress": null,
+        "long": false,
+        "audio": "audio/phonemes/t.mp3"
+      }
+    ],
+    "audio": "audio/words/that.mp3"
+  },
+  {
+    "spelling": "is",
+    "rank": 8,
+    "ipa": "ˈɪz",
+    "ipa_variants": [
+      "ˈɪz",
+      "ɪz"
+    ],
+    "phonemes": [
+      {
+        "text": "ˈɪ",
+        "ipa": "ɪ",
+        "arpabet": "IH",
+        "stress": "primary",
+        "long": false,
+        "audio": "audio/phonemes/ih.mp3"
+      },
+      {
+        "text": "z",
+        "ipa": "z",
+        "arpabet": "Z",
+        "stress": null,
+        "long": false,
+        "audio": "audio/phonemes/z.mp3"
+      }
+    ],
+    "audio": "audio/words/is.mp3"
+  },
+  {
+    "spelling": "was",
+    "rank": 9,
+    "ipa": "ˈwɑːz",
+    "ipa_variants": [
+      "ˈwɑːz",
+      "wɑːz"
+    ],
+    "phonemes": [
+      {
+        "text": "ˈw",
+        "ipa": "w",
+        "arpabet": "W",
+        "stress": "primary",
+        "long": false,
+        "audio": "audio/phonemes/w.mp3"
+      },
+      {
+        "text": "ɑː",
+        "ipa": "ɑː",
+        "arpabet": "AA",
+        "stress": null,
+        "long": true,
+        "audio": "audio/phonemes/aa.mp3"
+      },
+      {
+        "text": "z",
+        "ipa": "z",
+        "arpabet": "Z",
+        "stress": null,
+        "long": false,
+        "audio": "audio/phonemes/z.mp3"
+      }
+    ],
+    "audio": "audio/words/was.mp3"
+  },
+  {
+    "spelling": "he",
+    "rank": 10,
+    "ipa": "ˈhiː",
+    "ipa_variants": [
+      "ˈhiː"
+    ],
+    "phonemes": [
+      {
+        "text": "ˈh",
+        "ipa": "h",
+        "arpabet": "HH",
+        "stress": "primary",
+        "long": false,
+        "audio": "audio/phonemes/hh.mp3"
+      },
+      {
+        "text": "iː",
+        "ipa": "iː",
+        "arpabet": "IY",
+        "stress": null,
+        "long": true,
+        "audio": "audio/phonemes/iy.mp3"
+      }
+    ],
+    "audio": "audio/words/he.mp3"
+  }
+]

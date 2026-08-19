@@ -1,0 +1,365 @@
+[
+  {
+    "ipa": "ɑː",
+    "arpabet": "AA",
+    "example": "father",
+    "audio": "audio/phonemes/aa.mp3",
+    "aliases": [
+      "ɑː",
+      "ɑ"
+    ]
+  },
+  {
+    "ipa": "æ",
+    "arpabet": "AE",
+    "example": "cat",
+    "audio": "audio/phonemes/ae.mp3",
+    "aliases": [
+      "æ"
+    ]
+  },
+  {
+    "ipa": "ʌ",
+    "arpabet": "AH",
+    "example": "cup",
+    "audio": "audio/phonemes/ah.mp3",
+    "aliases": [
+      "ʌ",
+      "ə"
+    ]
+  },
+  {
+    "ipa": "ɔː",
+    "arpabet": "AO",
+    "example": "dog",
+    "audio": "audio/phonemes/ao.mp3",
+    "aliases": [
+      "ɔː",
+      "ɔ"
+    ]
+  },
+  {
+    "ipa": "aʊ",
+    "arpabet": "AW",
+    "example": "cow",
+    "audio": "audio/phonemes/aw.mp3",
+    "aliases": [
+      "aʊ"
+    ]
+  },
+  {
+    "ipa": "aɪ",
+    "arpabet": "AY",
+    "example": "eye",
+    "audio": "audio/phonemes/ay.mp3",
+    "aliases": [
+      "aɪ"
+    ]
+  },
+  {
+    "ipa": "b",
+    "arpabet": "B",
+    "example": "bat",
+    "audio": "audio/phonemes/b.mp3",
+    "aliases": [
+      "b"
+    ]
+  },
+  {
+    "ipa": "tʃ",
+    "arpabet": "CH",
+    "example": "chair",
+    "audio": "audio/phonemes/ch.mp3",
+    "aliases": [
+      "tʃ"
+    ]
+  },
+  {
+    "ipa": "d",
+    "arpabet": "D",
+    "example": "dog",
+    "audio": "audio/phonemes/d.mp3",
+    "aliases": [
+      "d"
+    ]
+  },
+  {
+    "ipa": "ð",
+    "arpabet": "DH",
+    "example": "this",
+    "audio": "audio/phonemes/dh.mp3",
+    "aliases": [
+      "ð"
+    ]
+  },
+  {
+    "ipa": "ɛ",
+    "arpabet": "EH",
+    "example": "bed",
+    "audio": "audio/phonemes/eh.mp3",
+    "aliases": [
+      "ɛ",
+      "e"
+    ]
+  },
+  {
+    "ipa": "ɝ",
+    "arpabet": "ER",
+    "example": "bird",
+    "audio": "audio/phonemes/er.mp3",
+    "aliases": [
+      "ɝ",
+      "ɚ",
+      "ɜː",
+      "ɜ"
+    ]
+  },
+  {
+    "ipa": "eɪ",
+    "arpabet": "EY",
+    "example": "day",
+    "audio": "audio/phonemes/ey.mp3",
+    "aliases": [
+      "eɪ"
+    ]
+  },
+  {
+    "ipa": "f",
+    "arpabet": "F",
+    "example": "fish",
+    "audio": "audio/phonemes/f.mp3",
+    "aliases": [
+      "f"
+    ]
+  },
+  {
+    "ipa": "g",
+    "arpabet": "G",
+    "example": "goat",
+    "audio": "audio/phonemes/g.mp3",
+    "aliases": [
+      "g",
+      "ɡ"
+    ]
+  },
+  {
+    "ipa": "h",
+    "arpabet": "HH",
+    "example": "hat",
+    "audio": "audio/phonemes/hh.mp3",
+    "aliases": [
+      "h"
+    ]
+  },
+  {
+    "ipa": "ɪ",
+    "arpabet": "IH",
+    "example": "sit",
+    "audio": "audio/phonemes/ih.mp3",
+    "aliases": [
+      "ɪ"
+    ]
+  },
+  {
+    "ipa": "iː",
+    "arpabet": "IY",
+    "example": "see",
+    "audio": "audio/phonemes/iy.mp3",
+    "aliases": [
+      "iː",
+      "i"
+    ]
+  },
+  {
+    "ipa": "dʒ",
+    "arpabet": "JH",
+    "example": "jam",
+    "audio": "audio/phonemes/jh.mp3",
+    "aliases": [
+      "dʒ"
+    ]
+  },
+  {
+    "ipa": "k",
+    "arpabet": "K",
+    "example": "key",
+    "audio": "audio/phonemes/k.mp3",
+    "aliases": [
+      "k"
+    ]
+  },
+  {
+    "ipa": "l",
+    "arpabet": "L",
+    "example": "lion",
+    "audio": "audio/phonemes/l.mp3",
+    "aliases": [
+      "l"
+    ]
+  },
+  {
+    "ipa": "m",
+    "arpabet": "M",
+    "example": "moon",
+    "audio": "audio/phonemes/m.mp3",
+    "aliases": [
+      "m"
+    ]
+  },
+  {
+    "ipa": "n",
+    "arpabet": "N",
+    "example": "nose",
+    "audio": "audio/phonemes/n.mp3",
+    "aliases": [
+      "n"
+    ]
+  },
+  {
+    "ipa": "ŋ",
+    "arpabet": "NG",
+    "example": "sing",
+    "audio": "audio/phonemes/ng.mp3",
+    "aliases": [
+      "ŋ"
+    ]
+  },
+  {
+    "ipa": "oʊ",
+    "arpabet": "OW",
+    "example": "boat",
+    "audio": "audio/phonemes/ow.mp3",
+    "aliases": [
+      "oʊ",
+      "o"
+    ]
+  },
+  {
+    "ipa": "ɔɪ",
+    "arpabet": "OY",
+    "example": "boy",
+    "audio": "audio/phonemes/oy.mp3",
+    "aliases": [
+      "ɔɪ"
+    ]
+  },
+  {
+    "ipa": "p",
+    "arpabet": "P",
+    "example": "pig",
+    "audio": "audio/phonemes/p.mp3",
+    "aliases": [
+      "p"
+    ]
+  },
+  {
+    "ipa": "r",
+    "arpabet": "R",
+    "example": "red",
+    "audio": "audio/phonemes/r.mp3",
+    "aliases": [
+      "r",
+      "ɹ"
+    ]
+  },
+  {
+    "ipa": "s",
+    "arpabet": "S",
+    "example": "sun",
+    "audio": "audio/phonemes/s.mp3",
+    "aliases": [
+      "s"
+    ]
+  },
+  {
+    "ipa": "ʃ",
+    "arpabet": "SH",
+    "example": "ship",
+    "audio": "audio/phonemes/sh.mp3",
+    "aliases": [
+      "ʃ"
+    ]
+  },
+  {
+    "ipa": "t",
+    "arpabet": "T",
+    "example": "top",
+    "audio": "audio/phonemes/t.mp3",
+    "aliases": [
+      "t"
+    ]
+  },
+  {
+    "ipa": "θ",
+    "arpabet": "TH",
+    "example": "think",
+    "audio": "audio/phonemes/th.mp3",
+    "aliases": [
+      "θ"
+    ]
+  },
+  {
+    "ipa": "ʊ",
+    "arpabet": "UH",
+    "example": "book",
+    "audio": "audio/phonemes/uh.mp3",
+    "aliases": [
+      "ʊ"
+    ]
+  },
+  {
+    "ipa": "uː",
+    "arpabet": "UW",
+    "example": "blue",
+    "audio": "audio/phonemes/uw.mp3",
+    "aliases": [
+      "uː",
+      "u"
+    ]
+  },
+  {
+    "ipa": "v",
+    "arpabet": "V",
+    "example": "van",
+    "audio": "audio/phonemes/v.mp3",
+    "aliases": [
+      "v"
+    ]
+  },
+  {
+    "ipa": "w",
+    "arpabet": "W",
+    "example": "water",
+    "audio": "audio/phonemes/w.mp3",
+    "aliases": [
+      "w"
+    ]
+  },
+  {
+    "ipa": "j",
+    "arpabet": "Y",
+    "example": "yes",
+    "audio": "audio/phonemes/y.mp3",
+    "aliases": [
+      "j"
+    ]
+  },
+  {
+    "ipa": "z",
+    "arpabet": "Z",
+    "example": "zoo",
+    "audio": "audio/phonemes/z.mp3",
+    "aliases": [
+      "z"
+    ]
+  },
+  {
+    "ipa": "ʒ",
+    "arpabet": "ZH",
+    "example": "vision",
+    "audio": "audio/phonemes/zh.mp3",
+    "aliases": [
+      "ʒ"
+    ]
+  }
+]
