@@ -108,9 +108,11 @@
     "example": "bird",
     "audio": "audio/phonemes/er.mp3",
     "aliases": [
+      "ɝː",
+      "ɚː",
+      "ɜː",
       "ɝ",
       "ɚ",
-      "ɜː",
       "ɜ"
     ]
   },

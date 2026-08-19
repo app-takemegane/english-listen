@@ -30,7 +30,7 @@
 <p class="note">Chromebook と iPhone の両方で、下の音がすべて鳴るか確かめるためのページです。</p>
 <div id="status">読み込み中…</div>
 
-<h2>単語(試験生成分)</h2>
+<h2>単語(先頭30語)</h2>
 <div id="words"></div>
 
 <h2>音素(39音・例単語で鳴らす)</h2>
@@ -49,10 +49,10 @@ Promise.all([
 ]).then(([words, phonemes]) => {
   const a = document.createElement("audio");
   document.getElementById("status").textContent =
-    `単語 ${words.length}件 / 音素 ${phonemes.length}音を読み込みました。` +
+    `単語 ${words.length}件(下に先頭30語)/ 音素 ${phonemes.length}音を読み込みました。` +
     `このブラウザの mp3 対応: ${a.canPlayType("audio/mpeg") || "なし"}`;
 
-  document.getElementById("words").innerHTML = words.map(w => `
+  document.getElementById("words").innerHTML = words.slice(0, 30).map(w => `
     <div class="word">
       <div class="head">
         <span class="spell">${w.spelling}</span>

@@ -42,7 +42,7 @@ PHONEME_TABLE = [
     ("D",  "d",  "dog",    ["d"]),
     ("DH", "ð",  "this",   ["ð"]),
     ("EH", "ɛ",  "bed",    ["ɛ", "e"]),
-    ("ER", "ɝ",  "bird",   ["ɝ", "ɚ", "ɜː", "ɜ"]),
+    ("ER", "ɝ",  "bird",   ["ɝː", "ɚː", "ɜː", "ɝ", "ɚ", "ɜ"]),   # were=ˈwɝː のように長音記号が付く形もある
     ("EY", "eɪ", "day",    ["eɪ"]),
     ("F",  "f",  "fish",   ["f"]),
     ("G",  "g",  "goat",   ["g", "ɡ"]),        # ɡ(U+0261)も同じ g
@@ -216,10 +216,11 @@ def main():
             failed.append({"rank": row["rank"], "word": word, "ipa": ipa,
                            "reason": "ファイル名にできる文字がない"})
             continue
-        if name in used_names:                         # 小文字化で名前がぶつかった場合
-            failed.append({"rank": row["rank"], "word": word, "ipa": ipa,
-                           "reason": f"ファイル名が {used_names[name]} と重なる"})
-            continue
+        if name in used_names:      # 小文字化で名前がぶつかったら番号を足す(IT'S と ITS など)
+            base, n = name, 2
+            while f"{base}-{n}" in used_names:
+                n += 1
+            name = f"{base}-{n}"
         used_names[name] = word
         audio = f"audio/words/{name}.mp3"
         if args.force or not os.path.exists(audio):
