@@ -14,8 +14,12 @@ os.chdir(ROOT)
 RATE = "0.3"   # 1音だけなので、ページ音声よりゆっくりめに合成する
 FADE = 0.015   # プチッという音を防ぐフェード(秒)
 PAD = 0.03     # 前後に残す余白(秒)
-HEAD_FADE = 0.04   # head 方式(母音の前で切る)の終わりを消していく長さ(秒)
-HEAD_RMS = 0.15    # head 方式の音の大きさ(m・n・l と同じくらいに揃える)
+HEAD_FADE_IN = 0.03   # head 方式の立ち上がり(急だと「ブ」に聞こえるので長め)
+HEAD_FADE = 0.05      # head 方式の終わりを消していく長さ(秒)
+HEAD_RMS = 0.15       # head 方式の音の大きさ(m・n・l と同じくらいに揃える)
+HEAD_SHELF_HZ = 1500  # ここから上の「こすれる音」を持ち上げる
+HEAD_SHELF_DB = 20    # 持ち上げる量。Ava の v はこすれる音が弱すぎて
+                      # そのままだと「ブー」という低い響きにしか聞こえない(ユーザー確認)
 
 # 音の名前 → 合成に使う発音記号(IPA)
 # 単独では鳴らせない音(破裂音 p t k など)は、ごく短い ə を付けて発音させる
@@ -135,6 +139,30 @@ def band_level(frame, sr, lo, hi, n=6):
     return total / n
 
 
+def high_shelf(samples, sr, f0, gain_db):
+    """f0 より高い音(こすれる音)だけを gain_db だけ持ち上げる(RBJ ハイシェルフ)"""
+    a = 10 ** (gain_db / 40)
+    w0 = 2 * math.pi * f0 / sr
+    cos_w, alpha = math.cos(w0), math.sin(w0) / 2 * math.sqrt(2)
+    sq = 2 * math.sqrt(a) * alpha
+    b = [a * ((a + 1) + (a - 1) * cos_w + sq),
+         -2 * a * ((a - 1) + (a + 1) * cos_w),
+         a * ((a + 1) + (a - 1) * cos_w - sq)]
+    a0 = (a + 1) - (a - 1) * cos_w + sq
+    a1 = 2 * ((a - 1) - (a + 1) * cos_w)
+    a2 = (a + 1) - (a - 1) * cos_w - sq
+    b = [v / a0 for v in b]
+    a1, a2 = a1 / a0, a2 / a0
+    out = []
+    x1 = x2 = y1 = y2 = 0.0
+    for x in samples:
+        y = b[0] * x + b[1] * x1 + b[2] * x2 - a1 * y1 - a2 * y2
+        out.append(y)
+        x2, x1 = x1, x
+        y2, y1 = y1, y
+    return [int(max(-32768, min(32767, v))) for v in out]
+
+
 def find_vowel_start(samples, sr):
     """子音のあとに母音が始まる位置を返す(見つからなければ None)。
     母音は「第1フォルマント(300〜1000Hz)が急に強くなる」ことで見分ける。
@@ -194,6 +222,8 @@ for key, ipa in SYNTH_IPA.items():
             samples = samples[:vowel_at]
         else:
             print(f"注意: {key} は母音の始まりが見つからなかった(そのまま使う)")
+        # 声の低い響きばかりで「ブー」に聞こえるため、こすれる音を持ち上げて「ヴー」にする
+        samples = high_shelf(samples, sr, HEAD_SHELF_HZ, HEAD_SHELF_DB)
 
     if cut_final or keep_tail:
         win = int(0.005 * sr)  # 5ms きざみで音量を見る
@@ -223,7 +253,8 @@ for key, ipa in SYNTH_IPA.items():
     pad = int(PAD * sr)
     samples = samples[max(0, first - pad):min(len(samples), last + 1 + pad)]
 
-    fade_n = min(int(FADE * sr), len(samples) // 2)
+    # head 方式は立ち上がりが急だと「ブ」に聞こえるので、少しゆっくり立ち上げる
+    fade_n = min(int((HEAD_FADE_IN if keep_head else FADE) * sr), len(samples) // 2)
     for i in range(fade_n):
         samples[i] = int(samples[i] * (i / fade_n))
     # head 方式は途中で切っているので、終わりは長めに消していく(ぶつ切りに聞こえないように)
