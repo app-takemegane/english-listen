@@ -1,6 +1,6 @@
 // サービスワーカー:アプリ全体を端末に保存し、オフラインでも動くようにする
 // ファイルを追加・変更したら VERSION の数字を上げること(古い保存分が入れ替わる)
-const VERSION = "v33";
+const VERSION = "v34";
 const CACHE_NAME = `eigo-ehon-${VERSION}`;
 
 // 絵本データを読み込み、保存するファイルの一覧を本文から自動で作る
@@ -54,8 +54,12 @@ const FILES_TO_CACHE = [
 ];
 
 self.addEventListener("install", event => {
+  // { cache: "reload" } が要:これがないと Safari が自分の一時保存から古いファイルを渡してしまい、
+  // VERSION を上げても中身が入れ替わらない(音を直したのに古い音のままになる)
   event.waitUntil(
-    caches.open(CACHE_NAME).then(cache => cache.addAll(FILES_TO_CACHE))
+    caches.open(CACHE_NAME).then(cache =>
+      cache.addAll(FILES_TO_CACHE.map(url => new Request(url, { cache: "reload" })))
+    )
   );
   self.skipWaiting();
 });

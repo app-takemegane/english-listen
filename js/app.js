@@ -1040,7 +1040,13 @@ updateCoinDisplays();
 renderShelf("all");
 
 if ("serviceWorker" in navigator) {
-  navigator.serviceWorker.register("sw.js");
+  navigator.serviceWorker.register("sw.js").then(reg => {
+    // ホーム画面アプリは閉じても眠っているだけで読み直されないため、
+    // 画面に戻ってくるたびに新しい版が出ていないか自分で確かめる
+    document.addEventListener("visibilitychange", () => {
+      if (!document.hidden) reg.update();
+    });
+  }).catch(() => {});
   // アプリが新しい版に入れ替わったら、画面を一度だけ自動で読み直す
   const hadController = !!navigator.serviceWorker.controller;
   let reloaded = false;
