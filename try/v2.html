@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>「v」の音くらべ その2</title>
+<style>
+  body { font-family: -apple-system, sans-serif; margin: 0; padding: 24px 20px 60px;
+         background: #fffdf5; color: #333; line-height: 1.7; }
+  h1 { font-size: 22px; margin: 0 0 6px; }
+  p { font-size: 16px; margin: 0 0 20px; color: #666; }
+  button { display: block; width: 100%; margin: 14px 0 4px; padding: 22px;
+           font-size: 26px; font-weight: bold; border: none; border-radius: 18px;
+           background: #ffd166; color: #333; box-shadow: 0 4px 0 #e0b44e; }
+  button:active { transform: translateY(3px); box-shadow: none; }
+  .memo { font-size: 15px; color: #888; margin: 0 0 18px; }
+</style>
+</head>
+<body>
+<h1>「v」の音くらべ その2</h1>
+<p>前回の3つとは作り方を変えました。いちばん「ヴ」に近いものを教えてください。</p>
+
+<button onclick="play('v-e')">1 を きく</button>
+<div class="memo">こすれる音を強くした「ヴー」(母音なし)</div>
+
+<button onclick="play('v-ki')">2 を きく</button>
+<div class="memo">こすれる音をもっと強くした「ヴー」(母音なし)</div>
+
+<button onclick="play('v-o')">3 を きく</button>
+<div class="memo">「ヴゥ」(ウ の母音つき)</div>
+
+<button onclick="play('v-k')">4 を きく</button>
+<div class="memo">「ヴゥ」(ウ の母音つき・こすれる音を強くした)</div>
+
+<script>
+  const a = new Audio();
+  function play(name) { a.pause(); a.src = name + ".m4a"; a.play(); }
+</script>
+</body>
+</html>
