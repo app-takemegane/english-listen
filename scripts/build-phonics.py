@@ -7,13 +7,15 @@ js/phonics.js の辞書も検査する:
  - 使っている音の名前が音の表にあるか
 使い方: python3 scripts/build-phonics.py
 """
-import json, os, struct, subprocess, sys, tempfile, wave
+import json, math, os, struct, subprocess, sys, tempfile, wave
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 os.chdir(ROOT)
 RATE = "0.3"   # 1音だけなので、ページ音声よりゆっくりめに合成する
 FADE = 0.015   # プチッという音を防ぐフェード(秒)
 PAD = 0.03     # 前後に残す余白(秒)
+HEAD_FADE = 0.04   # head 方式(母音の前で切る)の終わりを消していく長さ(秒)
+HEAD_RMS = 0.15    # head 方式の音の大きさ(m・n・l と同じくらいに揃える)
 
 # 音の名前 → 合成に使う発音記号(IPA)
 # 単独では鳴らせない音(破裂音 p t k など)は、ごく短い ə を付けて発音させる
@@ -34,7 +36,8 @@ SYNTH_IPA = {
 # 発音記号だと不自然になる音は、ふつうの英語をそのまま読ませて作る(こちらが優先)
 # 発音記号の単独読みは「破裂する音」「すべる音」「形が変わる母音」「r系」で崩れやすい
 # と実機確認で判明したため、その仲間は最初からこちらで作る。
-# 形式: 音の名前: (読ませる英語, 速さ[, "cut"=末尾の子音を切除 / "tail"=先頭側を捨てて後ろだけ使う])
+# 形式: 音の名前: (読ませる英語, 速さ[, "cut"=末尾の子音を切除 / "tail"=先頭側を捨てて後ろだけ使う
+#                              / "head"=母音が始まる前まで(先頭の子音だけ)を使う])
 TEXT_SYNTH = {
     # 一息で読む子音のかたまり(2ファイル連結だと「ク…ス」のように間延びするため、1つの音として作る)
     "ks": ("box.", "0.42", "tail"),   # x の音。本物の単語 box の「k の破裂の前の無音」から後ろ= /ks/ を切り出す
@@ -48,8 +51,11 @@ TEXT_SYNTH = {
     "j": ("juh.", "0.42"),   # 今の絵本では未使用だが同じ仲間なので揃える
     "g": ("guh.", "0.42"),   # IPA の gə は不自然だった(ユーザー確認)
     "k": ("cuh.", "0.42"),   # IPA の kə も「kuh」も不自然(kuh はキューと読まれた)。c+u なら確実にク
-    # 声を出しながらこする音(v は発音記号だけだと声が消えて「フ」になると確認された仲間)
-    "v": ("vuh.", "0.42"),   # IPA の v 単独は無声化して f と同じ音になった(ユーザー確認)
+    # 声を出しながらこする音(伸ばせる音なので、母音を付けずに「ヴー」だけを鳴らす)
+    # IPA の v 単独は無声化して「フ」になり、「vuh.」だと母音が長すぎて「ブァ」になった(ユーザー確認)。
+    # 本物の単語 van の「母音が始まる前まで」を切り出すと、声の出たヴだけが残る。
+    # 速さ 0.30 は 0.42 より v が長くなる(0.13秒。m・n・l の 0.15〜0.18秒に近い)
+    "v": ("van.", "0.30", "head"),
     # すべる音(y が不自然と確認された仲間)
     "y": ("yuh.", "0.42"),   # IPA の jə は不自然だった(ユーザー確認)
     "w": ("wuh.", "0.42"),
@@ -117,6 +123,36 @@ if unknown:
     print(f"音の表にない: {', '.join(unknown)}")
     sys.exit(1)
 
+def band_level(frame, sr, lo, hi, n=6):
+    """その区間の lo〜hi Hz の強さ(ゴーツェル法。numpy なしで計算する)"""
+    total = 0.0
+    for k in range(n):
+        f = lo + (hi - lo) * (k + 0.5) / n
+        w = 2 * math.pi * f / sr
+        re = sum(frame[i] * math.cos(w * i) for i in range(len(frame)))
+        im = sum(frame[i] * math.sin(w * i) for i in range(len(frame)))
+        total += math.hypot(re, im) / len(frame)
+    return total / n
+
+
+def find_vowel_start(samples, sr):
+    """子音のあとに母音が始まる位置を返す(見つからなければ None)。
+    母音は「第1フォルマント(300〜1000Hz)が急に強くなる」ことで見分ける。
+    子音の部分(最初の60ms)の強さを基準にして、2倍(6dB)を超えたところが母音の始まり。"""
+    peak = max(1, max(abs(v) for v in samples))
+    start = next((i for i, v in enumerate(samples) if abs(v) >= peak * 0.05), 0)
+    win = int(0.01 * sr)
+    levels = [(i, band_level(samples[i:i + win], sr, 300, 1000))
+              for i in range(start, min(len(samples) - win, start + int(0.35 * sr)), win)]
+    if len(levels) < 8:
+        return None
+    base = sorted(v for _, v in levels[:6])[3]  # 最初の60ms(=子音)の代表値
+    for i, v in levels:
+        if v > base * 2:
+            return i
+    return None
+
+
 made = 0
 for key, ipa in SYNTH_IPA.items():
     if only and key not in only:
@@ -131,12 +167,14 @@ for key, ipa in SYNTH_IPA.items():
         mode = TEXT_SYNTH[key][2] if len(TEXT_SYNTH[key]) > 2 else None
         cut_final = mode == "cut"
         keep_tail = mode == "tail"
+        keep_head = mode == "head"
         subprocess.run(["swift", "scripts/speak_with_timings.swift", text,
                         caf, os.path.join(tmpdir, "p.json"), rate],
                        check=True, capture_output=True)
-        ipa = f"「{text}」" + ("(末尾の子音を切除)" if cut_final else "(後ろだけ使う)" if keep_tail else "")
+        ipa = f"「{text}」" + ("(末尾の子音を切除)" if cut_final else "(後ろだけ使う)" if keep_tail
+                              else "(母音の前まで使う)" if keep_head else "")
     else:
-        cut_final = keep_tail = False
+        cut_final = keep_tail = keep_head = False
         subprocess.run(["swift", "scripts/speak_ipa.swift", "x", ipa, caf, RATE],
                        check=True, capture_output=True)
     subprocess.run(["afconvert", "-f", "WAVE", "-d", "LEI16", caf, wav],
@@ -149,6 +187,14 @@ for key, ipa in SYNTH_IPA.items():
     # 破裂音の前の「一瞬の無音」を探して切る:
     #   cut  = そこから後ろを捨てる(bud → /bʌ/)
     #   tail = そこから前を捨てて後ろだけ使う(box → /ks/)
+    if keep_head:
+        # 母音が始まる前で切る(van → /v/ だけ残す)
+        vowel_at = find_vowel_start(samples, sr)
+        if vowel_at:
+            samples = samples[:vowel_at]
+        else:
+            print(f"注意: {key} は母音の始まりが見つからなかった(そのまま使う)")
+
     if cut_final or keep_tail:
         win = int(0.005 * sr)  # 5ms きざみで音量を見る
         peak = max(1, max(abs(s) for s in samples))
@@ -179,9 +225,17 @@ for key, ipa in SYNTH_IPA.items():
 
     fade_n = min(int(FADE * sr), len(samples) // 2)
     for i in range(fade_n):
-        gain = i / fade_n
-        samples[i] = int(samples[i] * gain)
-        samples[-1 - i] = int(samples[-1 - i] * gain)
+        samples[i] = int(samples[i] * (i / fade_n))
+    # head 方式は途中で切っているので、終わりは長めに消していく(ぶつ切りに聞こえないように)
+    out_n = min(int((HEAD_FADE if keep_head else FADE) * sr), len(samples) // 2)
+    for i in range(out_n):
+        samples[-1 - i] = int(samples[-1 - i] * (i / out_n))
+
+    if keep_head:
+        # 一番大きい部分(母音)を捨てたぶん音が小さいので、ほかの音と同じ大きさにそろえる
+        rms = math.sqrt(sum(v * v for v in samples) / max(1, len(samples)))
+        gain = min(HEAD_RMS * 32767 / max(1.0, rms), 0.9 * 32767 / max(1, max(abs(v) for v in samples)))
+        samples = [max(-32768, min(32767, int(v * gain))) for v in samples]
 
     with wave.open(wav, "wb") as w:
         w.setnchannels(1)
