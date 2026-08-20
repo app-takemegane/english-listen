@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>「very」の音くらべ(1音ずつ)</title>
+<style>
+  body { font-family: -apple-system, sans-serif; margin: 0; padding: 24px 20px 60px;
+         background: #fffdf5; color: #333; line-height: 1.7; }
+  h1 { font-size: 22px; margin: 0 0 6px; }
+  h2 { font-size: 18px; margin: 32px 0 8px; padding-top: 18px; border-top: 2px solid #f0e6c8; }
+  p.lead { font-size: 16px; margin: 0 0 20px; color: #666; }
+  .memo { font-size: 15px; color: #888; margin: 0 0 18px; }
+
+  /* 単語の表示(子音は青・母音は赤。アプリのフォニックスカードと同じ色分け) */
+  .word { display: flex; justify-content: center; gap: 10px; margin: 18px 0 24px; }
+  .chip { min-width: 62px; padding: 12px 6px; border-radius: 16px; background: #fff;
+          border: 3px solid #e8ddc0; text-align: center; }
+  .chip.on { background: #fff3bf; border-color: #ffd166; transform: translateY(-4px); }
+  .chip .g { font-size: 30px; font-weight: bold; }
+  .chip .i { font-size: 17px; }
+  .chip.c .i { color: #2f6fd0; }   /* 子音 */
+  .chip.v .i { color: #d94f4f; }   /* 母音 */
+
+  button { display: block; width: 100%; margin: 12px 0 4px; padding: 20px;
+           font-size: 22px; font-weight: bold; border: none; border-radius: 18px;
+           background: #ffd166; color: #333; box-shadow: 0 4px 0 #e0b44e; }
+  button.sub { padding: 14px 8px; font-size: 17px; background: #eef3fa; box-shadow: 0 3px 0 #ccd8e8; }
+  button:active { transform: translateY(3px); box-shadow: none; }
+  .row { display: grid; grid-template-columns: 58px 1fr 1fr 1fr 1fr; gap: 6px;
+         align-items: center; margin-bottom: 6px; }
+  .row .name { font-size: 20px; font-weight: bold; text-align: center; }
+  .row button { margin: 0; }
+  .head { font-size: 13px; color: #888; text-align: center; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 14px; margin-top: 10px; }
+  th, td { border-bottom: 1px solid #eadfc4; padding: 6px 4px; text-align: right; }
+  th:first-child, td:first-child { text-align: left; }
+  th { color: #888; font-weight: normal; }
+</style>
+</head>
+<body>
+<h1>「very」の音くらべ(1音ずつ)</h1>
+<p class="lead">新しく作った声(Piper)で「very」を1音ずつ鳴らします。<br>
+<b>「新A案 ゆっくり」を採用</b>することにしました。<br>
+「e」が「たー」に聞こえた件は直しました(③)。<br>
+<b>アプリの「r」は、この音に差し替え済みです(④)。</b></p>
+
+<div class="word" id="word"></div>
+
+<h2>① 通しで聞く(1音ずつ → つなげて)</h2>
+<button onclick="seq('now')">今のアプリ(Ava)</button>
+<div class="memo">いま公開しているアプリの音です</div>
+<button onclick="seq('a')">新A案 ふつう</button>
+<div class="memo">発音記号をそのまま単独で合成した音(新しい声だからできる方式)</div>
+<button onclick="seq('as')">新A案 ゆっくり</button>
+<div class="memo">同じ方式を、少しゆっくり合成したもの</div>
+<button onclick="seq('b')">新B案 単語から切り出し</button>
+<div class="memo">van・bed・red・see を読ませて、その音の部分だけを切り出したもの(今のアプリと同じ考え方)</div>
+
+<h2>② 音ごとに聞き比べ</h2>
+<div class="row head"><div></div><div>今(Ava)</div><div>新A ふつう</div><div>新A ゆっくり</div><div>新B 切出し</div></div>
+<div id="rows"></div>
+
+<h2>③ 「e」を直しました</h2>
+<p class="memo">出だしに破裂のような荒れが入っていたのが原因でした。<br>
+新しい声は合成のたびに音が揺らぐため、<b>20回作って出だしがいちばんきれいなものを選ぶ</b>方式にしました。<br>
+荒さの数値は 0.24 → 0.02 になり、良いと言ってもらえた「r」(0.02)と同じ水準です。</p>
+<div class="row head"><div></div><div>直す前</div><div>直した後</div><div></div><div></div></div>
+<div class="row">
+  <div class="name">e</div>
+  <button class="sub" onclick="one('very/as-eh-old.mp3')">きく</button>
+  <button class="sub" onclick="one('very/as-eh.mp3')">きく</button>
+  <div></div><div></div>
+</div>
+<button onclick="seq('as')">直した音で通しで聞く</button>
+<div class="memo">very を1音ずつ → つなげて(新A案 ゆっくり)</div>
+
+<h2>④ アプリに入れました</h2>
+<p class="memo">アプリの「r」を、この「新A案 ゆっくり」の音に差し替えました。<br>
+左が差し替え前(Ava・0.60秒)、右がいまアプリに入っている音(0.37秒)です。<br>
+②の「今(Ava)」列の r も、差し替え前の音を保存したものに切り替えてあります。</p>
+<div class="row head"><div></div><div>差し替え前(Ava)</div><div>いまアプリの音</div><div></div><div></div></div>
+<div class="row">
+  <div class="name">r</div>
+  <button class="sub" onclick="one('very/ava-r.m4a')">きく</button>
+  <button class="sub" onclick="one('../phonics/r.m4a')">きく</button>
+  <div></div><div></div>
+</div>
+
+<h2>⑤ 単語まるごと</h2>
+<div class="row head"><div></div><div>今(Ava)</div><div>新 ふつう</div><div>新 ゆっくり</div><div></div></div>
+<div class="row">
+  <div class="name">very</div>
+  <button class="sub" onclick="one('../words/very.m4a')">きく</button>
+  <button class="sub" onclick="one('very/word-very.mp3')">きく</button>
+  <button class="sub" onclick="one('very/word-very-slow.mp3')">きく</button>
+  <div></div>
+</div>
+
+<h2>⑥ 測った数値</h2>
+<p class="memo">耳で決めるのが基本ですが、参考として機械で測った値です。<br>
+「声の強さ」は声帯が震えているかの目安(1に近いほどはっきり声が出ている)。<br>
+「高−低」は、こすれる音が声の低い響きに比べてどれだけ強いか(v が「ブー」でなく「ヴー」に聞こえるかの目安)。</p>
+<table id="tbl"></table>
+
+<script>
+// very = /ˈvɛri/。子音(c)は青、母音(v)は赤
+const PARTS = [
+  { key: "v",  g: "v", ipa: "v", kind: "c", now: "../phonics/v.m4a" },
+  { key: "eh", g: "e", ipa: "ɛ", kind: "v", now: "../phonics/eh.m4a" },
+  { key: "r",  g: "r", ipa: "ɹ", kind: "c", now: "very/ava-r.m4a" },   // 差し替え前の Ava の音を保存したもの
+  { key: "iy", g: "y", ipa: "i", kind: "v", now: "../phonics/iy.m4a" },
+];
+const GAP = 250;        // 音と音のあいだの間(アプリの SOUNDOUT_GAP と同じ)
+const WORD_PAUSE = 500; // 単語まるごとの前の間(アプリの SOUNDOUT_WORD_PAUSE と同じ)
+
+const audio = new Audio();
+function src(part, method) {
+  if (method === "now") return part.now;
+  return "very/" + method + "-" + part.key + ".mp3";
+}
+// アプリの音は差し替えたのに、ブラウザが古い音を覚えていて鳴らないことがある。
+// アドレスの後ろに版数を付けて、必ず新しい音を取りに行かせる
+const CACHE_BUST = "?v=36";
+function bust(path) { return path.indexOf("../") === 0 ? path + CACHE_BUST : path; }
+function one(path) {
+  audio.pause();
+  audio.src = bust(path);
+  audio.play();
+}
+function play(path) {
+  return new Promise(function (done) {
+    audio.pause();
+    audio.onended = done;
+    audio.onerror = done;
+    audio.src = bust(path);
+    audio.play().catch(done);
+  });
+}
+function wait(ms) { return new Promise(function (d) { setTimeout(d, ms); }); }
+
+// 1音ずつ鳴らして、鳴っている文字を光らせ、最後に単語まるごとを鳴らす
+let busy = false;
+async function seq(method) {
+  if (busy) return;
+  busy = true;
+  for (let i = 0; i < PARTS.length; i++) {
+    const chip = document.getElementById("chip" + i);
+    chip.classList.add("on");
+    await play(src(PARTS[i], method));
+    chip.classList.remove("on");
+    if (i < PARTS.length - 1) await wait(GAP);
+  }
+  await wait(WORD_PAUSE);
+  await play(method === "now" ? "../words/very.m4a"
+           : method === "as" ? "very/word-very-slow.mp3" : "very/word-very.mp3");
+  busy = false;
+}
+
+// 単語の表示を組み立てる
+document.getElementById("word").innerHTML = PARTS.map(function (p, i) {
+  return '<div class="chip ' + p.kind + '" id="chip' + i + '">' +
+         '<div class="g">' + p.g + '</div><div class="i">' + p.ipa + '</div></div>';
+}).join("");
+
+// 音ごとの聞き比べボタン
+document.getElementById("rows").innerHTML = PARTS.map(function (p) {
+  const b = ["now", "a", "as", "b"].map(function (m) {
+    return '<button class="sub" onclick="one(\'' + src(p, m) + '\')">きく</button>';
+  }).join("");
+  return '<div class="row"><div class="name">' + p.g + '</div>' + b + '</div>';
+}).join("");
+
+// 数値の表(build-sample-very.py と scripts/build-phonics.py の音を測ったもの)
+const MEASURED = [
+  ["v",  "今のアプリ(Ava)", 0.18, 6694, -15.3, 0.56],
+  ["v",  "新A案 ふつう",     0.21, 2905, -18.7, 0.66],
+  ["v",  "新A案 ゆっくり",    0.25, 2744, -20.4, 0.80],
+  ["v",  "新B案 切り出し",    0.09, 2358, -13.9, 0.63],
+  ["e",  "今のアプリ(Ava)", 0.32, 1284, -32.1, 0.45],
+  ["e",  "新A案 ふつう",     0.28,  924, -30.9, 0.95],
+  ["e",  "新A案 ゆっくり",    0.36,  827, -30.6, 0.77],
+  ["e",  "新B案 切り出し",    0.27, 1148, -21.9, 0.67],
+  ["r",  "今のアプリ(Ava)", 0.51, 1241, -33.6, 0.36],
+  ["r",  "新A案 ふつう",     0.21,  772, -31.8, 0.79],
+  ["r",  "新A案 ゆっくり",    0.32,  741, -32.9, 0.48],
+  ["r",  "新B案 切り出し",    0.08,  587, -40.1, 0.88],
+  ["y",  "今のアプリ(Ava)", 0.46, 1559, -33.2, 0.31],
+  ["y",  "新A案 ふつう",     0.26, 1063, -34.5, 0.95],
+  ["y",  "新A案 ゆっくり",    0.39,  864, -36.8, 0.89],
+  ["y",  "新B案 切り出し",    0.17, 1156, -26.0, 0.41],
+];
+document.getElementById("tbl").innerHTML =
+  "<tr><th>音</th><th>作り方</th><th>長さ(秒)</th><th>重心(Hz)</th><th>高−低(dB)</th><th>声の強さ</th></tr>" +
+  MEASURED.map(function (r) {
+    return "<tr><td>" + r[0] + "</td><td>" + r[1] + "</td><td>" + r[2].toFixed(2) +
+           "</td><td>" + r[3] + "</td><td>" + r[4].toFixed(1) + "</td><td>" + r[5].toFixed(2) + "</td></tr>";
+  }).join("");
+</script>
+</body>
+</html>

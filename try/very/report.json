@@ -1,0 +1,80 @@
+[
+  {
+    "sound": "v",
+    "letter": "v",
+    "ipa": "v",
+    "word": "van.",
+    "mode": "head",
+    "a_sec": 0.209,
+    "a_hz": 2894,
+    "as_sec": 0.247,
+    "as_hz": 2743,
+    "b_sec": 0.095,
+    "b_hz": 2353,
+    "word_sec": 0.813,
+    "cut_at_sec": 0.111
+  },
+  {
+    "sound": "eh",
+    "letter": "e",
+    "ipa": "ɛ",
+    "word": "bed.",
+    "mode": "vowel",
+    "a_sec": 0.199,
+    "a_hz": 784,
+    "as_sec": 0.381,
+    "as_hz": 1058,
+    "b_sec": 0.274,
+    "b_hz": 1187,
+    "word_sec": 0.929,
+    "cut_at_sec": 0.054
+  },
+  {
+    "sound": "r",
+    "letter": "r",
+    "ipa": "ɹ",
+    "word": "red.",
+    "mode": "head",
+    "a_sec": 0.209,
+    "a_hz": 771,
+    "as_sec": 0.322,
+    "as_hz": 738,
+    "b_sec": 0.085,
+    "b_hz": 588,
+    "word_sec": 0.801,
+    "cut_at_sec": 0.159
+  },
+  {
+    "sound": "iy",
+    "letter": "y",
+    "ipa": "i",
+    "word": "see.",
+    "mode": "vowel",
+    "a_sec": 0.264,
+    "a_hz": 1060,
+    "as_sec": 0.391,
+    "as_hz": 860,
+    "b_sec": 0.17,
+    "b_hz": 1150,
+    "word_sec": 0.859,
+    "cut_at_sec": 0.08
+  },
+  {
+    "sound": "(まるごと)",
+    "letter": "very",
+    "ipa": "ˈvɛri",
+    "word": "very.",
+    "mode": "word-very",
+    "b_sec": 0.423,
+    "b_hz": 1079
+  },
+  {
+    "sound": "(まるごと)",
+    "letter": "very",
+    "ipa": "ˈvɛri",
+    "word": "very.",
+    "mode": "word-very-slow",
+    "b_sec": 0.68,
+    "b_hz": 1153
+  }
+]

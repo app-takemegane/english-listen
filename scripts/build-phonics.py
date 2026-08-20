@@ -76,6 +76,12 @@ TEXT_SYNTH = {
     "er": ("err.", "0.42"),  # 「er.」だとアルファベット読みされる恐れがあるので err
 }
 
+# 新しい声(Piper)で作り直して、聞き比べで採用した音。
+# ここに入れた音は Ava で作り直さない(このスクリプトを実行しても上書きされない)。
+# 作り方は dataset/build-sample-very.py の「A案 ゆっくり」=発音記号を単独で合成する方式。
+# Piper は合成のたびに音が揺らぐため、採用したファイルそのものを phonics/ に置いている
+PIPER_SOUNDS = {"r"}
+
 # ── 辞書の検査 ──────────────────────────────────────
 data = json.loads(subprocess.run(
     ["node", "-e",
@@ -184,6 +190,9 @@ def find_vowel_start(samples, sr):
 made = 0
 for key, ipa in SYNTH_IPA.items():
     if only and key not in only:
+        continue
+    if key in PIPER_SOUNDS:
+        print(f"{key}: 新しい声で作った音を使うので、作り直さない")
         continue
     made += 1
     caf = os.path.join(tmpdir, "p.caf")
