@@ -2,3 +2,4 @@
 dataset/.venv/
 dataset/voices/
 dataset/source/
+.vscode/

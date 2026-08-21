@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>音の分解 あんくらべ（声はAva・作り直し版）</title>
+<style>
+  body { font-family: -apple-system, sans-serif; margin: 0; padding: 24px 20px 80px;
+         background: #fffdf5; color: #333; line-height: 1.7; max-width: 760px; }
+  h1 { font-size: 22px; margin: 0 0 6px; }
+  h2 { font-size: 20px; margin: 0 0 10px; display: flex; align-items: center; gap: 10px; }
+  h2 .ipa { font-size: 16px; color: #888; font-weight: normal; }
+  p.lead { font-size: 16px; margin: 0 0 8px; color: #555; }
+  .note { font-size: 14px; color: #888; margin: 0 0 20px; }
+  .card { border: 2px solid #f0e6c8; border-radius: 18px; padding: 16px 14px 14px;
+          margin-bottom: 22px; background: #fff; }
+  .fix { font-size: 13px; color: #c08a2e; background: #fff8e1; border-radius: 10px;
+         padding: 5px 10px; margin: 0 0 10px; }
+  .side { margin-bottom: 14px; }
+  .side.new { background: #fffbe9; border-radius: 14px; padding: 10px 8px 8px; }
+  .label { font-size: 13px; color: #999; margin-bottom: 4px; }
+  .side.new .label { color: #c08a2e; font-weight: bold; }
+  .word { display: flex; flex-wrap: wrap; gap: 8px; margin: 6px 0 10px; }
+  .chip { min-width: 58px; padding: 9px 9px 7px; border-radius: 14px; background: #fff;
+          border: 3px solid #e8ddc0; text-align: center; cursor: pointer; user-select: none; }
+  .chip.on { background: #fff3bf; border-color: #ffd166; transform: translateY(-4px); }
+  .chip .g { font-size: 26px; font-weight: bold; letter-spacing: 1px; }
+  .chip .i { font-size: 16px; }
+  .chip.c .i { color: #2f6fd0; }
+  .chip.v .i { color: #d94f4f; }
+  button { display: block; width: 100%; margin: 0; padding: 14px; font-size: 17px;
+           font-weight: bold; border: none; border-radius: 14px;
+           background: #ffd166; color: #333; box-shadow: 0 3px 0 #e0b44e; }
+  button.sub { background: #eef3fa; box-shadow: 0 3px 0 #ccd8e8; }
+  button.mini { width: auto; margin-left: auto; padding: 7px 14px; font-size: 14px;
+                background: #eef3fa; box-shadow: 0 2px 0 #ccd8e8; }
+  button:active { transform: translateY(3px); box-shadow: none; }
+  .ref { font-size: 13px; color: #aaa; margin-top: 10px; }
+  .box { background: #f4f7fb; border-radius: 14px; padding: 12px 14px; font-size: 15px; margin: 0 0 22px; }
+  .box b { color: #2f6fd0; }
+</style>
+</head>
+<body>
+<h1>音の分解 あんくらべ（作り直し版）</h1>
+<p class="lead"><b>「ca」を②（強さの印を外す）で作り直しました。</b>
+同じ直し方を新しい音すべてに反映しています。</p>
+<p class="note">文字をタップするとその音だけ鳴ります。ボタンで「1音ずつ → つなげて単語」を通しで鳴らします。<br>
+声はすべて Ava です（ページの音・単語の音と同じ声）。</p>
+
+<div class="box">
+きいてほしいところ：<br>
+① <b>cat の「ca」が「カァ」になったか</b><br>
+② <b>fun の「fu」と sings の「si」</b>（母音が短くなりやすいので、ゆっくり合成しました）<br>
+③ つなげたときに単語らしく聞こえるか
+</div>
+
+<section class="card">
+  <h2>cat <span class="ipa">/kæt/</span>
+      <button class="mini" onclick="one('../words/cat.m4a')">たんご まるごと</button></h2>
+  <div class="fix">「ca」を作り直しました（②：強さの印を外す）</div>
+  <div class="side">
+    <div class="label">今の分け方（1音ずつ）</div>
+    <div class="word" id="old-cat"></div>
+    <button class="sub" onclick="seq('cat','old')">▶ 1おとずつ → つなげて</button>
+  </div>
+  <div class="side new">
+    <div class="label">新しい分け方（子音＋母音をひとかたまり）</div>
+    <div class="word" id="new-cat"></div>
+    <button onclick="seq('cat','new')">▶ 1おとずつ → つなげて</button>
+  </div>
+  <div class="ref">参考 hatsuon.info：kǽ － t</div>
+</section>
+<section class="card">
+  <h2>blue <span class="ipa">/bluː/</span>
+      <button class="mini" onclick="one('../words/blue.m4a')">たんご まるごと</button></h2>
+  
+  <div class="side">
+    <div class="label">今の分け方（1音ずつ）</div>
+    <div class="word" id="old-blue"></div>
+    <button class="sub" onclick="seq('blue','old')">▶ 1おとずつ → つなげて</button>
+  </div>
+  <div class="side new">
+    <div class="label">新しい分け方（子音＋母音をひとかたまり）</div>
+    <div class="word" id="new-blue"></div>
+    <button onclick="seq('blue','new')">▶ 1おとずつ → つなげて</button>
+  </div>
+  <div class="ref">参考 hatsuon.info：b － lúː</div>
+</section>
+<section class="card">
+  <h2>happy <span class="ipa">/hæpiː/</span>
+      <button class="mini" onclick="one('../words/happy.m4a')">たんご まるごと</button></h2>
+  
+  <div class="side">
+    <div class="label">今の分け方（1音ずつ）</div>
+    <div class="word" id="old-happy"></div>
+    <button class="sub" onclick="seq('happy','old')">▶ 1おとずつ → つなげて</button>
+  </div>
+  <div class="side new">
+    <div class="label">新しい分け方（子音＋母音をひとかたまり）</div>
+    <div class="word" id="new-happy"></div>
+    <button onclick="seq('happy','new')">▶ 1おとずつ → つなげて</button>
+  </div>
+  <div class="ref">参考 hatsuon.info：hǽ － pi</div>
+</section>
+<section class="card">
+  <h2>friend <span class="ipa">/frend/</span>
+      <button class="mini" onclick="one('../words/friend.m4a')">たんご まるごと</button></h2>
+  
+  <div class="side">
+    <div class="label">今の分け方（1音ずつ）</div>
+    <div class="word" id="old-friend"></div>
+    <button class="sub" onclick="seq('friend','old')">▶ 1おとずつ → つなげて</button>
+  </div>
+  <div class="side new">
+    <div class="label">新しい分け方（子音＋母音をひとかたまり）</div>
+    <div class="word" id="new-friend"></div>
+    <button onclick="seq('friend','new')">▶ 1おとずつ → つなげて</button>
+  </div>
+  <div class="ref">参考 hatsuon.info：f － ré － n － d</div>
+</section>
+<section class="card">
+  <h2>flower <span class="ipa">/flaʊɚ/</span>
+      <button class="mini" onclick="one('../words/flower.m4a')">たんご まるごと</button></h2>
+  
+  <div class="side">
+    <div class="label">今の分け方（1音ずつ）</div>
+    <div class="word" id="old-flower"></div>
+    <button class="sub" onclick="seq('flower','old')">▶ 1おとずつ → つなげて</button>
+  </div>
+  <div class="side new">
+    <div class="label">新しい分け方（子音＋母音をひとかたまり）</div>
+    <div class="word" id="new-flower"></div>
+    <button onclick="seq('flower','new')">▶ 1おとずつ → つなげて</button>
+  </div>
+  <div class="ref">参考 hatsuon.info：f － láu － ə － r</div>
+</section>
+<section class="card">
+  <h2>sandbox <span class="ipa">/sændbɑks/</span>
+      <button class="mini" onclick="one('../words/sandbox.m4a')">たんご まるごと</button></h2>
+  
+  <div class="side">
+    <div class="label">今の分け方（1音ずつ）</div>
+    <div class="word" id="old-sandbox"></div>
+    <button class="sub" onclick="seq('sandbox','old')">▶ 1おとずつ → つなげて</button>
+  </div>
+  <div class="side new">
+    <div class="label">新しい分け方（子音＋母音をひとかたまり）</div>
+    <div class="word" id="new-sandbox"></div>
+    <button onclick="seq('sandbox','new')">▶ 1おとずつ → つなげて</button>
+  </div>
+  <div class="ref">参考 hatsuon.info：sǽ － n － d － bɑ － k － s</div>
+</section>
+<section class="card">
+  <h2>fun <span class="ipa">/fʌn/</span>
+      <button class="mini" onclick="one('../words/fun.m4a')">たんご まるごと</button></h2>
+  <div class="fix">「fu」は母音が短くなりやすいので、ゆっくり合成しました</div>
+  <div class="side">
+    <div class="label">今の分け方（1音ずつ）</div>
+    <div class="word" id="old-fun"></div>
+    <button class="sub" onclick="seq('fun','old')">▶ 1おとずつ → つなげて</button>
+  </div>
+  <div class="side new">
+    <div class="label">新しい分け方（子音＋母音をひとかたまり）</div>
+    <div class="word" id="new-fun"></div>
+    <button onclick="seq('fun','new')">▶ 1おとずつ → つなげて</button>
+  </div>
+  <div class="ref">参考 hatsuon.info：fʌ' － n</div>
+</section>
+<section class="card">
+  <h2>sings <span class="ipa">/sɪŋz/</span>
+      <button class="mini" onclick="one('../words/sings.m4a')">たんご まるごと</button></h2>
+  <div class="fix">「si」は母音が短くなりやすいので、ゆっくり合成しました</div>
+  <div class="side">
+    <div class="label">今の分け方（1音ずつ）</div>
+    <div class="word" id="old-sings"></div>
+    <button class="sub" onclick="seq('sings','old')">▶ 1おとずつ → つなげて</button>
+  </div>
+  <div class="side new">
+    <div class="label">新しい分け方（子音＋母音をひとかたまり）</div>
+    <div class="word" id="new-sings"></div>
+    <button onclick="seq('sings','new')">▶ 1おとずつ → つなげて</button>
+  </div>
+  <div class="ref">参考 hatsuon.info：sí － ŋ － z</div>
+</section>
+<script>
+const DATA = {"cat": {"ipa": "kæt", "word": "../words/cat.m4a", "old": [{"g": "c", "ipa": "k", "kind": "c", "src": "../phonics/k.m4a"}, {"g": "a", "ipa": "æ", "kind": "v", "src": "../phonics/ae.m4a"}, {"g": "t", "ipa": "t", "kind": "c", "src": "../phonics/t.m4a"}], "new": [{"g": "ca", "ipa": "kæ", "kind": "v", "src": "split/ava-k-ae.m4a"}, {"g": "t", "ipa": "t", "kind": "c", "src": "../phonics/t.m4a"}], "ref": "kǽ － t", "note": "「ca」を作り直しました（②：強さの印を外す）"}, "blue": {"ipa": "bluː", "word": "../words/blue.m4a", "old": [{"g": "b", "ipa": "b", "kind": "c", "src": "../phonics/b.m4a"}, {"g": "l", "ipa": "l", "kind": "c", "src": "../phonics/l.m4a"}, {"g": "ue", "ipa": "uː", "kind": "v", "src": "../phonics/uw.m4a"}], "new": [{"g": "b", "ipa": "b", "kind": "c", "src": "../phonics/b.m4a"}, {"g": "lue", "ipa": "luː", "kind": "v", "src": "split/ava-l-uw.m4a"}], "ref": "b － lúː", "note": ""}, "happy": {"ipa": "hæpiː", "word": "../words/happy.m4a", "old": [{"g": "h", "ipa": "h", "kind": "c", "src": "../phonics/h.m4a"}, {"g": "a", "ipa": "æ", "kind": "v", "src": "../phonics/ae.m4a"}, {"g": "pp", "ipa": "p", "kind": "c", "src": "../phonics/p.m4a"}, {"g": "y", "ipa": "iː", "kind": "v", "src": "../phonics/iy.m4a"}], "new": [{"g": "ha", "ipa": "hæ", "kind": "v", "src": "split/ava-h-ae.m4a"}, {"g": "ppy", "ipa": "piː", "kind": "v", "src": "split/ava-p-iy.m4a"}], "ref": "hǽ － pi", "note": ""}, "friend": {"ipa": "frend", "word": "../words/friend.m4a", "old": [{"g": "f", "ipa": "f", "kind": "c", "src": "../phonics/f.m4a"}, {"g": "r", "ipa": "r", "kind": "c", "src": "../phonics/r.m4a"}, {"g": "ie", "ipa": "e", "kind": "v", "src": "../phonics/eh.m4a"}, {"g": "n", "ipa": "n", "kind": "c", "src": "../phonics/n.m4a"}, {"g": "d", "ipa": "d", "kind": "c", "src": "../phonics/d.m4a"}], "new": [{"g": "f", "ipa": "f", "kind": "c", "src": "../phonics/f.m4a"}, {"g": "rie", "ipa": "re", "kind": "v", "src": "split/ava-r-eh.m4a"}, {"g": "n", "ipa": "n", "kind": "c", "src": "../phonics/n.m4a"}, {"g": "d", "ipa": "d", "kind": "c", "src": "../phonics/d.m4a"}], "ref": "f － ré － n － d", "note": ""}, "flower": {"ipa": "flaʊɚ", "word": "../words/flower.m4a", "old": [{"g": "f", "ipa": "f", "kind": "c", "src": "../phonics/f.m4a"}, {"g": "l", "ipa": "l", "kind": "c", "src": "../phonics/l.m4a"}, {"g": "ow", "ipa": "aʊ", "kind": "v", "src": "../phonics/ow.m4a"}, {"g": "er", "ipa": "ɚ", "kind": "v", "src": "../phonics/er.m4a"}], "new": [{"g": "f", "ipa": "f", "kind": "c", "src": "../phonics/f.m4a"}, {"g": "low", "ipa": "laʊ", "kind": "v", "src": "split/ava-l-ow.m4a"}, {"g": "er", "ipa": "ɚ", "kind": "v", "src": "../phonics/er.m4a"}], "ref": "f － láu － ə － r", "note": ""}, "sandbox": {"ipa": "sændbɑks", "word": "../words/sandbox.m4a", "old": [{"g": "s", "ipa": "s", "kind": "c", "src": "../phonics/s.m4a"}, {"g": "a", "ipa": "æ", "kind": "v", "src": "../phonics/ae.m4a"}, {"g": "n", "ipa": "n", "kind": "c", "src": "../phonics/n.m4a"}, {"g": "d", "ipa": "d", "kind": "c", "src": "../phonics/d.m4a"}, {"g": "b", "ipa": "b", "kind": "c", "src": "../phonics/b.m4a"}, {"g": "o", "ipa": "ɑ", "kind": "v", "src": "../phonics/aa.m4a"}, {"g": "x", "ipa": "ks", "kind": "c", "src": "../phonics/ks.m4a"}], "new": [{"g": "sa", "ipa": "sæ", "kind": "v", "src": "split/ava-s-ae.m4a"}, {"g": "n", "ipa": "n", "kind": "c", "src": "../phonics/n.m4a"}, {"g": "d", "ipa": "d", "kind": "c", "src": "../phonics/d.m4a"}, {"g": "bo", "ipa": "bɑ", "kind": "v", "src": "split/ava-b-aa.m4a"}, {"g": "x", "ipa": "ks", "kind": "c", "src": "../phonics/ks.m4a"}], "ref": "sǽ － n － d － bɑ － k － s", "note": ""}, "fun": {"ipa": "fʌn", "word": "../words/fun.m4a", "old": [{"g": "f", "ipa": "f", "kind": "c", "src": "../phonics/f.m4a"}, {"g": "u", "ipa": "ʌ", "kind": "v", "src": "../phonics/ah.m4a"}, {"g": "n", "ipa": "n", "kind": "c", "src": "../phonics/n.m4a"}], "new": [{"g": "fu", "ipa": "fʌ", "kind": "v", "src": "split/ava-f-ah.m4a"}, {"g": "n", "ipa": "n", "kind": "c", "src": "../phonics/n.m4a"}], "ref": "fʌ' － n", "note": "「fu」は母音が短くなりやすいので、ゆっくり合成しました"}, "sings": {"ipa": "sɪŋz", "word": "../words/sings.m4a", "old": [{"g": "s", "ipa": "s", "kind": "c", "src": "../phonics/s.m4a"}, {"g": "i", "ipa": "ɪ", "kind": "v", "src": "../phonics/ih.m4a"}, {"g": "ng", "ipa": "ŋ", "kind": "c", "src": "../phonics/ng.m4a"}, {"g": "s", "ipa": "z", "kind": "c", "src": "../phonics/z.m4a"}], "new": [{"g": "si", "ipa": "sɪ", "kind": "v", "src": "split/ava-s-ih.m4a"}, {"g": "ng", "ipa": "ŋ", "kind": "c", "src": "../phonics/ng.m4a"}, {"g": "s", "ipa": "z", "kind": "c", "src": "../phonics/z.m4a"}], "ref": "sí － ŋ － z", "note": "「si」は母音が短くなりやすいので、ゆっくり合成しました"}};
+const audio = new Audio(); audio.preload = "auto";
+let seqNo = 0;
+function play(p) {
+  return new Promise(res => {
+    audio.onended = audio.onerror = () => res();
+    audio.src = p + "?v=split3"; audio.play().catch(() => res());
+  });
+}
+function one(p) { seqNo++; flash(null); play(p); }
+function chips(word, side) {
+  const host = document.getElementById(side + "-" + word);
+  host.innerHTML = "";
+  DATA[word][side].forEach(part => {
+    const el = document.createElement("div");
+    el.className = "chip " + part.kind;
+    el.innerHTML = '<div class="g">' + part.g + '</div><div class="i">' + part.ipa + '</div>';
+    el.onclick = () => { seqNo++; flash(el); play(part.src); };
+    host.appendChild(el);
+  });
+}
+function flash(el) {
+  document.querySelectorAll(".chip.on").forEach(c => c.classList.remove("on"));
+  if (el) el.classList.add("on");
+}
+async function seq(word, side) {
+  const my = ++seqNo;
+  const els = [...document.getElementById(side + "-" + word).children];
+  const parts = DATA[word][side];
+  for (let i = 0; i < parts.length; i++) {
+    if (my !== seqNo) return;
+    flash(els[i]);
+    await play(parts[i].src);
+    if (my !== seqNo) return;
+    await new Promise(r => setTimeout(r, 160));
+  }
+  if (my !== seqNo) return;
+  flash(null);
+  await new Promise(r => setTimeout(r, 260));
+  if (my !== seqNo) return;
+  await play(DATA[word].word);
+}
+Object.keys(DATA).forEach(w => { chips(w, "old"); chips(w, "new"); });
+</script>
+</body>
+</html>

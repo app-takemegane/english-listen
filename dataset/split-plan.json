@@ -1,0 +1,3153 @@
+{
+ "a": {
+  "old": [
+   [
+    "a",
+    "uh"
+   ]
+  ],
+  "new": [
+   {
+    "letters": "a",
+    "sounds": [
+     "uh"
+    ]
+   }
+  ],
+  "ipa": "ə"
+ },
+ "and": {
+  "old": [
+   [
+    "a",
+    "ae"
+   ],
+   [
+    "n",
+    "n"
+   ],
+   [
+    "d",
+    "d"
+   ]
+  ],
+  "new": [
+   {
+    "letters": "a",
+    "sounds": [
+     "ae"
+    ]
+   },
+   {
+    "letters": "n",
+    "sounds": [
+     "n"
+    ]
+   },
+   {
+    "letters": "d",
+    "sounds": [
+     "d"
+    ]
+   }
+  ],
+  "ipa": "ænd"
+ },
+ "apple": {
+  "old": [
+   [
+    "a",
+    "ae"
+   ],
+   [
+    "pp",
+    "p"
+   ],
+   [
+    "le",
+    "el"
+   ]
+  ],
+  "new": [
+   {
+    "letters": "a",
+    "sounds": [
+     "ae"
+    ]
+   },
+   {
+    "letters": "pple",
+    "sounds": [
+     "p",
+     "el"
+    ]
+   }
+  ],
+  "ipa": "æpəl"
+ },
+ "away": {
+  "old": [
+   [
+    "a",
+    "uh"
+   ],
+   [
+    "w",
+    "w"
+   ],
+   [
+    "ay",
+    "ey"
+   ]
+  ],
+  "new": [
+   {
+    "letters": "a",
+    "sounds": [
+     "uh"
+    ]
+   },
+   {
+    "letters": "way",
+    "sounds": [
+     "w",
+     "ey"
+    ]
+   }
+  ],
+  "ipa": "əweɪ"
+ },
+ "banana": {
+  "old": [
+   [
+    "b",
+    "b"
+   ],
+   [
+    "a",
+    "uh"
+   ],
+   [
+    "n",
+    "n"
+   ],
+   [
+    "a",
+    "ae"
+   ],
+   [
+    "n",
+    "n"
+   ],
+   [
+    "a",
+    "uh"
+   ]
+  ],
+  "new": [
+   {
+    "letters": "ba",
+    "sounds": [
+     "b",
+     "uh"
+    ]
+   },
+   {
+    "letters": "na",
+    "sounds": [
+     "n",
+     "ae"
+    ]
+   },
+   {
+    "letters": "na",
+    "sounds": [
+     "n",
+     "uh"
+    ]
+   }
+  ],
+  "ipa": "bənænə"
+ },
+ "bird": {
+  "old": [
+   [
+    "b",
+    "b"
+   ],
+   [
+    "ir",
+    "er"
+   ],
+   [
+    "d",
+    "d"
+   ]
+  ],
+  "new": [
+   {
+    "letters": "bir",
+    "sounds": [
+     "b",
+     "er"
+    ]
+   },
+   {
+    "letters": "d",
+    "sounds": [
+     "d"
+    ]
+   }
+  ],
+  "ipa": "bɚd"
+ },
+ "blue": {
+  "old": [
+   [
+    "b",
+    "b"
+   ],
+   [
+    "l",
+    "l"
+   ],
+   [
+    "ue",
+    "uw"
+   ]
+  ],
+  "new": [
+   {
+    "letters": "b",
+    "sounds": [
+     "b"
+    ]
+   },
+   {
+    "letters": "lue",
+    "sounds": [
+     "l",
+     "uw"
+    ]
+   }
+  ],
+  "ipa": "bluː"
+ },
+ "cat": {
+  "old": [
+   [
+    "c",
+    "k"
+   ],
+   [
+    "a",
+    "ae"
+   ],
+   [
+    "t",
+    "t"
+   ]
+  ],
+  "new": [
+   {
+    "letters": "ca",
+    "sounds": [
+     "k",
+     "ae"
+    ]
+   },
+   {
+    "letters": "t",
+    "sounds": [
+     "t"
+    ]
+   }
+  ],
+  "ipa": "kæt"
+ },
+ "colors": {
+  "old": [
+   [
+    "c",
+    "k"
+   ],
+   [
+    "o",
+    "ah"
+   ],
+   [
+    "l",
+    "l"
+   ],
+   [
+    "or",
+    "er"
+   ],
+   [
+    "s",
+    "z"
+   ]
+  ],
+  "new": [
+   {
+    "letters": "co",
+    "sounds": [
+     "k",
+     "ah"
+    ]
+   },
+   {
+    "letters": "lor",
+    "sounds": [
+     "l",
+     "er"
+    ]
+   },
+   {
+    "letters": "s",
+    "sounds": [
+     "z"
+    ]
+   }
+  ],
+  "ipa": "kʌlɚz"
+ },
+ "comes": {
+  "old": [
+   [
+    "c",
+    "k"
+   ],
+   [
+    "o",
+    "ah"
+   ],
+   [
+    "m",
+    "m"
+   ],
+   [
+    "e",
+    null
+   ],
+   [
+    "s",
+    "z"
+   ]
+  ],
+  "new": [
+   {
+    "letters": "co",
+    "sounds": [
+     "k",
+     "ah"
+    ]
+   },
+   {
+    "letters": "me",
+    "sounds": [
+     "m"
+    ]
+   },
+   {
+    "letters": "s",
+    "sounds": [
+     "z"
+    ]
+   }
+  ],
+  "ipa": "kʌmz"
+ },
+ "day": {
+  "old": [
+   [
+    "d",
+    "d"
+   ],
+   [
+    "ay",
+    "ey"
+   ]
+  ],
+  "new": [
+   {
+    "letters": "day",
+    "sounds": [
+     "d",
+     "ey"
+    ]
+   }
+  ],
+  "ipa": "deɪ"
+ },
+ "down": {
+  "old": [
+   [
+    "d",
+    "d"
+   ],
+   [
+    "ow",
+    "ow"
+   ],
+   [
+    "n",
+    "n"
+   ]
+  ],
+  "new": [
+   {
+    "letters": "dow",
+    "sounds": [
+     "d",
+     "ow"
+    ]
+   },
+   {
+    "letters": "n",
+    "sounds": [
+     "n"
+    ]
+   }
+  ],
+  "ipa": "daʊn"
+ },
+ "everyone": {
+  "old": [
+   [
+    "e",
+    "eh"
+   ],
+   [
+    "v",
+    "v"
+   ],
+   [
+    "er",
+    "r"
+   ],
+   [
+    "y",
+    "iy"
+   ],
+   [
+    "one",
+    "w"
+   ],
+   [
+    "",
+    "ah"
+   ],
+   [
+    "",
+    "n"
+   ]
+  ],
+  "new": [
+   {
+    "letters": "e",
+    "sounds": [
+     "eh"
+    ]
+   },
+   {
+    "letters": "v",
+    "sounds": [
+     "v"
+    ]
+   },
+   {
+    "letters": "ery",
+    "sounds": [
+     "r",
+     "iy"
+    ]
+   },
+   {
+    "letters": "one",
+    "sounds": [
+     "w",
+     "ah"
+    ]
+   },
+   {
+    "letters": "",
+    "sounds": [
+     "n"
+    ]
+   }
+  ],
+  "ipa": "evriːwʌn"
+ },
+ "fast": {
+  "old": [
+   [
+    "f",
+    "f"
+   ],
+   [
+    "a",
+    "ae"
+   ],
+   [
+    "s",
+    "s"
+   ],
+   [
+    "t",
+    "t"
+   ]
+  ],
+  "new": [
+   {
+    "letters": "fa",
+    "sounds": [
+     "f",
+     "ae"
+    ]
+   },
+   {
+    "letters": "s",
+    "sounds": [
+     "s"
+    ]
+   },
+   {
+    "letters": "t",
+    "sounds": [
+     "t"
+    ]
+   }
+  ],
+  "ipa": "fæst"
+ },
+ "fish": {
+  "old": [
+   [
+    "f",
+    "f"
+   ],
+   [
+    "i",
+    "ih"
+   ],
+   [
+    "sh",
+    "sh"
+   ]
+  ],
+  "new": [
+   {
+    "letters": "fi",
+    "sounds": [
+     "f",
+     "ih"
+    ]
+   },
+   {
+    "letters": "sh",
+    "sounds": [
+     "sh"
+    ]
+   }
+  ],
+  "ipa": "fɪʃ"
+ },
+ "flower": {
+  "old": [
+   [
+    "f",
+    "f"
+   ],
+   [
+    "l",
+    "l"
+   ],
+   [
+    "ow",
+    "ow"
+   ],
+   [
+    "er",
+    "er"
+   ]
+  ],
+  "new": [
+   {
+    "letters": "f",
+    "sounds": [
+     "f"
+    ]
+   },
+   {
+    "letters": "low",
+    "sounds": [
+     "l",
+     "ow"
+    ]
+   },
+   {
+    "letters": "er",
+    "sounds": [
+     "er"
+    ]
+   }
+  ],
+  "ipa": "flaʊɚ"
+ },
+ "food": {
+  "old": [
+   [
+    "f",
+    "f"
+   ],
+   [
+    "oo",
+    "uw"
+   ],
+   [
+    "d",
+    "d"
+   ]
+  ],
+  "new": [
+   {
+    "letters": "foo",
+    "sounds": [
+     "f",
+     "uw"
+    ]
+   },
+   {
+    "letters": "d",
+    "sounds": [
+     "d"
+    ]
+   }
+  ],
+  "ipa": "fuːd"
+ },
+ "friend": {
+  "old": [
+   [
+    "f",
+    "f"
+   ],
+   [
+    "r",
+    "r"
+   ],
+   [
+    "ie",
+    "eh"
+   ],
+   [
+    "n",
+    "n"
+   ],
+   [
+    "d",
+    "d"
+   ]
+  ],
+  "new": [
+   {
+    "letters": "f",
+    "sounds": [
+     "f"
+    ]
+   },
+   {
+    "letters": "rie",
+    "sounds": [
+     "r",
+     "eh"
+    ]
+   },
+   {
+    "letters": "n",
+    "sounds": [
+     "n"
+    ]
+   },
+   {
+    "letters": "d",
+    "sounds": [
+     "d"
+    ]
+   }
+  ],
+  "ipa": "frend"
+ },
+ "frog": {
+  "old": [
+   [
+    "f",
+    "f"
+   ],
+   [
+    "r",
+    "r"
+   ],
+   [
+    "o",
+    "aa"
+   ],
+   [
+    "g",
+    "g"
+   ]
+  ],
+  "new": [
+   {
+    "letters": "f",
+    "sounds": [
+     "f"
+    ]
+   },
+   {
+    "letters": "ro",
+    "sounds": [
+     "r",
+     "aa"
+    ]
+   },
+   {
+    "letters": "g",
+    "sounds": [
+     "g"
+    ]
+   }
+  ],
+  "ipa": "frɑɡ"
+ },
+ "fun": {
+  "old": [
+   [
+    "f",
+    "f"
+   ],
+   [
+    "u",
+    "ah"
+   ],
+   [
+    "n",
+    "n"
+   ]
+  ],
+  "new": [
+   {
+    "letters": "fu",
+    "sounds": [
+     "f",
+     "ah"
+    ]
+   },
+   {
+    "letters": "n",
+    "sounds": [
+     "n"
+    ]
+   }
+  ],
+  "ipa": "fʌn"
+ },
+ "garden": {
+  "old": [
+   [
+    "g",
+    "g"
+   ],
+   [
+    "ar",
+    "ar"
+   ],
+   [
+    "d",
+    "d"
+   ],
+   [
+    "e",
+    "uh"
+   ],
+   [
+    "n",
+    "n"
+   ]
+  ],
+  "new": [
+   {
+    "letters": "gar",
+    "sounds": [
+     "g",
+     "ar"
+    ]
+   },
+   {
+    "letters": "de",
+    "sounds": [
+     "d",
+     "uh"
+    ]
+   },
+   {
+    "letters": "n",
+    "sounds": [
+     "n"
+    ]
+   }
+  ],
+  "ipa": "ɡɑrdən"
+ },
+ "gives": {
+  "old": [
+   [
+    "g",
+    "g"
+   ],
+   [
+    "i",
+    "ih"
+   ],
+   [
+    "v",
+    "v"
+   ],
+   [
+    "e",
+    null
+   ],
+   [
+    "s",
+    "z"
+   ]
+  ],
+  "new": [
+   {
+    "letters": "gi",
+    "sounds": [
+     "g",
+     "ih"
+    ]
+   },
+   {
+    "letters": "ve",
+    "sounds": [
+     "v"
+    ]
+   },
+   {
+    "letters": "s",
+    "sounds": [
+     "z"
+    ]
+   }
+  ],
+  "ipa": "ɡɪvz"
+ },
+ "go": {
+  "old": [
+   [
+    "g",
+    "g"
+   ],
+   [
+    "o",
+    "oh"
+   ]
+  ],
+  "new": [
+   {
+    "letters": "go",
+    "sounds": [
+     "g",
+     "oh"
+    ]
+   }
+  ],
+  "ipa": "ɡoʊ"
+ },
+ "good": {
+  "old": [
+   [
+    "g",
+    "g"
+   ],
+   [
+    "oo",
+    "uu"
+   ],
+   [
+    "d",
+    "d"
+   ]
+  ],
+  "new": [
+   {
+    "letters": "goo",
+    "sounds": [
+     "g",
+     "uu"
+    ]
+   },
+   {
+    "letters": "d",
+    "sounds": [
+     "d"
+    ]
+   }
+  ],
+  "ipa": "ɡʊd"
+ },
+ "green": {
+  "old": [
+   [
+    "g",
+    "g"
+   ],
+   [
+    "r",
+    "r"
+   ],
+   [
+    "ee",
+    "iy"
+   ],
+   [
+    "n",
+    "n"
+   ]
+  ],
+  "new": [
+   {
+    "letters": "g",
+    "sounds": [
+     "g"
+    ]
+   },
+   {
+    "letters": "ree",
+    "sounds": [
+     "r",
+     "iy"
+    ]
+   },
+   {
+    "letters": "n",
+    "sounds": [
+     "n"
+    ]
+   }
+  ],
+  "ipa": "ɡriːn"
+ },
+ "happy": {
+  "old": [
+   [
+    "h",
+    "h"
+   ],
+   [
+    "a",
+    "ae"
+   ],
+   [
+    "pp",
+    "p"
+   ],
+   [
+    "y",
+    "iy"
+   ]
+  ],
+  "new": [
+   {
+    "letters": "ha",
+    "sounds": [
+     "h",
+     "ae"
+    ]
+   },
+   {
+    "letters": "ppy",
+    "sounds": [
+     "p",
+     "iy"
+    ]
+   }
+  ],
+  "ipa": "hæpiː"
+ },
+ "home": {
+  "old": [
+   [
+    "h",
+    "h"
+   ],
+   [
+    "o",
+    "oh"
+   ],
+   [
+    "m",
+    "m"
+   ],
+   [
+    "e",
+    null
+   ]
+  ],
+  "new": [
+   {
+    "letters": "ho",
+    "sounds": [
+     "h",
+     "oh"
+    ]
+   },
+   {
+    "letters": "me",
+    "sounds": [
+     "m"
+    ]
+   }
+  ],
+  "ipa": "hoʊm"
+ },
+ "hungry": {
+  "old": [
+   [
+    "h",
+    "h"
+   ],
+   [
+    "u",
+    "ah"
+   ],
+   [
+    "n",
+    "ng"
+   ],
+   [
+    "g",
+    "g"
+   ],
+   [
+    "r",
+    "r"
+   ],
+   [
+    "y",
+    "iy"
+   ]
+  ],
+  "new": [
+   {
+    "letters": "hu",
+    "sounds": [
+     "h",
+     "ah"
+    ]
+   },
+   {
+    "letters": "n",
+    "sounds": [
+     "ng"
+    ]
+   },
+   {
+    "letters": "g",
+    "sounds": [
+     "g"
+    ]
+   },
+   {
+    "letters": "ry",
+    "sounds": [
+     "r",
+     "iy"
+    ]
+   }
+  ],
+  "ipa": "hʌŋɡriː"
+ },
+ "i": {
+  "old": [
+   [
+    "I",
+    "ay"
+   ]
+  ],
+  "new": [
+   {
+    "letters": "I",
+    "sounds": [
+     "ay"
+    ]
+   }
+  ],
+  "ipa": "aɪ"
+ },
+ "in": {
+  "old": [
+   [
+    "i",
+    "ih"
+   ],
+   [
+    "n",
+    "n"
+   ]
+  ],
+  "new": [
+   {
+    "letters": "i",
+    "sounds": [
+     "ih"
+    ]
+   },
+   {
+    "letters": "n",
+    "sounds": [
+     "n"
+    ]
+   }
+  ],
+  "ipa": "ɪn"
+ },
+ "is": {
+  "old": [
+   [
+    "i",
+    "ih"
+   ],
+   [
+    "s",
+    "z"
+   ]
+  ],
+  "new": [
+   {
+    "letters": "i",
+    "sounds": [
+     "ih"
+    ]
+   },
+   {
+    "letters": "s",
+    "sounds": [
+     "z"
+    ]
+   }
+  ],
+  "ipa": "ɪz"
+ },
+ "it": {
+  "old": [
+   [
+    "i",
+    "ih"
+   ],
+   [
+    "t",
+    "t"
+   ]
+  ],
+  "new": [
+   {
+    "letters": "i",
+    "sounds": [
+     "ih"
+    ]
+   },
+   {
+    "letters": "t",
+    "sounds": [
+     "t"
+    ]
+   }
+  ],
+  "ipa": "ɪt"
+ },
+ "kitchen": {
+  "old": [
+   [
+    "k",
+    "k"
+   ],
+   [
+    "i",
+    "ih"
+   ],
+   [
+    "tch",
+    "ch"
+   ],
+   [
+    "e",
+    "uh"
+   ],
+   [
+    "n",
+    "n"
+   ]
+  ],
+  "new": [
+   {
+    "letters": "ki",
+    "sounds": [
+     "k",
+     "ih"
+    ]
+   },
+   {
+    "letters": "tche",
+    "sounds": [
+     "ch",
+     "uh"
+    ]
+   },
+   {
+    "letters": "n",
+    "sounds": [
+     "n"
+    ]
+   }
+  ],
+  "ipa": "kɪtʃən"
+ },
+ "lets": {
+  "old": [
+   [
+    "l",
+    "l"
+   ],
+   [
+    "e",
+    "eh"
+   ],
+   [
+    "t's",
+    "ts"
+   ]
+  ],
+  "new": [
+   {
+    "letters": "le",
+    "sounds": [
+     "l",
+     "eh"
+    ]
+   },
+   {
+    "letters": "t's",
+    "sounds": [
+     "ts"
+    ]
+   }
+  ],
+  "ipa": "lets"
+ },
+ "little": {
+  "old": [
+   [
+    "l",
+    "l"
+   ],
+   [
+    "i",
+    "ih"
+   ],
+   [
+    "tt",
+    "t"
+   ],
+   [
+    "le",
+    "el"
+   ]
+  ],
+  "new": [
+   {
+    "letters": "li",
+    "sounds": [
+     "l",
+     "ih"
+    ]
+   },
+   {
+    "letters": "ttle",
+    "sounds": [
+     "t",
+     "el"
+    ]
+   }
+  ],
+  "ipa": "lɪtəl"
+ },
+ "look": {
+  "old": [
+   [
+    "l",
+    "l"
+   ],
+   [
+    "oo",
+    "uu"
+   ],
+   [
+    "k",
+    "k"
+   ]
+  ],
+  "new": [
+   {
+    "letters": "loo",
+    "sounds": [
+     "l",
+     "uu"
+    ]
+   },
+   {
+    "letters": "k",
+    "sounds": [
+     "k"
+    ]
+   }
+  ],
+  "ipa": "lʊk"
+ },
+ "looks": {
+  "old": [
+   [
+    "l",
+    "l"
+   ],
+   [
+    "oo",
+    "uu"
+   ],
+   [
+    "k",
+    "k"
+   ],
+   [
+    "s",
+    "s"
+   ]
+  ],
+  "new": [
+   {
+    "letters": "loo",
+    "sounds": [
+     "l",
+     "uu"
+    ]
+   },
+   {
+    "letters": "k",
+    "sounds": [
+     "k"
+    ]
+   },
+   {
+    "letters": "s",
+    "sounds": [
+     "s"
+    ]
+   }
+  ],
+  "ipa": "lʊks"
+ },
+ "love": {
+  "old": [
+   [
+    "l",
+    "l"
+   ],
+   [
+    "o",
+    "ah"
+   ],
+   [
+    "v",
+    "v"
+   ],
+   [
+    "e",
+    null
+   ]
+  ],
+  "new": [
+   {
+    "letters": "lo",
+    "sounds": [
+     "l",
+     "ah"
+    ]
+   },
+   {
+    "letters": "ve",
+    "sounds": [
+     "v"
+    ]
+   }
+  ],
+  "ipa": "lʌv"
+ },
+ "milk": {
+  "old": [
+   [
+    "m",
+    "m"
+   ],
+   [
+    "i",
+    "ih"
+   ],
+   [
+    "l",
+    "l"
+   ],
+   [
+    "k",
+    "k"
+   ]
+  ],
+  "new": [
+   {
+    "letters": "mi",
+    "sounds": [
+     "m",
+     "ih"
+    ]
+   },
+   {
+    "letters": "l",
+    "sounds": [
+     "l"
+    ]
+   },
+   {
+    "letters": "k",
+    "sounds": [
+     "k"
+    ]
+   }
+  ],
+  "ipa": "mɪlk"
+ },
+ "mom": {
+  "old": [
+   [
+    "m",
+    "m"
+   ],
+   [
+    "o",
+    "aa"
+   ],
+   [
+    "m",
+    "m"
+   ]
+  ],
+  "new": [
+   {
+    "letters": "mo",
+    "sounds": [
+     "m",
+     "aa"
+    ]
+   },
+   {
+    "letters": "m",
+    "sounds": [
+     "m"
+    ]
+   }
+  ],
+  "ipa": "mɑm"
+ },
+ "momo": {
+  "old": [
+   [
+    "m",
+    "m"
+   ],
+   [
+    "o",
+    "oh"
+   ],
+   [
+    "m",
+    "m"
+   ],
+   [
+    "o",
+    "oh"
+   ]
+  ],
+  "new": [
+   {
+    "letters": "mo",
+    "sounds": [
+     "m",
+     "oh"
+    ]
+   },
+   {
+    "letters": "mo",
+    "sounds": [
+     "m",
+     "oh"
+    ]
+   }
+  ],
+  "ipa": "moʊmoʊ"
+ },
+ "morning": {
+  "old": [
+   [
+    "m",
+    "m"
+   ],
+   [
+    "or",
+    "or"
+   ],
+   [
+    "n",
+    "n"
+   ],
+   [
+    "i",
+    "ih"
+   ],
+   [
+    "ng",
+    "ng"
+   ]
+  ],
+  "new": [
+   {
+    "letters": "mor",
+    "sounds": [
+     "m",
+     "or"
+    ]
+   },
+   {
+    "letters": "ni",
+    "sounds": [
+     "n",
+     "ih"
+    ]
+   },
+   {
+    "letters": "ng",
+    "sounds": [
+     "ng"
+    ]
+   }
+  ],
+  "ipa": "mɔrnɪŋ"
+ },
+ "my": {
+  "old": [
+   [
+    "m",
+    "m"
+   ],
+   [
+    "y",
+    "ay"
+   ]
+  ],
+  "new": [
+   {
+    "letters": "my",
+    "sounds": [
+     "m",
+     "ay"
+    ]
+   }
+  ],
+  "ipa": "maɪ"
+ },
+ "new": {
+  "old": [
+   [
+    "n",
+    "n"
+   ],
+   [
+    "ew",
+    "uw"
+   ]
+  ],
+  "new": [
+   {
+    "letters": "new",
+    "sounds": [
+     "n",
+     "uw"
+    ]
+   }
+  ],
+  "ipa": "nuː"
+ },
+ "no": {
+  "old": [
+   [
+    "n",
+    "n"
+   ],
+   [
+    "o",
+    "oh"
+   ]
+  ],
+  "new": [
+   {
+    "letters": "no",
+    "sounds": [
+     "n",
+     "oh"
+    ]
+   }
+  ],
+  "ipa": "noʊ"
+ },
+ "oh": {
+  "old": [
+   [
+    "oh",
+    "oh"
+   ]
+  ],
+  "new": [
+   {
+    "letters": "oh",
+    "sounds": [
+     "oh"
+    ]
+   }
+  ],
+  "ipa": "oʊ"
+ },
+ "on": {
+  "old": [
+   [
+    "o",
+    "aa"
+   ],
+   [
+    "n",
+    "n"
+   ]
+  ],
+  "new": [
+   {
+    "letters": "o",
+    "sounds": [
+     "aa"
+    ]
+   },
+   {
+    "letters": "n",
+    "sounds": [
+     "n"
+    ]
+   }
+  ],
+  "ipa": "ɑn"
+ },
+ "one": {
+  "old": [
+   [
+    "one",
+    "w"
+   ],
+   [
+    "",
+    "ah"
+   ],
+   [
+    "",
+    "n"
+   ]
+  ],
+  "new": [
+   {
+    "letters": "one",
+    "sounds": [
+     "w",
+     "ah"
+    ]
+   },
+   {
+    "letters": "",
+    "sounds": [
+     "n"
+    ]
+   }
+  ],
+  "ipa": "wʌn"
+ },
+ "opens": {
+  "old": [
+   [
+    "o",
+    "oh"
+   ],
+   [
+    "p",
+    "p"
+   ],
+   [
+    "e",
+    "uh"
+   ],
+   [
+    "n",
+    "n"
+   ],
+   [
+    "s",
+    "z"
+   ]
+  ],
+  "new": [
+   {
+    "letters": "o",
+    "sounds": [
+     "oh"
+    ]
+   },
+   {
+    "letters": "pe",
+    "sounds": [
+     "p",
+     "uh"
+    ]
+   },
+   {
+    "letters": "n",
+    "sounds": [
+     "n"
+    ]
+   },
+   {
+    "letters": "s",
+    "sounds": [
+     "z"
+    ]
+   }
+  ],
+  "ipa": "oʊpənz"
+ },
+ "park": {
+  "old": [
+   [
+    "p",
+    "p"
+   ],
+   [
+    "ar",
+    "ar"
+   ],
+   [
+    "k",
+    "k"
+   ]
+  ],
+  "new": [
+   {
+    "letters": "par",
+    "sounds": [
+     "p",
+     "ar"
+    ]
+   },
+   {
+    "letters": "k",
+    "sounds": [
+     "k"
+    ]
+   }
+  ],
+  "ipa": "pɑrk"
+ },
+ "pink": {
+  "old": [
+   [
+    "p",
+    "p"
+   ],
+   [
+    "i",
+    "ih"
+   ],
+   [
+    "n",
+    "ng"
+   ],
+   [
+    "k",
+    "k"
+   ]
+  ],
+  "new": [
+   {
+    "letters": "pi",
+    "sounds": [
+     "p",
+     "ih"
+    ]
+   },
+   {
+    "letters": "n",
+    "sounds": [
+     "ng"
+    ]
+   },
+   {
+    "letters": "k",
+    "sounds": [
+     "k"
+    ]
+   }
+  ],
+  "ipa": "pɪŋk"
+ },
+ "play": {
+  "old": [
+   [
+    "p",
+    "p"
+   ],
+   [
+    "l",
+    "l"
+   ],
+   [
+    "ay",
+    "ey"
+   ]
+  ],
+  "new": [
+   {
+    "letters": "p",
+    "sounds": [
+     "p"
+    ]
+   },
+   {
+    "letters": "lay",
+    "sounds": [
+     "l",
+     "ey"
+    ]
+   }
+  ],
+  "ipa": "pleɪ"
+ },
+ "pond": {
+  "old": [
+   [
+    "p",
+    "p"
+   ],
+   [
+    "o",
+    "aa"
+   ],
+   [
+    "n",
+    "n"
+   ],
+   [
+    "d",
+    "d"
+   ]
+  ],
+  "new": [
+   {
+    "letters": "po",
+    "sounds": [
+     "p",
+     "aa"
+    ]
+   },
+   {
+    "letters": "n",
+    "sounds": [
+     "n"
+    ]
+   },
+   {
+    "letters": "d",
+    "sounds": [
+     "d"
+    ]
+   }
+  ],
+  "ipa": "pɑnd"
+ },
+ "rain": {
+  "old": [
+   [
+    "r",
+    "r"
+   ],
+   [
+    "ai",
+    "ey"
+   ],
+   [
+    "n",
+    "n"
+   ]
+  ],
+  "new": [
+   {
+    "letters": "rai",
+    "sounds": [
+     "r",
+     "ey"
+    ]
+   },
+   {
+    "letters": "n",
+    "sounds": [
+     "n"
+    ]
+   }
+  ],
+  "ipa": "reɪn"
+ },
+ "red": {
+  "old": [
+   [
+    "r",
+    "r"
+   ],
+   [
+    "e",
+    "eh"
+   ],
+   [
+    "d",
+    "d"
+   ]
+  ],
+  "new": [
+   {
+    "letters": "re",
+    "sounds": [
+     "r",
+     "eh"
+    ]
+   },
+   {
+    "letters": "d",
+    "sounds": [
+     "d"
+    ]
+   }
+  ],
+  "ipa": "red"
+ },
+ "ride": {
+  "old": [
+   [
+    "r",
+    "r"
+   ],
+   [
+    "i",
+    "ay"
+   ],
+   [
+    "d",
+    "d"
+   ],
+   [
+    "e",
+    null
+   ]
+  ],
+  "new": [
+   {
+    "letters": "ri",
+    "sounds": [
+     "r",
+     "ay"
+    ]
+   },
+   {
+    "letters": "de",
+    "sounds": [
+     "d"
+    ]
+   }
+  ],
+  "ipa": "raɪd"
+ },
+ "run": {
+  "old": [
+   [
+    "r",
+    "r"
+   ],
+   [
+    "u",
+    "ah"
+   ],
+   [
+    "n",
+    "n"
+   ]
+  ],
+  "new": [
+   {
+    "letters": "ru",
+    "sounds": [
+     "r",
+     "ah"
+    ]
+   },
+   {
+    "letters": "n",
+    "sounds": [
+     "n"
+    ]
+   }
+  ],
+  "ipa": "rʌn"
+ },
+ "sandbox": {
+  "old": [
+   [
+    "s",
+    "s"
+   ],
+   [
+    "a",
+    "ae"
+   ],
+   [
+    "n",
+    "n"
+   ],
+   [
+    "d",
+    "d"
+   ],
+   [
+    "b",
+    "b"
+   ],
+   [
+    "o",
+    "aa"
+   ],
+   [
+    "x",
+    "ks"
+   ]
+  ],
+  "new": [
+   {
+    "letters": "sa",
+    "sounds": [
+     "s",
+     "ae"
+    ]
+   },
+   {
+    "letters": "n",
+    "sounds": [
+     "n"
+    ]
+   },
+   {
+    "letters": "d",
+    "sounds": [
+     "d"
+    ]
+   },
+   {
+    "letters": "bo",
+    "sounds": [
+     "b",
+     "aa"
+    ]
+   },
+   {
+    "letters": "x",
+    "sounds": [
+     "ks"
+    ]
+   }
+  ],
+  "ipa": "sændbɑks"
+ },
+ "sees": {
+  "old": [
+   [
+    "s",
+    "s"
+   ],
+   [
+    "ee",
+    "iy"
+   ],
+   [
+    "s",
+    "z"
+   ]
+  ],
+  "new": [
+   {
+    "letters": "see",
+    "sounds": [
+     "s",
+     "iy"
+    ]
+   },
+   {
+    "letters": "s",
+    "sounds": [
+     "z"
+    ]
+   }
+  ],
+  "ipa": "siːz"
+ },
+ "she": {
+  "old": [
+   [
+    "sh",
+    "sh"
+   ],
+   [
+    "e",
+    "iy"
+   ]
+  ],
+  "new": [
+   {
+    "letters": "she",
+    "sounds": [
+     "sh",
+     "iy"
+    ]
+   }
+  ],
+  "ipa": "ʃiː"
+ },
+ "sings": {
+  "old": [
+   [
+    "s",
+    "s"
+   ],
+   [
+    "i",
+    "ih"
+   ],
+   [
+    "ng",
+    "ng"
+   ],
+   [
+    "s",
+    "z"
+   ]
+  ],
+  "new": [
+   {
+    "letters": "si",
+    "sounds": [
+     "s",
+     "ih"
+    ]
+   },
+   {
+    "letters": "ng",
+    "sounds": [
+     "ng"
+    ]
+   },
+   {
+    "letters": "s",
+    "sounds": [
+     "z"
+    ]
+   }
+  ],
+  "ipa": "sɪŋz"
+ },
+ "slide": {
+  "old": [
+   [
+    "s",
+    "s"
+   ],
+   [
+    "l",
+    "l"
+   ],
+   [
+    "i",
+    "ay"
+   ],
+   [
+    "d",
+    "d"
+   ],
+   [
+    "e",
+    null
+   ]
+  ],
+  "new": [
+   {
+    "letters": "s",
+    "sounds": [
+     "s"
+    ]
+   },
+   {
+    "letters": "li",
+    "sounds": [
+     "l",
+     "ay"
+    ]
+   },
+   {
+    "letters": "de",
+    "sounds": [
+     "d"
+    ]
+   }
+  ],
+  "ipa": "slaɪd"
+ },
+ "smile": {
+  "old": [
+   [
+    "s",
+    "s"
+   ],
+   [
+    "m",
+    "m"
+   ],
+   [
+    "i",
+    "ay"
+   ],
+   [
+    "l",
+    "l"
+   ],
+   [
+    "e",
+    null
+   ]
+  ],
+  "new": [
+   {
+    "letters": "s",
+    "sounds": [
+     "s"
+    ]
+   },
+   {
+    "letters": "mi",
+    "sounds": [
+     "m",
+     "ay"
+    ]
+   },
+   {
+    "letters": "le",
+    "sounds": [
+     "l"
+    ]
+   }
+  ],
+  "ipa": "smaɪl"
+ },
+ "so": {
+  "old": [
+   [
+    "s",
+    "s"
+   ],
+   [
+    "o",
+    "oh"
+   ]
+  ],
+  "new": [
+   {
+    "letters": "so",
+    "sounds": [
+     "s",
+     "oh"
+    ]
+   }
+  ],
+  "ipa": "soʊ"
+ },
+ "some": {
+  "old": [
+   [
+    "s",
+    "s"
+   ],
+   [
+    "o",
+    "ah"
+   ],
+   [
+    "m",
+    "m"
+   ],
+   [
+    "e",
+    null
+   ]
+  ],
+  "new": [
+   {
+    "letters": "so",
+    "sounds": [
+     "s",
+     "ah"
+    ]
+   },
+   {
+    "letters": "me",
+    "sounds": [
+     "m"
+    ]
+   }
+  ],
+  "ipa": "sʌm"
+ },
+ "splash": {
+  "old": [
+   [
+    "s",
+    "s"
+   ],
+   [
+    "p",
+    "p"
+   ],
+   [
+    "l",
+    "l"
+   ],
+   [
+    "a",
+    "ae"
+   ],
+   [
+    "sh",
+    "sh"
+   ]
+  ],
+  "new": [
+   {
+    "letters": "s",
+    "sounds": [
+     "s"
+    ]
+   },
+   {
+    "letters": "p",
+    "sounds": [
+     "p"
+    ]
+   },
+   {
+    "letters": "la",
+    "sounds": [
+     "l",
+     "ae"
+    ]
+   },
+   {
+    "letters": "sh",
+    "sounds": [
+     "sh"
+    ]
+   }
+  ],
+  "ipa": "splæʃ"
+ },
+ "starts": {
+  "old": [
+   [
+    "s",
+    "s"
+   ],
+   [
+    "t",
+    "t"
+   ],
+   [
+    "ar",
+    "ar"
+   ],
+   [
+    "ts",
+    "ts"
+   ]
+  ],
+  "new": [
+   {
+    "letters": "s",
+    "sounds": [
+     "s"
+    ]
+   },
+   {
+    "letters": "tar",
+    "sounds": [
+     "t",
+     "ar"
+    ]
+   },
+   {
+    "letters": "ts",
+    "sounds": [
+     "ts"
+    ]
+   }
+  ],
+  "ipa": "stɑrts"
+ },
+ "sun": {
+  "old": [
+   [
+    "s",
+    "s"
+   ],
+   [
+    "u",
+    "ah"
+   ],
+   [
+    "n",
+    "n"
+   ]
+  ],
+  "new": [
+   {
+    "letters": "su",
+    "sounds": [
+     "s",
+     "ah"
+    ]
+   },
+   {
+    "letters": "n",
+    "sounds": [
+     "n"
+    ]
+   }
+  ],
+  "ipa": "sʌn"
+ },
+ "sunday": {
+  "old": [
+   [
+    "s",
+    "s"
+   ],
+   [
+    "u",
+    "ah"
+   ],
+   [
+    "n",
+    "n"
+   ],
+   [
+    "d",
+    "d"
+   ],
+   [
+    "ay",
+    "ey"
+   ]
+  ],
+  "new": [
+   {
+    "letters": "su",
+    "sounds": [
+     "s",
+     "ah"
+    ]
+   },
+   {
+    "letters": "n",
+    "sounds": [
+     "n"
+    ]
+   },
+   {
+    "letters": "day",
+    "sounds": [
+     "d",
+     "ey"
+    ]
+   }
+  ],
+  "ipa": "sʌndeɪ"
+ },
+ "swims": {
+  "old": [
+   [
+    "s",
+    "s"
+   ],
+   [
+    "w",
+    "w"
+   ],
+   [
+    "i",
+    "ih"
+   ],
+   [
+    "m",
+    "m"
+   ],
+   [
+    "s",
+    "z"
+   ]
+  ],
+  "new": [
+   {
+    "letters": "s",
+    "sounds": [
+     "s"
+    ]
+   },
+   {
+    "letters": "wi",
+    "sounds": [
+     "w",
+     "ih"
+    ]
+   },
+   {
+    "letters": "m",
+    "sounds": [
+     "m"
+    ]
+   },
+   {
+    "letters": "s",
+    "sounds": [
+     "z"
+    ]
+   }
+  ],
+  "ipa": "swɪmz"
+ },
+ "swing": {
+  "old": [
+   [
+    "s",
+    "s"
+   ],
+   [
+    "w",
+    "w"
+   ],
+   [
+    "i",
+    "ih"
+   ],
+   [
+    "ng",
+    "ng"
+   ]
+  ],
+  "new": [
+   {
+    "letters": "s",
+    "sounds": [
+     "s"
+    ]
+   },
+   {
+    "letters": "wi",
+    "sounds": [
+     "w",
+     "ih"
+    ]
+   },
+   {
+    "letters": "ng",
+    "sounds": [
+     "ng"
+    ]
+   }
+  ],
+  "ipa": "swɪŋ"
+ },
+ "the": {
+  "old": [
+   [
+    "th",
+    "dh"
+   ],
+   [
+    "e",
+    "uh"
+   ]
+  ],
+  "new": [
+   {
+    "letters": "the",
+    "sounds": [
+     "dh",
+     "uh"
+    ]
+   }
+  ],
+  "ipa": "ðə"
+ },
+ "three": {
+  "old": [
+   [
+    "th",
+    "th"
+   ],
+   [
+    "r",
+    "r"
+   ],
+   [
+    "ee",
+    "iy"
+   ]
+  ],
+  "new": [
+   {
+    "letters": "th",
+    "sounds": [
+     "th"
+    ]
+   },
+   {
+    "letters": "ree",
+    "sounds": [
+     "r",
+     "iy"
+    ]
+   }
+  ],
+  "ipa": "θriː"
+ },
+ "to": {
+  "old": [
+   [
+    "t",
+    "t"
+   ],
+   [
+    "o",
+    "uw"
+   ]
+  ],
+  "new": [
+   {
+    "letters": "to",
+    "sounds": [
+     "t",
+     "uw"
+    ]
+   }
+  ],
+  "ipa": "tuː"
+ },
+ "today": {
+  "old": [
+   [
+    "t",
+    "t"
+   ],
+   [
+    "o",
+    "uh"
+   ],
+   [
+    "d",
+    "d"
+   ],
+   [
+    "ay",
+    "ey"
+   ]
+  ],
+  "new": [
+   {
+    "letters": "to",
+    "sounds": [
+     "t",
+     "uh"
+    ]
+   },
+   {
+    "letters": "day",
+    "sounds": [
+     "d",
+     "ey"
+    ]
+   }
+  ],
+  "ipa": "tədeɪ"
+ },
+ "together": {
+  "old": [
+   [
+    "t",
+    "t"
+   ],
+   [
+    "o",
+    "uh"
+   ],
+   [
+    "g",
+    "g"
+   ],
+   [
+    "e",
+    "eh"
+   ],
+   [
+    "th",
+    "dh"
+   ],
+   [
+    "er",
+    "er"
+   ]
+  ],
+  "new": [
+   {
+    "letters": "to",
+    "sounds": [
+     "t",
+     "uh"
+    ]
+   },
+   {
+    "letters": "ge",
+    "sounds": [
+     "g",
+     "eh"
+    ]
+   },
+   {
+    "letters": "ther",
+    "sounds": [
+     "dh",
+     "er"
+    ]
+   }
+  ],
+  "ipa": "təɡeðɚ"
+ },
+ "tree": {
+  "old": [
+   [
+    "t",
+    "t"
+   ],
+   [
+    "r",
+    "r"
+   ],
+   [
+    "ee",
+    "iy"
+   ]
+  ],
+  "new": [
+   {
+    "letters": "t",
+    "sounds": [
+     "t"
+    ]
+   },
+   {
+    "letters": "ree",
+    "sounds": [
+     "r",
+     "iy"
+    ]
+   }
+  ],
+  "ipa": "triː"
+ },
+ "two": {
+  "old": [
+   [
+    "t",
+    "t"
+   ],
+   [
+    "wo",
+    "uw"
+   ]
+  ],
+  "new": [
+   {
+    "letters": "two",
+    "sounds": [
+     "t",
+     "uw"
+    ]
+   }
+  ],
+  "ipa": "tuː"
+ },
+ "up": {
+  "old": [
+   [
+    "u",
+    "ah"
+   ],
+   [
+    "p",
+    "p"
+   ]
+  ],
+  "new": [
+   {
+    "letters": "u",
+    "sounds": [
+     "ah"
+    ]
+   },
+   {
+    "letters": "p",
+    "sounds": [
+     "p"
+    ]
+   }
+  ],
+  "ipa": "ʌp"
+ },
+ "very": {
+  "old": [
+   [
+    "v",
+    "v"
+   ],
+   [
+    "e",
+    "eh"
+   ],
+   [
+    "r",
+    "r"
+   ],
+   [
+    "y",
+    "iy"
+   ]
+  ],
+  "new": [
+   {
+    "letters": "ve",
+    "sounds": [
+     "v",
+     "eh"
+    ]
+   },
+   {
+    "letters": "ry",
+    "sounds": [
+     "r",
+     "iy"
+    ]
+   }
+  ],
+  "ipa": "veriː"
+ },
+ "wake": {
+  "old": [
+   [
+    "w",
+    "w"
+   ],
+   [
+    "a",
+    "ey"
+   ],
+   [
+    "k",
+    "k"
+   ],
+   [
+    "e",
+    null
+   ]
+  ],
+  "new": [
+   {
+    "letters": "wa",
+    "sounds": [
+     "w",
+     "ey"
+    ]
+   },
+   {
+    "letters": "ke",
+    "sounds": [
+     "k"
+    ]
+   }
+  ],
+  "ipa": "weɪk"
+ },
+ "wakes": {
+  "old": [
+   [
+    "w",
+    "w"
+   ],
+   [
+    "a",
+    "ey"
+   ],
+   [
+    "k",
+    "k"
+   ],
+   [
+    "e",
+    null
+   ],
+   [
+    "s",
+    "s"
+   ]
+  ],
+  "new": [
+   {
+    "letters": "wa",
+    "sounds": [
+     "w",
+     "ey"
+    ]
+   },
+   {
+    "letters": "ke",
+    "sounds": [
+     "k"
+    ]
+   },
+   {
+    "letters": "s",
+    "sounds": [
+     "s"
+    ]
+   }
+  ],
+  "ipa": "weɪks"
+ },
+ "was": {
+  "old": [
+   [
+    "w",
+    "w"
+   ],
+   [
+    "a",
+    "ah"
+   ],
+   [
+    "s",
+    "z"
+   ]
+  ],
+  "new": [
+   {
+    "letters": "wa",
+    "sounds": [
+     "w",
+     "ah"
+    ]
+   },
+   {
+    "letters": "s",
+    "sounds": [
+     "z"
+    ]
+   }
+  ],
+  "ipa": "wʌz"
+ },
+ "we": {
+  "old": [
+   [
+    "w",
+    "w"
+   ],
+   [
+    "e",
+    "iy"
+   ]
+  ],
+  "new": [
+   {
+    "letters": "we",
+    "sounds": [
+     "w",
+     "iy"
+    ]
+   }
+  ],
+  "ipa": "wiː"
+ },
+ "wheee": {
+  "old": [
+   [
+    "wh",
+    "w"
+   ],
+   [
+    "eee",
+    "iy"
+   ]
+  ],
+  "new": [
+   {
+    "letters": "wheee",
+    "sounds": [
+     "w",
+     "iy"
+    ]
+   }
+  ],
+  "ipa": "wiː"
+ },
+ "with": {
+  "old": [
+   [
+    "w",
+    "w"
+   ],
+   [
+    "i",
+    "ih"
+   ],
+   [
+    "th",
+    "th"
+   ]
+  ],
+  "new": [
+   {
+    "letters": "wi",
+    "sounds": [
+     "w",
+     "ih"
+    ]
+   },
+   {
+    "letters": "th",
+    "sounds": [
+     "th"
+    ]
+   }
+  ],
+  "ipa": "wɪθ"
+ },
+ "yellow": {
+  "old": [
+   [
+    "y",
+    "y"
+   ],
+   [
+    "e",
+    "eh"
+   ],
+   [
+    "ll",
+    "l"
+   ],
+   [
+    "ow",
+    "oh"
+   ]
+  ],
+  "new": [
+   {
+    "letters": "ye",
+    "sounds": [
+     "y",
+     "eh"
+    ]
+   },
+   {
+    "letters": "llow",
+    "sounds": [
+     "l",
+     "oh"
+    ]
+   }
+  ],
+  "ipa": "jeloʊ"
+ },
+ "yum": {
+  "old": [
+   [
+    "y",
+    "y"
+   ],
+   [
+    "u",
+    "ah"
+   ],
+   [
+    "m",
+    "m"
+   ]
+  ],
+  "new": [
+   {
+    "letters": "yu",
+    "sounds": [
+     "y",
+     "ah"
+    ]
+   },
+   {
+    "letters": "m",
+    "sounds": [
+     "m"
+    ]
+   }
+  ],
+  "ipa": "jʌm"
+ }
+}

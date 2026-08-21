@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>l・m の音くらべ（その5・単語から抜き出す）</title>
+<style>
+  body { font-family: -apple-system, sans-serif; margin: 0; padding: 24px 20px 70px;
+         background: #fffdf5; color: #333; line-height: 1.7; max-width: 700px; }
+  h1 { font-size: 22px; margin: 0 0 8px; }
+  h2 { font-size: 19px; margin: 30px 0 4px; padding-top: 16px; border-top: 2px solid #f0e6c8; }
+  h2 .sub { font-size: 14px; color: #888; font-weight: normal; }
+  p.lead { font-size: 16px; margin: 0 0 6px; color: #555; }
+  .note { font-size: 14px; color: #888; margin: 0 0 18px; }
+  .box { background: #f4f7fb; border-radius: 14px; padding: 12px 14px; font-size: 15px; margin: 0 0 22px; }
+  .box b { color: #2f6fd0; }
+  .done { background: #eef7ee; border-radius: 14px; padding: 10px 14px; font-size: 15px; margin: 0 0 22px; }
+  .grp { font-size: 13px; color: #b09050; font-weight: bold; margin: 16px 0 6px; }
+  .cand { border: 2px solid #f0e6c8; border-radius: 16px; background: #fff;
+          padding: 11px 13px; margin-bottom: 10px; }
+  .cand.now { background: #faf7f0; }
+  .cand.ng  { background: #fdf1f1; border-color: #f0d6d6; opacity: .72; }
+  .cand.pick { border-color: #7fbf7f; box-shadow: 0 0 0 3px #e6f4e6; }
+  .cand h3 { font-size: 16px; margin: 0 0 2px; }
+  .cand .how { font-size: 13.5px; color: #888; margin: 0 0 9px; }
+  .cand .num { font-size: 12.5px; color: #aaa; margin-top: 7px; }
+  .cand.ng .num { color: #c05a5a; }
+  .meter { display: flex; align-items: center; gap: 8px; margin-top: 8px; font-size: 12px; color: #aaa; }
+  .meter .track { flex: 1; height: 8px; border-radius: 4px; background: #eee; position: relative; }
+  .meter .track i { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 4px; }
+  .meter .track b { position: absolute; top: -3px; bottom: -3px; width: 2px; background: #c05a5a; }
+  .shape { display: flex; align-items: flex-end; gap: 2px; height: 26px; margin-top: 7px; }
+  .shape i { flex: 0 0 8px; background: #ffd166; border-radius: 2px 2px 0 0; }
+  .cand.now .shape i { background: #e0b4b4; }
+  .btns { display: flex; gap: 8px; }
+  button { flex: 1; padding: 13px 8px; font-size: 15.5px; font-weight: bold; border: none;
+           border-radius: 13px; background: #ffd166; color: #333; box-shadow: 0 3px 0 #e0b44e; }
+  button.sub { background: #eef3fa; box-shadow: 0 3px 0 #ccd8e8; }
+  button:active { transform: translateY(3px); box-shadow: none; }
+  .ref { margin: 8px 0 16px; }
+  .ref button { width: 100%; }
+</style>
+</head>
+<body>
+<h1>l・m の音くらべ（その5）</h1>
+<p class="lead">単語（blue・mom・milk）からそのまま抜き出したものを足しました。</p>
+<div class="done">✅ <b>n は今のままで確定</b>しました。このページからは外してあります。</div>
+<p class="note">結果は<b>はっきり分かれました</b>。<br>
+<b>m は単語から抜き出すのが一番でした</b>（mom の最後の m）。語末なので、もともと自然に消えていきます。<br>
+<b>l は単語から抜き出すとうまくいきません</b>。blue の l は母音に流れ込むので「終わり」がなく、
+milk の l は母音の色を持ち込んでしまいます（下の赤いカード）。</p>
+
+<div class="box">
+<b>緑のメーター</b>＝母音っぽさ。赤い線を越えると「ラ」「ム」が「ア」に化けます。<br>
+<b>黄色い棒グラフ</b>＝終わりの音量のかたち。右下がりなら自然に消えています。
+</div>
+
+<div id="list"></div>
+
+<script>
+const SOUNDS = [
+  { key:"l", label:"l", word:"blue", wsrc:"../words/blue.m4a",
+    before:["../phonics/b.m4a"], after:["../phonics/uw.m4a"], limit:0.45,
+    groups: [
+      ["今の音", [["now","① 今のまま","発音記号を単独で合成",0.18,0.44,[69,70,70,74,100,1],0]]],
+      ["出だしはそのまま＋終わりに本物の続きをつなぐ", [
+        ["3a","A：続きを 50ミリ秒","出だしは今と完全一致（1.00）",0.27,0.40,[100,78,71,46,0],0],
+        ["3b","B：続きを 80ミリ秒","出だしは今と完全一致（1.00）",0.26,0.43,[70,72,100,89,25],0],
+        ["3c","C：続きを 120ミリ秒","出だしは今と完全一致（1.00）",0.31,0.43,[100,78,65,46,0],0]]],
+      ["単語からそのまま抜き出す", [
+        ["w1","W1：blue の l","b のあと、母音に入る手前まで",0.17,0.34,[87,92,100,78,56,0],0],
+        ["w2","W2：milk の l 全部","母音のあと、k の口を閉じるまで",0.25,0.69,[83,95,99,45,18,0],0],
+        ["w3","W3：milk の l の後ろだけ","母音の色を避けた範囲",0.14,0.59,[0,37,100,77,24,5],0]]],
+    ]},
+  { key:"m", label:"m", word:"mom", wsrc:"../words/mom.m4a",
+    before:["../phonics/m.m4a","../phonics/aa.m4a"], after:[], limit:0.20,
+    groups: [
+      ["今の音", [["now","① 今のまま","発音記号を単独で合成",0.18,0.13,[81,83,80,80,100,0],0]]],
+      ["出だしはそのまま＋終わりに本物の続きをつなぐ", [
+        ["3a","A：続きを 50ミリ秒","出だしは今と完全一致（1.00）",0.26,0.14,[100,99,97,27,0],0],
+        ["3b","B：続きを 80ミリ秒","出だしは今と完全一致（1.00）",0.25,0.17,[66,97,100,88,8],0]]],
+      ["単語からそのまま抜き出す", [
+        ["w1","W1：mom の最後の m","語末なので、もともと自然に消えていく",0.23,0.20,[46,46,40,31,11,0],1],
+        ["w2","W2：mom の最初の m","語頭の m",0.15,0.25,[7,80,95,100,86,0],0]]],
+    ]},
+];
+const audio = new Audio(); audio.preload = "auto";
+let seqNo = 0;
+function play(p) {
+  return new Promise(res => {
+    audio.onended = audio.onerror = () => res();
+    audio.src = p + "?v=l5"; audio.play().catch(() => res());
+  });
+}
+function one(p) { seqNo++; play(p); }
+function srcOf(k, id) {
+  return id === "now" ? "../phonics/" + k + ".m4a" : "split/" + k + "-" + id + ".m4a";
+}
+async function inword(ki, id) {
+  const s = SOUNDS.find(x => x.key === ki), my = ++seqNo;
+  for (const p of [...s.before, srcOf(ki, id), ...s.after]) {
+    if (my !== seqNo) return;
+    await play(p);
+    if (my !== seqNo) return;
+    await new Promise(r => setTimeout(r, 160));
+  }
+  await new Promise(r => setTimeout(r, 200));
+  if (my !== seqNo) return;
+  await play(s.wsrc);
+}
+const meter = (v, limit) => `<div class="meter">母音っぽさ
+  <div class="track"><i style="width:${Math.min(100, v/1.2*100)}%;
+    background:${v > limit ? '#e08a8a' : '#7fbf7f'}"></i>
+    <b style="left:${limit/1.2*100}%"></b></div>${v.toFixed(2)}</div>`;
+const bars = a => '<div class="shape">' + a.map(v => `<i style="height:${Math.max(3,v)}%"></i>`).join("") + '</div>';
+document.getElementById("list").innerHTML = SOUNDS.map(s => `
+  <h2>${s.label} <span class="sub">— ${s.word} の中で聞きます</span></h2>
+  <div class="ref"><button class="sub" onclick="one('${s.wsrc}')">▶ お手本：${s.word}（単語まるごと）</button></div>
+  ${s.groups.map(([gname, rows]) => `<div class="grp">${gname}</div>` + rows.map(([id,name,how,sec,v,shape,pick]) => `
+    <div class="cand${id==='now'?' now':''}${v>s.limit?' ng':''}${pick?' pick':''}">
+      <h3>${name}${pick ? '　⭐' : ''}</h3>
+      <div class="how">${how}</div>
+      <div class="btns">
+        <button class="sub" onclick="one('${srcOf(s.key,id)}')">▶ ${s.label} だけ</button>
+        <button onclick="inword('${s.key}','${id}')">▶ 単語の中で</button>
+      </div>
+      ${meter(v, s.limit)}
+      ${bars(shape)}
+      <div class="num">全体 ${sec}秒${v>s.limit?'　⚠ 機械の判定：「ア」寄り':''}</div>
+    </div>`).join("")).join("")}`).join("");
+</script>
+</body>
+</html>

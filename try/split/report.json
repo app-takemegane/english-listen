@@ -1,0 +1,93 @@
+[
+ {
+  "unit": "k-ae",
+  "src": "新規",
+  "phonemes": "kˈæ",
+  "sec": 0.387,
+  "hz": 1209
+ },
+ {
+  "unit": "t",
+  "src": "既存 phonics/",
+  "sec": null
+ },
+ {
+  "unit": "b",
+  "src": "既存 phonics/",
+  "sec": null
+ },
+ {
+  "unit": "l-uw",
+  "src": "新規",
+  "phonemes": "lˈuː",
+  "sec": 0.502,
+  "hz": 673
+ },
+ {
+  "unit": "h-ae",
+  "src": "新規",
+  "phonemes": "hˈæ",
+  "sec": 0.344,
+  "hz": 1261
+ },
+ {
+  "unit": "p-iy",
+  "src": "新規",
+  "phonemes": "pˈiː",
+  "sec": 0.541,
+  "hz": 1167
+ },
+ {
+  "unit": "f",
+  "src": "既存 phonics/",
+  "sec": null
+ },
+ {
+  "unit": "r-eh",
+  "src": "新規",
+  "phonemes": "ɹˈɛ",
+  "sec": 0.391,
+  "hz": 965
+ },
+ {
+  "unit": "n",
+  "src": "既存 phonics/",
+  "sec": null
+ },
+ {
+  "unit": "d",
+  "src": "既存 phonics/",
+  "sec": null
+ },
+ {
+  "unit": "l-ow",
+  "src": "新規",
+  "phonemes": "lˈaʊ",
+  "sec": 0.555,
+  "hz": 1188
+ },
+ {
+  "unit": "er",
+  "src": "既存 phonics/",
+  "sec": null
+ },
+ {
+  "unit": "s-ae",
+  "src": "新規",
+  "phonemes": "sˈæ",
+  "sec": 0.426,
+  "hz": 1768
+ },
+ {
+  "unit": "b-aa",
+  "src": "新規",
+  "phonemes": "bˈɑː",
+  "sec": 0.416,
+  "hz": 900
+ },
+ {
+  "unit": "ks",
+  "src": "既存 phonics/",
+  "sec": null
+ }
+]

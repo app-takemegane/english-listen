@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>cat の「ca」音くらべ</title>
+<style>
+  body { font-family: -apple-system, sans-serif; margin: 0; padding: 24px 20px 70px;
+         background: #fffdf5; color: #333; line-height: 1.7; max-width: 700px; }
+  h1 { font-size: 22px; margin: 0 0 8px; }
+  p.lead { font-size: 16px; margin: 0 0 6px; color: #555; }
+  .note { font-size: 14px; color: #888; margin: 0 0 22px; }
+  .box { background: #f4f7fb; border-radius: 14px; padding: 12px 14px; font-size: 15px; margin: 0 0 22px; }
+  .box b { color: #2f6fd0; }
+  .cand { border: 2px solid #f0e6c8; border-radius: 16px; background: #fff;
+          padding: 12px 14px; margin-bottom: 14px; }
+  .cand h2 { font-size: 17px; margin: 0 0 2px; }
+  .cand .how { font-size: 14px; color: #888; margin: 0 0 10px; }
+  .cand .num { font-size: 13px; color: #aaa; margin-top: 8px; }
+  .btns { display: flex; gap: 8px; }
+  button { flex: 1; padding: 14px 8px; font-size: 16px; font-weight: bold; border: none;
+           border-radius: 13px; background: #ffd166; color: #333; box-shadow: 0 3px 0 #e0b44e; }
+  button.sub { background: #eef3fa; box-shadow: 0 3px 0 #ccd8e8; }
+  button:active { transform: translateY(3px); box-shadow: none; }
+  .ref { margin: 0 0 22px; }
+  .ref button { width: 100%; }
+</style>
+</head>
+<body>
+<h1>cat の「ca」音くらべ</h1>
+<p class="lead">「ca」が<b>「カッ」</b>に聞こえる件の作り直し候補です。</p>
+<p class="note">原因が分かりました。発音記号に<b>強さの印(ˈ)</b>を付けると、Ava は母音を半分に縮めます。<br>
+今のサンプルの母音は 0.17秒で、ほかの音の平均(0.38秒)の半分以下でした。</p>
+
+<div class="box">
+きき方：<br>
+<b>「ca → t → cat」</b>を押すと、1音ずつ鳴らしてから単語まるごとを鳴らします。<br>
+「カッ」ではなく<b>「カァ」</b>と伸びて聞こえるものを選んでください。
+</div>
+
+<div class="ref"><button class="sub" onclick="one('../words/cat.m4a')">▶ お手本：cat（単語まるごと）</button></div>
+
+<div id="list"></div>
+
+<script>
+const CANDS = [
+  { id: "ca-1", name: "① 今のサンプル", how: "強さの印あり・ふつうの速さ（kˈæ）", sec: 0.23, v: 0.17 },
+  { id: "ca-2", name: "② 強さの印を外す", how: "kæ・ふつうの速さ", sec: 0.45, v: 0.33 },
+  { id: "ca-3", name: "③ 強さの印を外して ゆっくり", how: "kæ・ゆっくり合成", sec: 0.57, v: 0.40 },
+  { id: "ca-4", name: "④ 本物の単語から切り出し", how: "「cat.」を読ませて t の直前で切る", sec: 0.34, v: 0.24 },
+  { id: "ca-5", name: "⑤ 本物の単語から切り出し（ゆっくり）", how: "「cat.」をゆっくり読ませて t の直前で切る", sec: 0.40, v: 0.28 },
+];
+const audio = new Audio(); audio.preload = "auto";
+let seqNo = 0;
+function play(p) {
+  return new Promise(res => {
+    audio.onended = audio.onerror = () => res();
+    audio.src = p + "?v=ca1"; audio.play().catch(() => res());
+  });
+}
+function one(p) { seqNo++; play(p); }
+async function seq(id) {
+  const my = ++seqNo;
+  await play("split/" + id + ".m4a");
+  if (my !== seqNo) return;
+  await new Promise(r => setTimeout(r, 160));
+  if (my !== seqNo) return;
+  await play("../phonics/t.m4a");
+  if (my !== seqNo) return;
+  await new Promise(r => setTimeout(r, 260));
+  if (my !== seqNo) return;
+  await play("../words/cat.m4a");
+}
+document.getElementById("list").innerHTML = CANDS.map(c => `
+  <div class="cand">
+    <h2>${c.name}</h2>
+    <div class="how">${c.how}</div>
+    <div class="btns">
+      <button class="sub" onclick="one('split/${c.id}.m4a')">▶ ca だけ</button>
+      <button onclick="seq('${c.id}')">▶ ca → t → cat</button>
+    </div>
+    <div class="num">長さ ${c.sec}秒（うち母音 ${c.v}秒）</div>
+  </div>`).join("");
+</script>
+</body>
+</html>
